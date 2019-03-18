@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">EmPathy</string>
+    <string name="cd_search_schools">Search schools</string>
+    <string name="cd_school_list">Schools List</string>
+    <string name="cd_school_name">Name of the schoolEntity</string>
+    <string name="loading_schools">Loading schools...</string>
+    <string name="search_schools_hint">Put name pattern of schoolEntity to search</string>
+</resources>

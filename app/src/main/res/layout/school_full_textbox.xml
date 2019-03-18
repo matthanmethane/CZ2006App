@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- TODO: create a RecyclerView for CCAs and courses in the schoolEntity -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <import type="com.example.testapp.viewmodel.FullTextboxViewModel"/>
+
+        <variable name="schoolFullTextboxViewModel"
+            type="com.example.testapp.viewmodel.FullTextboxViewModel"/>
+    </data>
+    <!--<android.support.constraint.ConstraintLayout-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <LinearLayout
+        android:id="@+id/full_textbox"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/full_textbox_school_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{schoolFullTextboxViewModel.sekolah.schoolName}" />
+
+        <TextView
+            android:id="@+id/full_textbox_school_physical_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{schoolFullTextboxViewModel.sekolah.physicalAddress}" />
+
+        <TextView
+            android:id="@+id/full_textbox_school_postal_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{((Integer)schoolFullTextboxViewModel.sekolah.postalCode).toString()}" />
+
+        <TextView
+            android:id="@+id/full_textbox_school_telephone_number_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{schoolFullTextboxViewModel.sekolah.telephoneNumber1}" />
+
+        <TextView
+            android:id="@+id/full_textbox_school_telephone_number_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{schoolFullTextboxViewModel.sekolah.telephoneNumber2}" />
+
+        <TextView
+            android:id="@+id/full_textbox_school_vision"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/cd_school_name"
+            android:text="@{schoolFullTextboxViewModel.sekolah.vision}" />
+
+        <TextView
+            android:id="@+id/full_textbox_school_mission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/cd_school_name"
+            android:text="@{schoolFullTextboxViewModel.sekolah.mission}" />
+
+        <TextView
+            android:id="@+id/full_textbox_school_autonomy_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/cd_school_name"
+            android:text="@{schoolFullTextboxViewModel.sekolah.schoolAutonomyType}" />
+
+        <TextView
+            android:id="@+id/full_textbox_school_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/cd_school_name"
+            android:text="@{schoolFullTextboxViewModel.sekolah.schoolGender}" />
+
+        <!-- TODO: figure out how to dynamically display this only for primary schools -->
+        <!--<TextView-->
+            <!--android:id="@+id/full_textbox_school_session"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:contentDescription="@string/cd_school_name"-->
+            <!--android:text="@{schoolDetails.}" />-->
+
+        <!-- TODO: display the four at the bottom as YES/NO strings instead -->
+        <!--<TextView-->
+            <!--android:id="@+id/full_textbox_gifted_education_program_offered"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@{((Integer)schoolFullTextboxViewModel.sekolah.giftedEducationProgramOffered).toString()}" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/full_textbox_integrated_program"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@{schoolFullTextboxViewModel.sekolah.integratedProgram}" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/full_textbox_SAP_school"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@{schoolFullTextboxViewModel.sekolah.SAPSchool}" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/full_textbox_zone_code"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@{schoolFullTextboxViewModel.sekolah.zoneCode}" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/full_textbox_cluster_code"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@{schoolFullTextboxViewModel.sekolah.clusterCode}" />-->
+
+
+    </LinearLayout>
+    <!--</android.support.constraint.ConstraintLayout>-->
+    <!--<androidx.cardview.widget.CardView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:minHeight="@dimen/product_item_min_height"-->
+        <!--android:onClick="@{() ->  callback.onClick(schoolName)}"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_marginStart="@dimen/item_horizontal_margin"-->
+        <!--android:layout_marginEnd="@dimen/item_horizontal_margin"-->
+        <!--app:cardUseCompatPadding="true">-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_marginStart="@dimen/item_horizontal_margin"-->
+            <!--android:layout_marginEnd="@dimen/item_horizontal_margin"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/name"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:contentDescription="@string/cd_product_name"-->
+                <!--android:text="@{schoolEntity.name}"/>-->
+
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_alignParentEnd="true"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_marginEnd="5dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="@{schoolEntity.physicalAddress)}"/>&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_below="@id/name"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="@{schoolEntity.postalCode}"/>&ndash;&gt;-->
+        <!--</RelativeLayout>-->
+
+    <!--</androidx.cardview.widget.CardView>-->
+</layout>

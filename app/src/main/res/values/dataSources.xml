@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="SCHOOL_GENERAL_INFORMATION_URL"><![CDATA[https://data.gov.sg/api/action/datastore_search?resource_id=ede26d32-01af-4228-b1ed-f05c45a1d8ee&limit=500000]]></string>
+    <string name="SUBJECTS_OFFERED_URL"><![CDATA[https://data.gov.sg/api/action/datastore_search?resource_id=3bb9e6b0-6865-4a55-87ba-cc380bc4df39&limit=500000]]></string>
+    <string name="CCAS_OFFERED_URL"><![CDATA[https://data.gov.sg/api/action/datastore_search?resource_id=dd7a056a-49fa-4854-bd9a-c4e1a88f1181&limit=500000]]></string>
+</resources>
