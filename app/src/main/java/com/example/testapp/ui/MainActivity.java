@@ -1,12 +1,14 @@
 package com.example.testapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.testapp.R;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * The Main activity.
@@ -17,12 +19,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Add school list fragment if this is first creation (subsequent creations will have it inside savedInstanceState)
-        if (savedInstanceState == null) {
-            SchoolListFragment fragment = new SchoolListFragment();
+        Button searchBtn =  findViewById(R.id.search);
+        Button bookmarkBtn = findViewById(R.id.bookmark);
+        Button settingBtn = findViewById(R.id.setting);
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment, SchoolListFragment.TAG).commit();
-        }
+        searchBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent openSearch = new Intent(getApplicationContext(), searchLevel.class);
+                startActivity(openSearch);
+            }
+        });
     }
 }
