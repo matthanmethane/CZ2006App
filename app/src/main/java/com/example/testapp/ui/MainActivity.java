@@ -30,5 +30,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(openSearch);
             }
         });
+        /*openBookmark to be implemented later
+        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openBookmark = new Intent(getApplicationContext(),#PUT_ACTIVITY_NAME);
+                startActivity();
+            }
+        });*/
+        settingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openSetting = new Intent(getApplicationContext(),settingView.class);
+                startActivity(openSetting);
+            }
+        });
     }
 }

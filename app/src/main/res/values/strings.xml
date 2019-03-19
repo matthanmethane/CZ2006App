@@ -8,4 +8,20 @@
     <!-- Yes and no are used for conditional databinding -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="title_activity_setting_view">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_address">Address</string>
+
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_reset">Reset</string>
+
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_about_us">About Us</string>
+
+
 </resources>
