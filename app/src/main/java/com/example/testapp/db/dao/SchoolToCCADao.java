@@ -25,8 +25,8 @@ public interface SchoolToCCADao {
      * @return
      */
     @Query("SELECT * FROM SchoolToCCA " +
-            "WHERE SchoolToCCA.school_name = :schoolName")
-    LiveData<List<SchoolToCCA>> getCCAsOfASchool(String schoolName);
+            "WHERE SchoolToCCA.school_name LIKE :schoolName")
+    List<SchoolToCCA> getCCAsOfASchool(String schoolName);
 
     /**
      * Insert school to cca.

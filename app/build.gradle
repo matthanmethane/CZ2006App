@@ -69,4 +69,5 @@ dependencies {
     androidTestImplementation deps.support.v4
     androidTestImplementation deps.support.app_compat
     androidTestImplementation deps.support.design
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
 }

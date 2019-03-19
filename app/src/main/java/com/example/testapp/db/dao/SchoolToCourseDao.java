@@ -20,8 +20,8 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 public interface SchoolToCourseDao {
 
     @Query("SELECT * FROM SchoolToCourse " +
-            "WHERE SchoolToCourse.school_name = :schoolName")
-    LiveData<List<SchoolToCourse>> getCoursesOfASchool(String schoolName);
+            "WHERE SchoolToCourse.school_name LIKE :schoolName")
+    List<SchoolToCourse> getCoursesOfASchool(String schoolName);
 
     /**
      * Insert school to course.

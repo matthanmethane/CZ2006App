@@ -59,7 +59,4 @@ public class SchoolListViewModel extends AndroidViewModel {
      */
     public LiveData<List<SchoolEntity>> getSchoolsBySearchName(String schoolName) { return mRepository.getSchoolsBySearchPattern(schoolName); }
 
-//    public LiveData<List<SchoolEntity>> searchSecondarySchools(String schoolName, List<String> CCAs, List<String> Courses) {
-//        return mRepository.findSecondarySchoolNames(schoolName, CCAs, Courses);
-//    }
 }

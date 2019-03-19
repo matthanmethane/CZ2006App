@@ -1,9 +1,6 @@
 package com.example.testapp.db.entity;
 
-import com.example.testapp.db.model.School;
-
 import androidx.annotation.NonNull;
-
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,7 +8,7 @@ import androidx.room.PrimaryKey;
  * The type SchoolEntity. Main place to store data for all schools.
  */
 @Entity
-public class SchoolEntity implements School {
+public class SchoolEntity {
     /**
      * The Id.
      */
@@ -186,11 +183,9 @@ public class SchoolEntity implements School {
      *
      * @return the id
      */
-    @Override
     public int getId() {
         return this.id;
     }
 
-    @Override
     public String getSchoolName() { return this.schoolName; }
 }

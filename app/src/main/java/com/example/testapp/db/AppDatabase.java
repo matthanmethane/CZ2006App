@@ -187,6 +187,9 @@ public abstract class AppDatabase extends RoomDatabase {
             this.database = database;
         }
 
+        /**
+         * This whole chunk of code is used to instantiate the app's data on first run.
+         */
         @Override
         public void run() {
             // Moves the current Thread into the background
@@ -195,8 +198,8 @@ public abstract class AppDatabase extends RoomDatabase {
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(appContext);
 
-            // send the JSON request
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+            // create the JSON request for school general information
+            JsonObjectRequest schoolGeneralInfoJsonRequest = new JsonObjectRequest
                     (Request.Method.GET, appContext.getString(R.string.SCHOOL_GENERAL_INFORMATION_URL), null, new Response.Listener<JSONObject>() {
 
                         @Override
@@ -204,14 +207,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
                             try {
                                 // parse results as json array
-
-                                JSONArray allSchoolsAsJSONArray = getSchoolsAsJSONArray(response);
-
-
-                                List<SchoolEntity> allSchoolsAsList = new ArrayList<SchoolEntity>();
-                                List<PrimarySchool> allPrimarySchoolsAsList = new ArrayList<PrimarySchool>();
-                                List<SecondarySchool> allSecondarySchoolsAsList = new ArrayList<SecondarySchool>();
-                                List<PreUniversitySchool> allPreUniversitySchoolsAsList = new ArrayList<PreUniversitySchool>();
+                                JSONArray allSchoolsAsJSONArray = getResultsAsJSONArray(response);
 
                                 parseSchoolJSONArrayAndStoreInDatabase(database, allSchoolsAsJSONArray);
 
@@ -230,11 +226,64 @@ public abstract class AppDatabase extends RoomDatabase {
                             System.out.println("Rabak la bro: " + error.toString());
                         }
                     });
-            // Access the RequestQueue through your singleton class.
-            queue.add(jsonObjectRequest);
+
+            // create the JSON request for CCAs offered by each school
+            JsonObjectRequest schoolToCCAJsonRequest = new JsonObjectRequest
+                    (Request.Method.GET, appContext.getString(R.string.CCAS_OFFERED_URL), null, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                // parse results as json array
+                                JSONArray allSchoolToCCA_AsJSONArray = getResultsAsJSONArray(response);
+
+                                // get each entry in results and store in database
+                                parseSchoolToCCAJSONArrayAndStoreInDatabase(database, allSchoolToCCA_AsJSONArray);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            System.out.println("Rabak la bro: " + error.toString());
+                        }
+                    });
+
+            // create the JSON request for courses offered by each school
+            JsonObjectRequest schoolToCourseJsonRequest = new JsonObjectRequest
+                    (Request.Method.GET, appContext.getString(R.string.SUBJECTS_OFFERED_URL), null, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                // parse results as json array
+                                JSONArray allSchoolToCourseAsJSONArray = getResultsAsJSONArray(response);
+
+                                // get each entry in results and store in database
+                                parseSchoolToCourseJSONArrayAndStoreInDatabase(database, allSchoolToCourseAsJSONArray);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            System.out.println("Rabak la bro: " + error.toString());
+                        }
+                    });
+            // Access the RequestQueue through your singleton class. Add each request into the queue.
+            queue.add(schoolGeneralInfoJsonRequest);
+            queue.add(schoolToCourseJsonRequest);
+            queue.add(schoolToCCAJsonRequest);
         }
 
-        private JSONArray getSchoolsAsJSONArray(JSONObject rawJson) throws JSONException {
+        // this parsing format is specific to data.gov.sg's API
+        private JSONArray getResultsAsJSONArray(JSONObject rawJson) throws JSONException {
             return  rawJson.getJSONObject("result").getJSONArray("records");
         }
 
@@ -327,5 +376,33 @@ public abstract class AppDatabase extends RoomDatabase {
             }
         }
 
+        private void parseSchoolToCCAJSONArrayAndStoreInDatabase(final AppDatabase database,
+                                                                 JSONArray allSchoolToCCA_AsJSONArray) throws JSONException
+        {
+            for (int i = 0; i < allSchoolToCCA_AsJSONArray.length(); i++)
+            {
+                JSONObject record = allSchoolToCCA_AsJSONArray.getJSONObject(i);
+                String schoolName = record.getString("school_name");
+                String ccaGroup = record.getString("cca_grouping_desc");
+                String ccaName = record.getString("cca_generic_name");
+
+                SchoolToCCA parsedSchoolToCCA = new SchoolToCCA(schoolName, ccaName, ccaGroup);
+                database.SchoolToCCAModel().insertSchoolToCCA(parsedSchoolToCCA);
+            }
+        }
+
+        private void parseSchoolToCourseJSONArrayAndStoreInDatabase(final AppDatabase database,
+                                                                    JSONArray allSchoolToCourseAsJSONArray) throws JSONException
+        {
+            for (int i = 0; i < allSchoolToCourseAsJSONArray.length(); i++)
+            {
+                JSONObject record = allSchoolToCourseAsJSONArray.getJSONObject(i);
+                String schoolName = record.getString("school_name");
+                String courseName = record.getString("subject_desc");
+
+                SchoolToCourse parsedSchoolToCourse = new SchoolToCourse(schoolName, courseName);
+                database.SchoolToCourseModel().insertSchoolToCourse(parsedSchoolToCourse);
+            }
+        }
     }
 }

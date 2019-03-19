@@ -57,7 +57,6 @@ public class DataRepository {
     /**
      * Get the list of schools from the database and get notified when the data changes.
      * mObservableSchools gets typecasted to LiveData instead of MediatorLiveData.
-     * (TODO: find out why.)
      *
      * @return the schools
      */
@@ -98,12 +97,17 @@ public class DataRepository {
      * @param schoolName
      * @return
      */
-    public LiveData<List<SchoolToCCA>> getCCAsOfASchool(String schoolName) {
-        return mDatabase.SchoolToCCAModel().getCCAsOfASchool(schoolName.toUpperCase());
+    public List<SchoolToCCA> getCCAsOfASchool(String schoolName) {
+        return mDatabase.SchoolToCCAModel().getCCAsOfASchool(schoolName);
     }
 
-    public LiveData<List<SchoolToCourse>> getCoursesOfASchool (String schoolName) {
-        return mDatabase.SchoolToCourseModel().getCoursesOfASchool(schoolName.toUpperCase());
+    /**
+     * Get the Courses offered by a school.
+     * @param schoolName
+     * @return
+     */
+    public List<SchoolToCourse> getCoursesOfASchool (String schoolName) {
+        return mDatabase.SchoolToCourseModel().getCoursesOfASchool(schoolName);
     }
 
 

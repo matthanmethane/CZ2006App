@@ -1,12 +1,16 @@
 package com.example.testapp.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.testapp.R;
 import com.example.testapp.databinding.SchoolFullTextboxBinding;
+import com.example.testapp.generated.callback.OnClickListener;
 import com.example.testapp.viewmodel.FullTextboxViewModel;
 
 import java.util.List;
@@ -18,8 +22,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 /**
- * The type SchoolEntity full textbox fragment. It is the fragment for showing the details of each school in a textbox format.
- * TODO: complete this
+ * The School full textbox fragment. It is the fragment for showing the details of each school in a textbox format.
  */
 public class SchoolFullTextboxFragment extends Fragment {
     private static final String KEY_SCHOOL_NAME = "school_name"; // used to identify the fragment since there are multiple schools
@@ -37,10 +40,14 @@ public class SchoolFullTextboxFragment extends Fragment {
         return schoolFullTextboxBinding.getRoot();
     }
 
+    /**
+     * Create the ViewModel associated with the School selected and bind it to the UI.
+     * **/
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // This Factory pattern allows you to inject the school name into the new View Model.
         FullTextboxViewModel.Factory factory = new FullTextboxViewModel.Factory(
                 getActivity().getApplication(), getArguments().getString(KEY_SCHOOL_NAME));
 
@@ -49,19 +56,23 @@ public class SchoolFullTextboxFragment extends Fragment {
 
         schoolFullTextboxBinding.setSchoolFullTextboxViewModel(model);
 
-//        subscribeToModel(model);
-    }
+        // set a listener for the school website link button
+        Button schoolWebsiteButton = this.getActivity().findViewById(R.id.schoolWebsiteButton);
 
-//    private void subscribeToModel(final FullTextboxViewModel model) {
-//
-//        // Observe school data
-//        model.getObservableProduct().observe(this, new Observer<SchoolDetailsView>() {
-//            @Override
-//            public void onChanged(@Nullable SchoolDetailsView schoolDetailsView) {
-//                model.setSchool(schoolDetailsView);
-//            }
-//        });
-//    }
+        schoolWebsiteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
+                // get the URI to open up from the FullTextboxViewModel
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(schoolFullTextboxBinding.getSchoolFullTextboxViewModel().sekolah.homePageAddress));
+                startActivity(intent);
+            }
+        });
+
+        // TODO: set a listener for the map view button
+        // TODO: create map view
+    }
 
     /** Creates SchoolEntity FullTextbox Fragment for specific school name */
     public static SchoolFullTextboxFragment forSchool(String schoolName) {

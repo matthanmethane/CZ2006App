@@ -11,7 +11,6 @@ import com.example.testapp.db.entity.SchoolToCourse;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -19,17 +18,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 public class FullTextboxViewModel extends AndroidViewModel {
 
+    //TODO: find out how to perform better encapsulation of data in the ViewModel
     public final String mSchoolName;
-
-//    public ObservableField<SchoolEntity> sekolah = new ObservableField<>();
 
     public final SchoolEntity sekolah;
 
-//    private final LiveData<SchoolEntity> mObservableSchool;
+    public String stringOfCCAsOfferedBySchool = "";
 
-    private final LiveData<List<SchoolToCCA>> mObservableSchoolToCCAs;
-
-    private final LiveData<List<SchoolToCourse>> mObservableSchoolToCourses;
+    public String stringOfCoursesOfferedBySchool = "";
 
     public FullTextboxViewModel(@NonNull Application application, DataRepository repository,
                             final String schoolName) throws Exception {
@@ -37,34 +33,46 @@ public class FullTextboxViewModel extends AndroidViewModel {
 
         mSchoolName = schoolName;
 
-//        mObservableSchool = repository.getSchool(mSchoolName);
         sekolah = repository.getSchool(mSchoolName);
-        mObservableSchoolToCCAs = repository.getCCAsOfASchool(mSchoolName);
-        mObservableSchoolToCourses = repository.getCoursesOfASchool(mSchoolName);
+        List<SchoolToCCA> schoolToCCAs = repository.getCCAsOfASchool(mSchoolName);
+        for (SchoolToCCA schoolToCCA : schoolToCCAs)
+        {
+            stringOfCCAsOfferedBySchool += (schoolToCCA.ccaName + ", ");
+        }
+
+        // sanitize the string output
+        if (stringOfCCAsOfferedBySchool.equalsIgnoreCase(""))
+        {
+            stringOfCCAsOfferedBySchool = "No Data Available";
+        }
+        else
+        {
+            stringOfCCAsOfferedBySchool =
+                    stringOfCCAsOfferedBySchool.substring(0,
+                            stringOfCCAsOfferedBySchool.lastIndexOf(','));
+        }
+
+        List<SchoolToCourse> schoolToCourses = repository.getCoursesOfASchool(mSchoolName);
+        for (SchoolToCourse schoolToCourse : schoolToCourses)
+        {
+            stringOfCoursesOfferedBySchool += (schoolToCourse.courseName + ", ");
+        }
+
+        // sanitize the string output
+        if (stringOfCoursesOfferedBySchool.equalsIgnoreCase(""))
+        {
+            stringOfCoursesOfferedBySchool = "No Data Available";
+        }
+        else
+        {
+            stringOfCoursesOfferedBySchool =
+                    stringOfCoursesOfferedBySchool.substring(0,
+                            stringOfCoursesOfferedBySchool.lastIndexOf(','));
+        }
     }
 
     /**
-     * Expose the LiveData CCA and Courses query so the UI can observe it.
-     */
-//    public LiveData<SchoolEntity> getSchool() {return mObservableSchool; }
-
-    public LiveData<List<SchoolToCCA>> getCCAs() {
-        return mObservableSchoolToCCAs;
-    }
-
-    public LiveData<List<SchoolToCourse>> getCourses() {
-        return mObservableSchoolToCourses;
-    }
-
-////    public String getSchoolName() {return sekolah.schoolName;}
-//
-//    public void setSekolah(SchoolEntity sekolah) {
-//        System.out.println("I got called. Yay!");
-//        this.sekolah.set(sekolah);
-//    }
-
-    /**
-     * A creator used to inject the school name into the ViewModel
+     * A creator used to inject the school name into the instantiation of a new ViewModel (so that data inside can be tailored to it)
      */
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
@@ -83,7 +91,6 @@ public class FullTextboxViewModel extends AndroidViewModel {
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
-            //noinspection unchecked
             try {
                 return (T) new FullTextboxViewModel(mApplication, mRepository, mSchoolName);
             } catch (Exception e) {
