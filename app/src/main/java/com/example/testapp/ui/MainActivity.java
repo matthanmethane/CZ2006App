@@ -19,11 +19,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button searchBtn =  findViewById(R.id.search);
+        Button searchBtn = findViewById(R.id.search);
         Button bookmarkBtn = findViewById(R.id.bookmark);
         Button settingBtn = findViewById(R.id.setting);
 
-        searchBtn.setOnClickListener(new View.OnClickListener(){
+        searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent openSearch = new Intent(getApplicationContext(), searchLevel.class);
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSetting = new Intent(getApplicationContext(),settingView.class);
+                Intent openSetting = new Intent(getApplicationContext(), settingView.class);
                 startActivity(openSetting);
             }
         });

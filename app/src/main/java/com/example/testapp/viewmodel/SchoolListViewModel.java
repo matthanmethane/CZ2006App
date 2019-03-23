@@ -13,7 +13,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
 /**
- *
  * The type SchoolEntity list view model. Used as an additional abstraction between DataRepository and SchoolList.
  */
 public class SchoolListViewModel extends AndroidViewModel {
@@ -57,6 +56,8 @@ public class SchoolListViewModel extends AndroidViewModel {
      * @param schoolName the school name
      * @return the schools by search name
      */
-    public LiveData<List<SchoolEntity>> getSchoolsBySearchName(String schoolName) { return mRepository.getSchoolsBySearchPattern(schoolName); }
+    public LiveData<List<SchoolEntity>> getSchoolsBySearchName(String schoolName) {
+        return mRepository.getSchoolsBySearchPattern(schoolName);
+    }
 
 }

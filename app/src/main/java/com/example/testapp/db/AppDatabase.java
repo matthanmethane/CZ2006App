@@ -1,7 +1,5 @@
 package com.example.testapp.db;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
 
 import com.android.volley.Request;
@@ -29,10 +27,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -43,10 +42,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  * as well as all the data access objects (DAOs) for each entity.
  */
 @Database(entities =
-            {SchoolEntity.class, PreUniversitySchool.class,
-                    PrimarySchool.class, SchoolToCCA.class,
-                    SchoolToCourse.class, SecondarySchool.class,
-                    }, version = 1)
+        {SchoolEntity.class, PreUniversitySchool.class,
+                PrimarySchool.class, SchoolToCCA.class,
+                SchoolToCourse.class, SecondarySchool.class,
+        }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "EmPathy DB";
 
@@ -155,7 +154,7 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
-    private void setDatabaseCreated(){
+    private void setDatabaseCreated() {
         mIsDatabaseCreated.postValue(true);
     }
 
@@ -214,6 +213,11 @@ public abstract class AppDatabase extends RoomDatabase {
                                 // notify that the database was created and it's ready to be used
                                 database.setDatabaseCreated();
 
+                                // add geolocation of schools
+                                List<SchoolEntity> allSchools = database.SchoolModel().loadAllSchoolsAsList();
+                                for (SchoolEntity school : allSchools) {
+                                    addGeocodingForSchool(school, queue);
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -280,17 +284,60 @@ public abstract class AppDatabase extends RoomDatabase {
             queue.add(schoolGeneralInfoJsonRequest);
             queue.add(schoolToCourseJsonRequest);
             queue.add(schoolToCCAJsonRequest);
+
+
+        }
+
+        // geocode school
+        private void addGeocodingForSchool(SchoolEntity school, RequestQueue queue) {
+            String BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
+            JsonObjectRequest geoCodingRequest =
+                    new JsonObjectRequest(
+                            Request.Method.GET,
+                            BASE_URL +
+                                    "?address=" +
+                                    school.physicalAddress +
+                                    "&key=" +
+                                    appContext.getString(R.string.google_geocoding_key) +
+                                    "&region=sg",
+                            null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        JSONObject location =
+                                                response.getJSONArray("results")
+                                                        .getJSONObject(0)
+                                                        .getJSONObject("geometry")
+                                                        .getJSONObject("location");
+                                        Double latitude = location.getDouble("lat");
+                                        Double longitude = location.getDouble("lng");
+                                        school.latitude = latitude;
+                                        school.longitude = longitude;
+                                        database.SchoolModel().updateSchool(school);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    // TODO: Handle error
+                                    System.out.println("Rabak la bro: " + error.toString());
+                                }
+                            });
+            queue.add(geoCodingRequest);
         }
 
         // this parsing format is specific to data.gov.sg's API
         private JSONArray getResultsAsJSONArray(JSONObject rawJson) throws JSONException {
-            return  rawJson.getJSONObject("result").getJSONArray("records");
+            return rawJson.getJSONObject("result").getJSONArray("records");
         }
 
         private void parseSchoolJSONArrayAndStoreInDatabase(final AppDatabase database,
-                                                         JSONArray allSchoolsAsJSONArray) throws JSONException {
-            for (int i = 0; i < allSchoolsAsJSONArray.length(); i++)
-            {
+                                                            JSONArray allSchoolsAsJSONArray) throws JSONException {
+            for (int i = 0; i < allSchoolsAsJSONArray.length(); i++) {
 
                 JSONObject school = allSchoolsAsJSONArray.getJSONObject(i);
                 String schoolName = school.getString("school_name");
@@ -300,7 +347,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 String telephoneNumber2 = school.getString("telephone_no_2");
                 String homePageAddress = school.getString("url_address");
                 String emailAddress = school.getString("email_address");
-                String mission =  school.getString("missionstatement_desc");
+                String mission = school.getString("missionstatement_desc");
                 String vision = school.getString("visionstatement_desc");
                 String schoolAutonomyType = school.getString("type_code");
                 String schoolGender = school.getString("nature_code");
@@ -322,51 +369,44 @@ public abstract class AppDatabase extends RoomDatabase {
                 String sessionCode = school.getString("session_code");
 
                 // store school in database
-                SchoolEntity parsedSchoolEntity = new SchoolEntity(   i+1,
-                                                    schoolName,
-                                                    physicalAddress,
-                                                    postalCode,
-                                                    telephoneNumber1,
-                                                    telephoneNumber2,
-                                                    homePageAddress,
-                                                    emailAddress,
-                                                    mission,
-                                                    vision,
-                                                    schoolAutonomyType,
-                                                    schoolGender,
-                                                    SAPSchool,
-                                                    autonomousSchool,
-                                                    integratedProgram,
-                                                    giftedEducationProgramOffered,
-                                                    zoneCode,
-                                                    clusterCode     );
+                SchoolEntity parsedSchoolEntity = new SchoolEntity(i + 1,
+                        schoolName,
+                        physicalAddress,
+                        postalCode,
+                        telephoneNumber1,
+                        telephoneNumber2,
+                        homePageAddress,
+                        emailAddress,
+                        mission,
+                        vision,
+                        schoolAutonomyType,
+                        schoolGender,
+                        SAPSchool,
+                        autonomousSchool,
+                        integratedProgram,
+                        giftedEducationProgramOffered,
+                        zoneCode,
+                        clusterCode);
                 database.SchoolModel().insertSchool(parsedSchoolEntity);
 
                 // check which other school table to insert data into
-                if (level.equalsIgnoreCase("primary"))
-                {
+                if (level.equalsIgnoreCase("primary")) {
                     PrimarySchool parsedPrimarySchool = new PrimarySchool(schoolName, sessionCode);
                     database.PrimarySchoolModel().insertPrimarySchool(parsedPrimarySchool);
-                } else if (level.equalsIgnoreCase("secondary"))
-                {
+                } else if (level.equalsIgnoreCase("secondary")) {
                     SecondarySchool parsedSecondarySchool = new SecondarySchool(schoolName, 0, 0, 0, 0, 0);
                     database.SecondarySchoolModel().insertSecondarySchool(parsedSecondarySchool);
-                } else if (level.equalsIgnoreCase("junior college") || level.equalsIgnoreCase("CENTRALISED INSTITUTE"))
-                {
+                } else if (level.equalsIgnoreCase("junior college") || level.equalsIgnoreCase("CENTRALISED INSTITUTE")) {
                     PreUniversitySchool parsedPreUniversitySchool = new PreUniversitySchool(schoolName, 10, 10);
                     database.PreUniversitySchoolModel().insertPreUniversitySchool(parsedPreUniversitySchool);
-                } else if (level.equalsIgnoreCase("mixed level"))
-                {
+                } else if (level.equalsIgnoreCase("mixed level")) {
                     // TODO: Load exceptional cases of mixed levels from another file
                     if (schoolName.equalsIgnoreCase("MARIS STELLA HIGH SCHOOL") ||
-                        schoolName.equalsIgnoreCase("CHIJ ST. NICHOLAS GIRLS' SCHOOL") ||
-                        schoolName.equalsIgnoreCase("CATHOLIC HIGH SCHOOL"))
-                    {
+                            schoolName.equalsIgnoreCase("CHIJ ST. NICHOLAS GIRLS' SCHOOL") ||
+                            schoolName.equalsIgnoreCase("CATHOLIC HIGH SCHOOL")) {
                         PrimarySchool parsedPrimarySchool = new PrimarySchool(schoolName, sessionCode);
                         database.PrimarySchoolModel().insertPrimarySchool(parsedPrimarySchool);
-                    }
-                    else
-                    {
+                    } else {
                         PreUniversitySchool parsedPreUniversitySchool = new PreUniversitySchool(schoolName, 10, 10);
                         database.PreUniversitySchoolModel().insertPreUniversitySchool(parsedPreUniversitySchool);
                     }
@@ -377,10 +417,8 @@ public abstract class AppDatabase extends RoomDatabase {
         }
 
         private void parseSchoolToCCAJSONArrayAndStoreInDatabase(final AppDatabase database,
-                                                                 JSONArray allSchoolToCCA_AsJSONArray) throws JSONException
-        {
-            for (int i = 0; i < allSchoolToCCA_AsJSONArray.length(); i++)
-            {
+                                                                 JSONArray allSchoolToCCA_AsJSONArray) throws JSONException {
+            for (int i = 0; i < allSchoolToCCA_AsJSONArray.length(); i++) {
                 JSONObject record = allSchoolToCCA_AsJSONArray.getJSONObject(i);
                 String schoolName = record.getString("school_name");
                 String ccaGroup = record.getString("cca_grouping_desc");
@@ -392,10 +430,8 @@ public abstract class AppDatabase extends RoomDatabase {
         }
 
         private void parseSchoolToCourseJSONArrayAndStoreInDatabase(final AppDatabase database,
-                                                                    JSONArray allSchoolToCourseAsJSONArray) throws JSONException
-        {
-            for (int i = 0; i < allSchoolToCourseAsJSONArray.length(); i++)
-            {
+                                                                    JSONArray allSchoolToCourseAsJSONArray) throws JSONException {
+            for (int i = 0; i < allSchoolToCourseAsJSONArray.length(); i++) {
                 JSONObject record = allSchoolToCourseAsJSONArray.getJSONObject(i);
                 String schoolName = record.getString("school_name");
                 String courseName = record.getString("subject_desc");

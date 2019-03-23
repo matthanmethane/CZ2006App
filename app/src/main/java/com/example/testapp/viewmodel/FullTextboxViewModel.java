@@ -12,7 +12,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,43 +27,35 @@ public class FullTextboxViewModel extends AndroidViewModel {
     public String stringOfCoursesOfferedBySchool = "";
 
     public FullTextboxViewModel(@NonNull Application application, DataRepository repository,
-                            final String schoolName) throws Exception {
+                                final String schoolName) throws Exception {
         super(application);
 
         mSchoolName = schoolName;
 
         sekolah = repository.getSchool(mSchoolName);
         List<SchoolToCCA> schoolToCCAs = repository.getCCAsOfASchool(mSchoolName);
-        for (SchoolToCCA schoolToCCA : schoolToCCAs)
-        {
+        for (SchoolToCCA schoolToCCA : schoolToCCAs) {
             stringOfCCAsOfferedBySchool += (schoolToCCA.ccaName + ", ");
         }
 
         // sanitize the string output
-        if (stringOfCCAsOfferedBySchool.equalsIgnoreCase(""))
-        {
+        if (stringOfCCAsOfferedBySchool.equalsIgnoreCase("")) {
             stringOfCCAsOfferedBySchool = "No Data Available";
-        }
-        else
-        {
+        } else {
             stringOfCCAsOfferedBySchool =
                     stringOfCCAsOfferedBySchool.substring(0,
                             stringOfCCAsOfferedBySchool.lastIndexOf(','));
         }
 
         List<SchoolToCourse> schoolToCourses = repository.getCoursesOfASchool(mSchoolName);
-        for (SchoolToCourse schoolToCourse : schoolToCourses)
-        {
+        for (SchoolToCourse schoolToCourse : schoolToCourses) {
             stringOfCoursesOfferedBySchool += (schoolToCourse.courseName + ", ");
         }
 
         // sanitize the string output
-        if (stringOfCoursesOfferedBySchool.equalsIgnoreCase(""))
-        {
+        if (stringOfCoursesOfferedBySchool.equalsIgnoreCase("")) {
             stringOfCoursesOfferedBySchool = "No Data Available";
-        }
-        else
-        {
+        } else {
             stringOfCoursesOfferedBySchool =
                     stringOfCoursesOfferedBySchool.substring(0,
                             stringOfCoursesOfferedBySchool.lastIndexOf(','));

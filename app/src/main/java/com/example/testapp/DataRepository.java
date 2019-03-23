@@ -28,7 +28,7 @@ public class DataRepository {
         mObservableSchools = new MediatorLiveData<>();
 
         // TODO: find out what does this block of code do
-        mObservableSchools.addSource(mDatabase.SchoolModel().loadAllSchools(),
+        mObservableSchools.addSource(mDatabase.SchoolModel().loadAllSchoolsAsLiveData(),
                 schoolEntities -> {
                     if (mDatabase.getDatabaseCreated().getValue() != null) {
                         mObservableSchools.postValue(schoolEntities);
@@ -76,24 +76,24 @@ public class DataRepository {
 
     /**
      * Get a school by its name. Must be an exact match.
+     *
      * @param schoolName
      * @return
      */
     public SchoolEntity getSchool(String schoolName) throws Exception {
         SchoolEntity result = mDatabase.SchoolModel().findSchoolByName(schoolName);
 
-        if (result == null)
-        {
+        if (result == null) {
             throw new Exception("Cannot find a school with that name");
-        }
-        else
-        {
+        } else {
             return mDatabase.SchoolModel().findSchoolByName(schoolName);
         }
     }
 
+
     /**
      * Get the CCAs for a school.
+     *
      * @param schoolName
      * @return
      */
@@ -103,10 +103,11 @@ public class DataRepository {
 
     /**
      * Get the Courses offered by a school.
+     *
      * @param schoolName
      * @return
      */
-    public List<SchoolToCourse> getCoursesOfASchool (String schoolName) {
+    public List<SchoolToCourse> getCoursesOfASchool(String schoolName) {
         return mDatabase.SchoolToCourseModel().getCoursesOfASchool(schoolName);
     }
 

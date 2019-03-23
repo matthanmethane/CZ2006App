@@ -4,7 +4,6 @@ import com.example.testapp.db.entity.SchoolToCourse;
 
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;

@@ -25,21 +25,16 @@ public interface SchoolDao {
      * @return the live data
      */
     @Query("SELECT * FROM SchoolEntity ")
-    LiveData<List<SchoolEntity>> loadAllSchools();
+    LiveData<List<SchoolEntity>> loadAllSchoolsAsLiveData();
 
-    // prototyping methods. Rmb to throw away
-    @Query("SELECT * FROM SchoolEntity WHERE id=1")
-    LiveData<SchoolEntity> loadARandomSchool();
+    @Query("SELECT * FROM SchoolEntity ")
+    List<SchoolEntity> loadAllSchoolsAsList();
 
-    @Query("SELECT * FROM SchoolEntity WHERE id=1")
-    SchoolEntity loadARandomSchoolAsEntity();
-    // end of prototyping methods
+    @Query("SELECT longitude FROM SchoolEntity WHERE schoolName LIKE :pattern")
+    Double getLongitudeOfSchool(String pattern);
 
-//    @Query("SELECT schoolName FROM SchoolEntity ")
-//    LiveData<List<String>> loadAllSchools();
-
-//    @Query("select schoolName from SchoolEntity where schoolName LIKE :pattern")
-//    LiveData<List<String>> findSchoolNamesByNamePattern(String pattern);
+    @Query("SELECT latitude FROM SchoolEntity WHERE schoolName LIKE :pattern")
+    Double getLatitudeOfSchool(String pattern);
 
     /**
      * Find schools by name pattern live data.

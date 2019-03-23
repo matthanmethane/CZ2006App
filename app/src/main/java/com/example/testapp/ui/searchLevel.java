@@ -16,7 +16,7 @@ public class searchLevel extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case android.R.id.home:
                 onBackPressed();
@@ -50,14 +50,14 @@ public class searchLevel extends AppCompatActivity {
         secondaryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSec = new Intent(getApplicationContext(),searchView.class);
+                Intent openSec = new Intent(getApplicationContext(), searchView.class);
                 startActivity(openSec);
             }
         });
         jcBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openJc = new Intent(getApplicationContext(),searchView.class);
+                Intent openJc = new Intent(getApplicationContext(), searchView.class);
                 startActivity(openJc);
             }
         });

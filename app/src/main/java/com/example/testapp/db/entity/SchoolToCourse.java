@@ -1,7 +1,6 @@
 package com.example.testapp.db.entity;
 
 import androidx.annotation.NonNull;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -13,7 +12,7 @@ import androidx.room.ForeignKey;
         @ForeignKey(entity = SchoolEntity.class,
                 parentColumns = "schoolName",
                 childColumns = "school_name")
-        },
+},
         primaryKeys = {"school_name", "courseName"}
 )
 public class SchoolToCourse {
@@ -37,8 +36,7 @@ public class SchoolToCourse {
      * @param courseName the course name
      */
     public SchoolToCourse(String schoolName,
-                          String courseName)
-    {
+                          String courseName) {
         this.schoolName = schoolName;
         this.courseName = courseName;
     }

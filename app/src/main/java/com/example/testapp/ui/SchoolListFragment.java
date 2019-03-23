@@ -34,6 +34,7 @@ public class SchoolListFragment extends Fragment {
 
     /**
      * The correct part of a Fragment's lifecycle to add an Adapter to. See https://www.journaldev.com/9266/android-fragment-lifecycle
+     *
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -56,6 +57,7 @@ public class SchoolListFragment extends Fragment {
     /**
      * Called whenever this fragment is created together with the activity.
      * This is called after onCreateView (see https://www.journaldev.com/9266/android-fragment-lifecycle)
+     *
      * @param savedInstanceState
      */
     @Override
@@ -82,6 +84,7 @@ public class SchoolListFragment extends Fragment {
 
     /**
      * Notifys the schoolAdapter (which generates the summary textbox of all schools) of a change in data.
+     *
      * @param liveData
      */
     private void subscribeUi(LiveData<List<SchoolEntity>> liveData) {
@@ -102,7 +105,7 @@ public class SchoolListFragment extends Fragment {
     }
 
     /**
-     *   set a listener for each school 'card'
+     * set a listener for each school 'card'
      */
     private final SchoolNameTextboxClickCallback mSchoolClickCallback = new SchoolNameTextboxClickCallback() {
         @Override
