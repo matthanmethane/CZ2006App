@@ -26,7 +26,7 @@ public class FullTextboxViewModel extends AndroidViewModel {
 
     public String stringOfCoursesOfferedBySchool = "";
 
-    public FullTextboxViewModel(@NonNull Application application, DataRepository repository,
+    private FullTextboxViewModel(@NonNull Application application, DataRepository repository,
                                 final String schoolName) throws Exception {
         super(application);
 

@@ -64,7 +64,26 @@ public class SchoolListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final SchoolListViewModel viewModel = ViewModelProviders.of(this).get(SchoolListViewModel.class);
+        // initialize the SchoolListViewModel so stuff can be fetched.
+        // Must use the ViewModel Factory for this,
+        // since SchoolListFragment is the first Fragment to be created.
+        // Subsequent fragments which require the ViewModel do not need to create it using the factory.
+        // LEARNING POINT:
+        //  source: https://developer.android.com/topic/libraries/architecture/viewmodel.html#sharing
+        //  As we are sharing SchoolListViewModel between different fragments, the viewmodel should be
+        //  instantiated in the context of an Activity, and not a fragment. Specifically:
+        //  - ViewModelProviders.of(this, ...) will cause a runtime error on another fragment
+        //  because the viewmodel will not be in the activity's scope.
+        //  - ViewModelProviders.of(getActivity(), ...) will fix the error.
+        SchoolListViewModel.Factory factory =
+                new SchoolListViewModel.Factory(
+                getActivity().getApplication(),
+                getArguments().getInt("schoolLevel")
+        );
+
+        final SchoolListViewModel viewModel = ViewModelProviders.of(getActivity(), factory).get(SchoolListViewModel.class);
+
+        System.out.println("School level of viewModel: " + viewModel.schoolLevel);
 
         // Change the list of schools to show up in the summary textboxes whenever the school search button is clicked.
         mBinding.schoolSearchBtn.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +98,7 @@ public class SchoolListFragment extends Fragment {
             }
         });
 
+        // instantiate the list of schools first
         subscribeUi(viewModel.getSchools());
     }
 
@@ -120,7 +140,6 @@ public class SchoolListFragment extends Fragment {
                         .addToBackStack("school")
                         .replace(R.id.fragment_container,
                                 schoolFullTextboxFragment, null).commit();
-
             }
         }
     };

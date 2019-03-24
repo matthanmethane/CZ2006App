@@ -21,19 +21,9 @@ public class DataRepository {
     private static DataRepository sInstance; // adhering to the Singleton pattern, only one instance of DataRepository can exist in the lifecycle of the application.
 
     private final AppDatabase mDatabase;
-    private MediatorLiveData<List<SchoolEntity>> mObservableSchools; // TODO: find out why MediatorLiveData is used
 
     private DataRepository(final AppDatabase database) { // same point as above. Notice how the constructor for DataRepository is private.
         mDatabase = database;
-        mObservableSchools = new MediatorLiveData<>();
-
-        // TODO: find out what does this block of code do
-        mObservableSchools.addSource(mDatabase.SchoolModel().loadAllSchoolsAsLiveData(),
-                schoolEntities -> {
-                    if (mDatabase.getDatabaseCreated().getValue() != null) {
-                        mObservableSchools.postValue(schoolEntities);
-                    }
-                });
     }
 
     /**
@@ -55,13 +45,37 @@ public class DataRepository {
     }
 
     /**
-     * Get the list of schools from the database and get notified when the data changes.
-     * mObservableSchools gets typecasted to LiveData instead of MediatorLiveData.
+     * Get the list of all schools from the database.
      *
      * @return the schools
      */
     public LiveData<List<SchoolEntity>> getSchools() {
-        return mObservableSchools;
+        System.out.println("From DataRepository: fetched all schools");
+        return mDatabase.SchoolModel().loadAllSchoolsAsLiveData();
+    }
+
+    /**
+     * Get list of primary schools
+     */
+    public LiveData<List<SchoolEntity>> getPrimarySchools() {
+        System.out.println("From DataRepository: fetched all primary schools");
+        return mDatabase.SchoolModel().getPrimarySchoolsAsLiveData();
+    }
+
+    /**
+     * Get list of secondary schools
+     */
+    public LiveData<List<SchoolEntity>> getSecondarySchools() {
+        System.out.println("From DataRepository: fetched all secondary schools");
+        return mDatabase.SchoolModel().getSecondarySchoolsAsLiveData();
+    }
+
+    /**
+     * Get list of junior colleges
+     */
+    public LiveData<List<SchoolEntity>> getJuniorColleges() {
+        System.out.println("From DataRepository: fetched all junior colleges");
+        return mDatabase.SchoolModel().getJuniorCollegesAsLiveData();
     }
 
     /**
@@ -109,6 +123,22 @@ public class DataRepository {
      */
     public List<SchoolToCourse> getCoursesOfASchool(String schoolName) {
         return mDatabase.SchoolToCourseModel().getCoursesOfASchool(schoolName);
+    }
+
+    public List<String> getPrimarySchoolCCAs() {
+        return mDatabase.SchoolToCCAModel().getPrimarySchoolCCAs();
+    }
+
+    public List<String> getSecondarySchoolCCAs() {
+        return mDatabase.SchoolToCCAModel().getSecondarySchoolCCAs();
+    }
+
+    public List<String> getJuniorCollegeCCAs() {
+        return mDatabase.SchoolToCCAModel().getJuniorCollegeCCAs();
+    }
+
+    public List<String> getAllCCAs() {
+        return mDatabase.SchoolToCCAModel().getAllCCAs();
     }
 
 

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * NOTE: This does not use the Adapter pattern used in softwawre engineering. Do not confuse the two concepts.
+ * NOTE: This does not use the Adapter pattern used in software engineering. Do not confuse the two concepts.
  * <p>
  * Schools adapter, a subclass of RecyclerView's Adapter class. It is used to map each school in the list of schools
  *

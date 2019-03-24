@@ -36,6 +36,21 @@ public interface SchoolDao {
     @Query("SELECT latitude FROM SchoolEntity WHERE schoolName LIKE :pattern")
     Double getLatitudeOfSchool(String pattern);
 
+    @Query("SELECT * FROM SchoolEntity " +
+            "WHERE schoolName IN " +
+            " (SELECT schoolName FROM PrimarySchool)")
+    LiveData<List<SchoolEntity>> getPrimarySchoolsAsLiveData();
+
+    @Query("SELECT * FROM SchoolEntity " +
+            "WHERE schoolName IN " +
+            " (SELECT school_name FROM SecondarySchool)")
+    LiveData<List<SchoolEntity>> getSecondarySchoolsAsLiveData();
+
+    @Query("SELECT * FROM SchoolEntity " +
+            "WHERE schoolName IN " +
+            " (SELECT school_name FROM PreUniversitySchool)")
+    LiveData<List<SchoolEntity>> getJuniorCollegesAsLiveData();
+
     /**
      * Find schools by name pattern live data.
      *

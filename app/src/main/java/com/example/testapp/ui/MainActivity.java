@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSearch = new Intent(getApplicationContext(), searchLevel.class);
+                Intent openSearch = new Intent(getApplicationContext(), SearchLevelView.class);
                 startActivity(openSearch);
             }
         });
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSetting = new Intent(getApplicationContext(), settingView.class);
+                Intent openSetting = new Intent(getApplicationContext(), SettingView.class);
                 startActivity(openSetting);
             }
         });
