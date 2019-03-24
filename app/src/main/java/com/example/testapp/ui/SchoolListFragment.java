@@ -91,9 +91,9 @@ public class SchoolListFragment extends Fragment {
             public void onClick(View v) {
                 Editable query = mBinding.schoolSearchBox.getText();
                 if (query == null || query.toString().isEmpty()) {
-                    subscribeUi(viewModel.getSchools()); // return all schools
+                    subscribeUi(viewModel.getSchoolsBySearchPattern("", viewModel.getSelectedCCAs(), viewModel.getSelectedCourses()));
                 } else {
-                    subscribeUi(viewModel.getSchoolsBySearchName(query.toString())); // return schools with name containing the text specified in the search box.
+                    subscribeUi(viewModel.getSchoolsBySearchPattern(query.toString(), viewModel.getSelectedCCAs(), viewModel.getSelectedCourses()));
                 }
             }
         });

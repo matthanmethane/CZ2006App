@@ -43,4 +43,16 @@ public interface SchoolToCourseDao {
      */
     @Query("DELETE FROM SchoolToCourse")
     void deleteAll();
+
+    @Query("SELECT DISTINCT courseName FROM SchoolToCourse " +
+            "WHERE SchoolToCourse.school_name IN (SELECT schoolName FROM PrimarySchool)")
+    List<String> getPrimarySchoolCourses();
+
+    @Query("SELECT DISTINCT courseName FROM SchoolToCourse " +
+            "WHERE SchoolToCourse.school_name IN (SELECT school_name FROM SecondarySchool)")
+    List<String> getSecondarySchoolCourses();
+
+    @Query("SELECT DISTINCT courseName FROM SchoolToCourse " +
+            "WHERE SchoolToCourse.school_name IN (SELECT school_name FROM PreUniversitySchool)")
+    List<String> getJuniorCollegeCourses();
 }

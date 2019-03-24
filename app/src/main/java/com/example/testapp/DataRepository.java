@@ -84,8 +84,45 @@ public class DataRepository {
      * @param pattern the pattern
      * @return the schools by search pattern
      */
-    public LiveData<List<SchoolEntity>> getSchoolsBySearchPattern(String pattern) {
-        return mDatabase.SchoolModel().findSchoolsByNamePattern("%" + pattern + "%");
+    public LiveData<List<SchoolEntity>> getSchoolsBySearchPattern(String pattern, List<String> ccas, List<String> courses, int schoolLevel) {
+        if (ccas.size() > 0 && courses.size() > 0)
+        {
+            if (schoolLevel == 1)
+                return mDatabase.SchoolModel().getPrimarySchoolsBySearchPattern("%" + pattern + "%", ccas, courses);
+            else if (schoolLevel == 2)
+                return mDatabase.SchoolModel().getSecondarySchoolsBySearchPattern("%" + pattern + "%", ccas, courses);
+            else if (schoolLevel == 3)
+                return mDatabase.SchoolModel().getJuniorCollegesBySearchPattern("%" + pattern + "%", ccas, courses);
+        }
+        else if (ccas.size() > 0)
+        {
+            if (schoolLevel == 1)
+                return mDatabase.SchoolModel().getPrimarySchoolsByNameAndCCAs("%" + pattern + "%", ccas);
+            else if (schoolLevel == 2)
+                return mDatabase.SchoolModel().getSecondarySchoolsByNameAndCCAs("%" + pattern + "%", ccas);
+            else if (schoolLevel == 3)
+                return mDatabase.SchoolModel().getJuniorCollegesByNameAndCCAs("%" + pattern + "%", ccas);
+        }
+        else if (courses.size() > 0)
+        {
+            if (schoolLevel == 1)
+                return mDatabase.SchoolModel().getPrimarySchoolsByNameAndCourses("%" + pattern + "%", courses);
+            else if (schoolLevel == 2)
+                return mDatabase.SchoolModel().getSecondarySchoolsByNameAndCourses("%" + pattern + "%", courses);
+            else if (schoolLevel == 3)
+                return mDatabase.SchoolModel().getJuniorCollegesByNameAndCourses("%" + pattern + "%", courses);
+        }
+        else
+        {
+            if (schoolLevel == 1)
+                return mDatabase.SchoolModel().getPrimarySchoolsByName("%" + pattern + "%");
+            else if (schoolLevel == 2)
+                return mDatabase.SchoolModel().getSecondarySchoolsByName("%" + pattern + "%");
+            else if (schoolLevel == 3)
+                return mDatabase.SchoolModel().getJuniorCollegesByName("%" + pattern + "%");
+        }
+
+        return null;
     }
 
     /**
@@ -141,10 +178,15 @@ public class DataRepository {
         return mDatabase.SchoolToCCAModel().getAllCCAs();
     }
 
-
-    // TODO: make a method which returns the list of schools from the database based on search pattern and other criteria, such as level and CCAs.
-//    public LiveData<List<String>> findSecondarySchoolNames(String schoolName, List<String> CCAs, List<String> Courses) {
-//        return mDatabase.SchoolModel().findSecondarySchoolNamesUsingNameAndCCAsAndCourses(schoolName, CCAs, Courses);
-//    }
-
+    public List<String> getCourses(int schoolLevel) {
+        if (schoolLevel == 1)
+        {
+            return mDatabase.SchoolToCourseModel().getPrimarySchoolCourses();
+        } else if (schoolLevel == 2) {
+            return mDatabase.SchoolToCourseModel().getSecondarySchoolCourses();
+        } else if (schoolLevel == 3) {
+            return mDatabase.SchoolToCourseModel().getJuniorCollegeCourses();
+        }
+        return null;
+    }
 }

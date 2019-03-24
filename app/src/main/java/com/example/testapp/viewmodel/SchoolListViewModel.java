@@ -6,6 +6,7 @@ import com.example.testapp.DataRepository;
 import com.example.testapp.EmpathyApp;
 import com.example.testapp.db.entity.SchoolEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,10 @@ public class SchoolListViewModel extends AndroidViewModel {
     private List<String> allCCAs;
 
     // list of selected CCAs
-    private List<String> selectedCCAs;
+    private List<String> selectedCCAs = new ArrayList<String>();
+
+    // list of selected courses
+    private List<String> selectedCourses = new ArrayList<String>();
 
     /**
      * Instantiates a new SchoolEntity list view model.
@@ -70,13 +74,34 @@ public class SchoolListViewModel extends AndroidViewModel {
      */
     public void addToSelectedCCAs(String cca) {
         selectedCCAs.add(cca);
-        // update mObservableSchools
+        // TODO: update mObservableSchools and thus the UI somehow
     }
 
+    /**
+     * Removes from the list of selected CCAs
+     * @param cca
+     */
     public void removeFromSelectedCCAs(String cca) {
         selectedCCAs.remove(cca);
-        // update mObservableSchools
+        // TODO: update mObservableSchools and thus the UI somehow
     }
+
+    /**
+     * Gets the list of selected CCAs
+     */
+    public List<String> getSelectedCCAs()
+    {
+        return selectedCCAs;
+    }
+
+    /**
+     * Gets the list of selected courses
+     */
+    public List<String> getSelectedCourses()
+    {
+        return selectedCourses;
+    }
+
 
     /**
      * Gets schools by search name.
@@ -84,10 +109,33 @@ public class SchoolListViewModel extends AndroidViewModel {
      * @param schoolName the school name
      * @return the schools by search name
      */
-    public LiveData<List<SchoolEntity>> getSchoolsBySearchName(String schoolName) {
-        return mRepository.getSchoolsBySearchPattern(schoolName);
+    public LiveData<List<SchoolEntity>> getSchoolsBySearchPattern(String schoolName, List<String> ccas, List<String> courses) {
+        return mRepository.getSchoolsBySearchPattern(schoolName, ccas, courses, schoolLevel);
     }
 
+    /**
+     * Gets courses for that schooling level
+     */
+    public List<String> getCourses() {
+        return mRepository.getCourses(schoolLevel);
+    }
+
+    /**
+     * Add to selected courses
+     */
+    public void addToSelectedCourses(String course)
+    {
+        selectedCourses.add(course);
+        // TODO: update mObservableSchools and thus the UI somehow
+    }
+
+    /**
+     * Remove from selected courses
+     */
+    public void removeFromSelectedCourses(String course)
+    {
+        selectedCourses.remove(course);
+    }
 
     /**
      * A creator used to inject the school name into the instantiation of a new ViewModel (so that data inside can be tailored to it)

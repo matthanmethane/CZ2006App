@@ -27,11 +27,17 @@ public class SearchView extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, schoolListFragment, SchoolListFragment.TAG).commit();
 
-            // add the search button fragment
+            // add the cca search fragment
             CCASearchFragment ccaSearchFragment = new CCASearchFragment();
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, ccaSearchFragment).commit();
+
+            // add the course search fragment
+            CourseSearchFragment courseSearchFragment = new CourseSearchFragment();
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, courseSearchFragment).commit();
         }
     }
 }
