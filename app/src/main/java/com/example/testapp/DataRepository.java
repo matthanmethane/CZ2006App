@@ -21,19 +21,9 @@ public class DataRepository {
     private static DataRepository sInstance; // adhering to the Singleton pattern, only one instance of DataRepository can exist in the lifecycle of the application.
 
     private final AppDatabase mDatabase;
-    private MediatorLiveData<List<SchoolEntity>> mObservableSchools; // TODO: find out why MediatorLiveData is used
 
     private DataRepository(final AppDatabase database) { // same point as above. Notice how the constructor for DataRepository is private.
         mDatabase = database;
-        mObservableSchools = new MediatorLiveData<>();
-
-        // TODO: find out what does this block of code do
-        mObservableSchools.addSource(mDatabase.SchoolModel().loadAllSchools(),
-                schoolEntities -> {
-                    if (mDatabase.getDatabaseCreated().getValue() != null) {
-                        mObservableSchools.postValue(schoolEntities);
-                    }
-                });
     }
 
     /**
@@ -55,13 +45,37 @@ public class DataRepository {
     }
 
     /**
-     * Get the list of schools from the database and get notified when the data changes.
-     * mObservableSchools gets typecasted to LiveData instead of MediatorLiveData.
+     * Get the list of all schools from the database.
      *
      * @return the schools
      */
     public LiveData<List<SchoolEntity>> getSchools() {
-        return mObservableSchools;
+        System.out.println("From DataRepository: fetched all schools");
+        return mDatabase.SchoolModel().loadAllSchoolsAsLiveData();
+    }
+
+    /**
+     * Get list of primary schools
+     */
+    public LiveData<List<SchoolEntity>> getPrimarySchools() {
+        System.out.println("From DataRepository: fetched all primary schools");
+        return mDatabase.SchoolModel().getPrimarySchoolsAsLiveData();
+    }
+
+    /**
+     * Get list of secondary schools
+     */
+    public LiveData<List<SchoolEntity>> getSecondarySchools() {
+        System.out.println("From DataRepository: fetched all secondary schools");
+        return mDatabase.SchoolModel().getSecondarySchoolsAsLiveData();
+    }
+
+    /**
+     * Get list of junior colleges
+     */
+    public LiveData<List<SchoolEntity>> getJuniorColleges() {
+        System.out.println("From DataRepository: fetched all junior colleges");
+        return mDatabase.SchoolModel().getJuniorCollegesAsLiveData();
     }
 
     /**
@@ -70,30 +84,67 @@ public class DataRepository {
      * @param pattern the pattern
      * @return the schools by search pattern
      */
-    public LiveData<List<SchoolEntity>> getSchoolsBySearchPattern(String pattern) {
-        return mDatabase.SchoolModel().findSchoolsByNamePattern("%" + pattern + "%");
+    public LiveData<List<SchoolEntity>> getSchoolsBySearchPattern(String pattern, List<String> ccas, List<String> courses, int schoolLevel) {
+        if (ccas.size() > 0 && courses.size() > 0)
+        {
+            if (schoolLevel == 1)
+                return mDatabase.SchoolModel().getPrimarySchoolsBySearchPattern("%" + pattern + "%", ccas, courses);
+            else if (schoolLevel == 2)
+                return mDatabase.SchoolModel().getSecondarySchoolsBySearchPattern("%" + pattern + "%", ccas, courses);
+            else if (schoolLevel == 3)
+                return mDatabase.SchoolModel().getJuniorCollegesBySearchPattern("%" + pattern + "%", ccas, courses);
+        }
+        else if (ccas.size() > 0)
+        {
+            if (schoolLevel == 1)
+                return mDatabase.SchoolModel().getPrimarySchoolsByNameAndCCAs("%" + pattern + "%", ccas);
+            else if (schoolLevel == 2)
+                return mDatabase.SchoolModel().getSecondarySchoolsByNameAndCCAs("%" + pattern + "%", ccas);
+            else if (schoolLevel == 3)
+                return mDatabase.SchoolModel().getJuniorCollegesByNameAndCCAs("%" + pattern + "%", ccas);
+        }
+        else if (courses.size() > 0)
+        {
+            if (schoolLevel == 1)
+                return mDatabase.SchoolModel().getPrimarySchoolsByNameAndCourses("%" + pattern + "%", courses);
+            else if (schoolLevel == 2)
+                return mDatabase.SchoolModel().getSecondarySchoolsByNameAndCourses("%" + pattern + "%", courses);
+            else if (schoolLevel == 3)
+                return mDatabase.SchoolModel().getJuniorCollegesByNameAndCourses("%" + pattern + "%", courses);
+        }
+        else
+        {
+            if (schoolLevel == 1)
+                return mDatabase.SchoolModel().getPrimarySchoolsByName("%" + pattern + "%");
+            else if (schoolLevel == 2)
+                return mDatabase.SchoolModel().getSecondarySchoolsByName("%" + pattern + "%");
+            else if (schoolLevel == 3)
+                return mDatabase.SchoolModel().getJuniorCollegesByName("%" + pattern + "%");
+        }
+
+        return null;
     }
 
     /**
      * Get a school by its name. Must be an exact match.
+     *
      * @param schoolName
      * @return
      */
     public SchoolEntity getSchool(String schoolName) throws Exception {
         SchoolEntity result = mDatabase.SchoolModel().findSchoolByName(schoolName);
 
-        if (result == null)
-        {
+        if (result == null) {
             throw new Exception("Cannot find a school with that name");
-        }
-        else
-        {
+        } else {
             return mDatabase.SchoolModel().findSchoolByName(schoolName);
         }
     }
 
+
     /**
      * Get the CCAs for a school.
+     *
      * @param schoolName
      * @return
      */
@@ -103,17 +154,39 @@ public class DataRepository {
 
     /**
      * Get the Courses offered by a school.
+     *
      * @param schoolName
      * @return
      */
-    public List<SchoolToCourse> getCoursesOfASchool (String schoolName) {
+    public List<SchoolToCourse> getCoursesOfASchool(String schoolName) {
         return mDatabase.SchoolToCourseModel().getCoursesOfASchool(schoolName);
     }
 
+    public List<String> getPrimarySchoolCCAs() {
+        return mDatabase.SchoolToCCAModel().getPrimarySchoolCCAs();
+    }
 
-    // TODO: make a method which returns the list of schools from the database based on search pattern and other criteria, such as level and CCAs.
-//    public LiveData<List<String>> findSecondarySchoolNames(String schoolName, List<String> CCAs, List<String> Courses) {
-//        return mDatabase.SchoolModel().findSecondarySchoolNamesUsingNameAndCCAsAndCourses(schoolName, CCAs, Courses);
-//    }
+    public List<String> getSecondarySchoolCCAs() {
+        return mDatabase.SchoolToCCAModel().getSecondarySchoolCCAs();
+    }
 
+    public List<String> getJuniorCollegeCCAs() {
+        return mDatabase.SchoolToCCAModel().getJuniorCollegeCCAs();
+    }
+
+    public List<String> getAllCCAs() {
+        return mDatabase.SchoolToCCAModel().getAllCCAs();
+    }
+
+    public List<String> getCourses(int schoolLevel) {
+        if (schoolLevel == 1)
+        {
+            return mDatabase.SchoolToCourseModel().getPrimarySchoolCourses();
+        } else if (schoolLevel == 2) {
+            return mDatabase.SchoolToCourseModel().getSecondarySchoolCourses();
+        } else if (schoolLevel == 3) {
+            return mDatabase.SchoolToCourseModel().getJuniorCollegeCourses();
+        }
+        return null;
+    }
 }

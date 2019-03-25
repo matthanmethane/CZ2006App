@@ -117,6 +117,15 @@ public class SchoolEntity {
     @NonNull
     public String clusterCode;
 
+    /**
+     * The longitude of the school - instantiated only when required
+     */
+    public double longitude;
+
+    /**
+     * The latitude of the school - instantiated only when required
+     */
+    public double latitude;
 
     /**
      * Instantiates a new SchoolEntity.
@@ -187,5 +196,7 @@ public class SchoolEntity {
         return this.id;
     }
 
-    public String getSchoolName() { return this.schoolName; }
+    public String getSchoolName() {
+        return this.schoolName;
+    }
 }

@@ -10,15 +10,11 @@ import android.widget.Button;
 
 import com.example.testapp.R;
 import com.example.testapp.databinding.SchoolFullTextboxBinding;
-import com.example.testapp.generated.callback.OnClickListener;
 import com.example.testapp.viewmodel.FullTextboxViewModel;
-
-import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 /**
@@ -42,7 +38,7 @@ public class SchoolFullTextboxFragment extends Fragment {
 
     /**
      * Create the ViewModel associated with the School selected and bind it to the UI.
-     * **/
+     **/
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -70,11 +66,26 @@ public class SchoolFullTextboxFragment extends Fragment {
             }
         });
 
-        // TODO: set a listener for the map view button
-        // TODO: create map view
+        // set a listener for the map view button
+        Button viewOnMapButton = this.getActivity().findViewById(R.id.schoolOnMapButton);
+        Intent goToMapIntent = new Intent(this.getActivity(), SchoolOnMapView.class);
+        // add school name, longitude and latitude to the map activity
+        goToMapIntent.putExtra("school_name", schoolFullTextboxBinding.getSchoolFullTextboxViewModel().mSchoolName); //TODO: find out why can't this be done by passing KEY_SCHOOL_NAME instead
+        goToMapIntent.putExtra("longitude", schoolFullTextboxBinding.getSchoolFullTextboxViewModel().sekolah.longitude);
+        goToMapIntent.putExtra("latitude", schoolFullTextboxBinding.getSchoolFullTextboxViewModel().sekolah.latitude);
+
+        viewOnMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // go to the SchoolOnMapView activity
+                startActivity(goToMapIntent);
+            }
+        });
     }
 
-    /** Creates SchoolEntity FullTextbox Fragment for specific school name */
+    /**
+     * Creates SchoolEntity FullTextbox Fragment for specific school name
+     */
     public static SchoolFullTextboxFragment forSchool(String schoolName) {
         SchoolFullTextboxFragment fragment = new SchoolFullTextboxFragment();
         Bundle args = new Bundle();

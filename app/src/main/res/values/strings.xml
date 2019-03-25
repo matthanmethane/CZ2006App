@@ -22,6 +22,8 @@
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_about_us">About Us</string>
+    <string name="title_activity_school_on_map_view">Map</string>
+    <string name="title_activity_name_and_score_search_view">NameAndScoreSearchView</string>
 
 
 </resources>

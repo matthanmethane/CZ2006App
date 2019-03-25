@@ -1,7 +1,6 @@
 package com.example.testapp.db.entity;
 
 import androidx.annotation.NonNull;
-
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -13,7 +12,7 @@ import androidx.room.PrimaryKey;
         @ForeignKey(entity = SchoolEntity.class,
                 parentColumns = "schoolName",
                 childColumns = "schoolName")
-        })
+})
 public class PrimarySchool {
     /**
      * The SchoolEntity name.

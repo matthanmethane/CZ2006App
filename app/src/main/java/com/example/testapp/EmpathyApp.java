@@ -14,13 +14,13 @@ import com.example.testapp.db.AppDatabase;
 
 /**
  * The main reason why this extension of the Application class exists is to initialize the database when the application first starts.
- *
+ * <p>
  * Android knows that you have a custom Application class when you specify the android:name property in the <application> node
  * in AndroidManifest.xml.
- *
+ * <p>
  * Note: never store mutable shared data inside the Application object - that data might disappear or become invalid at anytime,
  * so store them in persistence strategies.
- *
+ * <p>
  * For more notes on the parent Application class, please see:
  * https://github.com/codepath/android_guides/wiki/Understanding-the-Android-Application-Class
  */

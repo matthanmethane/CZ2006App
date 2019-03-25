@@ -1,7 +1,6 @@
 package com.example.testapp.db.entity;
 
 import androidx.annotation.NonNull;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -21,7 +20,7 @@ public class PreUniversitySchool {
      */
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name="school_name")
+    @ColumnInfo(name = "school_name")
     public String schoolName;
 
     /**
@@ -46,8 +45,7 @@ public class PreUniversitySchool {
      */
     public PreUniversitySchool(String schoolName,
                                int entryScore1,
-                               int entryScore2)
-    {
+                               int entryScore2) {
         this.schoolName = schoolName;
         this.entryScore1 = entryScore1;
         this.entryScore2 = entryScore2;

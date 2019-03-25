@@ -16,9 +16,10 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * NOTE: This does not use the Adapter pattern used in softwawre engineering. Do not confuse the two concepts.
- *
+ * NOTE: This does not use the Adapter pattern used in software engineering. Do not confuse the two concepts.
+ * <p>
  * Schools adapter, a subclass of RecyclerView's Adapter class. It is used to map each school in the list of schools
+ *
  * @code mSchoolsList to a RecyclerView card.
  */
 public class SchoolsAdapter extends RecyclerView.Adapter<SchoolsAdapter.SchoolViewHolder> {
@@ -80,7 +81,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<SchoolsAdapter.SchoolVi
 
     /**
      * The function that links the summary textbox logic with the xml file for its layout.
-     * @param parent the parent element where the textbox is to reside in
+     *
+     * @param parent   the parent element where the textbox is to reside in
      * @param viewType what the view is (not used)
      * @return
      */
@@ -96,7 +98,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<SchoolsAdapter.SchoolVi
 
     /**
      * Callback method for what happens when a card is 'binded' to (i.e. it comes into the visible screen of the user)
-     * @param holder the card's class
+     *
+     * @param holder   the card's class
      * @param position the position of the card in the entire list of cards.
      */
     @Override
@@ -107,6 +110,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<SchoolsAdapter.SchoolVi
 
     /**
      * Get the number of items in the list of schools.
+     *
      * @return count of number of items in list of schools
      */
     @Override

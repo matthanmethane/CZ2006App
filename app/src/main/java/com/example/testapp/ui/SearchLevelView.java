@@ -7,16 +7,15 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.testapp.R;
-import com.example.testapp.searchView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class searchLevel extends AppCompatActivity {
+public class SearchLevelView extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case android.R.id.home:
                 onBackPressed();
@@ -43,25 +42,28 @@ public class searchLevel extends AppCompatActivity {
         primaryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openPri = new Intent(getApplicationContext(), searchView.class);
+                Intent openPri = new Intent(getApplicationContext(), SearchView.class);
+                openPri.putExtra("schoolLevel", 1);
                 startActivity(openPri);
             }
         });
+
         secondaryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSec = new Intent(getApplicationContext(),searchView.class);
+                Intent openSec = new Intent(getApplicationContext(), SearchView.class);
+                openSec.putExtra("schoolLevel", 2);
                 startActivity(openSec);
             }
         });
+
         jcBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openJc = new Intent(getApplicationContext(),searchView.class);
+                Intent openJc = new Intent(getApplicationContext(), SearchView.class);
+                openJc.putExtra("schoolLevel", 3);
                 startActivity(openJc);
             }
         });
-
-
     }
 }
