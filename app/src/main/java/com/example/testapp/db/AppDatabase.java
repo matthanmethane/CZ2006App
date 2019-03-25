@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.testapp.AppExecutors;
 import com.example.testapp.R;
@@ -47,7 +48,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
                 SchoolToCourse.class, SecondarySchool.class,
         }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
-    private static final String DATABASE_NAME = "EmPathy DB";
+    private static final String DATABASE_NAME = "EmPathy DB v2";
 
     // have a single reference to its object (singleton principle) to ensure data integrity.
     private static AppDatabase sInstance;
@@ -197,40 +198,6 @@ public abstract class AppDatabase extends RoomDatabase {
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(appContext);
 
-            // create the JSON request for school general information
-            JsonObjectRequest schoolGeneralInfoJsonRequest = new JsonObjectRequest
-                    (Request.Method.GET, appContext.getString(R.string.SCHOOL_GENERAL_INFORMATION_URL), null, new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                            try {
-                                // parse results as json array
-                                JSONArray allSchoolsAsJSONArray = getResultsAsJSONArray(response);
-
-                                parseSchoolJSONArrayAndStoreInDatabase(database, allSchoolsAsJSONArray);
-
-                                // notify that the database was created and it's ready to be used
-                                database.setDatabaseCreated();
-
-                                // add geolocation of schools
-                                List<SchoolEntity> allSchools = database.SchoolModel().loadAllSchoolsAsList();
-                                for (SchoolEntity school : allSchools) {
-                                    addGeocodingForSchool(school, queue);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            System.out.println("Rabak la bro: " + error.toString());
-                        }
-                    });
-
             // create the JSON request for CCAs offered by each school
             JsonObjectRequest schoolToCCAJsonRequest = new JsonObjectRequest
                     (Request.Method.GET, appContext.getString(R.string.CCAS_OFFERED_URL), null, new Response.Listener<JSONObject>() {
@@ -268,6 +235,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                 // get each entry in results and store in database
                                 parseSchoolToCourseJSONArrayAndStoreInDatabase(database, allSchoolToCourseAsJSONArray);
+
+                                queue.add(schoolToCCAJsonRequest);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -280,10 +250,45 @@ public abstract class AppDatabase extends RoomDatabase {
                             System.out.println("Rabak la bro: " + error.toString());
                         }
                     });
+
+            // create the JSON request for school general information
+            JsonObjectRequest schoolGeneralInfoJsonRequest = new JsonObjectRequest
+                    (Request.Method.GET, appContext.getString(R.string.SCHOOL_GENERAL_INFORMATION_URL), null, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            try {
+                                // parse results as json array
+                                JSONArray allSchoolsAsJSONArray = getResultsAsJSONArray(response);
+
+                                parseSchoolJSONArrayAndStoreInDatabase(database, allSchoolsAsJSONArray);
+
+                                // notify that the database was created and it's ready to be used
+                                database.setDatabaseCreated();
+
+                                // add geolocation of schools
+                                List<SchoolEntity> allSchools = database.SchoolModel().loadAllSchoolsAsList();
+                                for (SchoolEntity school : allSchools) {
+                                    addGeocodingForSchool(school, queue);
+                                }
+                                queue.add(schoolToCourseJsonRequest);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            System.out.println("Rabak la bro: " + error.toString());
+                        }
+                    });
+
             // Access the RequestQueue through your singleton class. Add each request into the queue.
             queue.add(schoolGeneralInfoJsonRequest);
-            queue.add(schoolToCourseJsonRequest);
-            queue.add(schoolToCCAJsonRequest);
+
 
 
         }
