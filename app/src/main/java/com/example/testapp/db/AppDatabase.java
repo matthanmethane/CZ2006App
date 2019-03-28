@@ -18,6 +18,7 @@ import com.example.testapp.db.dao.SchoolDao;
 import com.example.testapp.db.dao.SchoolToCCADao;
 import com.example.testapp.db.dao.SchoolToCourseDao;
 import com.example.testapp.db.dao.SecondarySchoolDao;
+import com.example.testapp.db.entity.Bookmark;
 import com.example.testapp.db.entity.PreUniversitySchool;
 import com.example.testapp.db.entity.PrimarySchool;
 import com.example.testapp.db.entity.SchoolEntity;
@@ -47,7 +48,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
         {SchoolEntity.class, PreUniversitySchool.class,
                 PrimarySchool.class, SchoolToCCA.class,
                 SchoolToCourse.class, SecondarySchool.class,
-        }, version = 1)
+                Bookmark.class
+        }, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "EmPathy DB v3 betas";
 

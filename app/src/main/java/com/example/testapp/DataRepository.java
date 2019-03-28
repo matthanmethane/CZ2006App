@@ -133,7 +133,8 @@ public class DataRepository {
      */
     void addNewBookmark(String schoolName)
     {
-        mDatabase.BookmarkModel().insertBookmark(schoolName);
+        Bookmark newBookmark = new Bookmark(schoolName);
+        mDatabase.BookmarkModel().insertBookmark(newBookmark);
     }
 
     /**

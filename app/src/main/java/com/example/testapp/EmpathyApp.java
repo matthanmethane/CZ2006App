@@ -33,7 +33,16 @@ public class EmpathyApp extends Application {
         super.onCreate();
 
         mAppExecutors = new AppExecutors();
+
+        System.out.println("Why didn't this run?");
+        initializeDatabaseOnCreation();
     }
+
+    private void initializeDatabaseOnCreation()
+    {
+        getRepository();
+    }
+
 
     /**
      * Gets database.

@@ -22,7 +22,7 @@ public interface BookmarkDao {
     Bookmark getBookmark(String schoolName);
 
     @Insert(onConflict = IGNORE)
-    void insertBookmark(String schoolName);
+    void insertBookmark(Bookmark bookmark);
 
     @Update(onConflict = REPLACE)
     void updateBookmark(Bookmark bookmark);
