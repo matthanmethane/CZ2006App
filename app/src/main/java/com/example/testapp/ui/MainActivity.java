@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSetting = new Intent(getApplicationContext(), SettingView.class);
+                Intent openSetting = new Intent(getApplicationContext(), ArticleView.class);
                 startActivity(openSetting);
             }
         });

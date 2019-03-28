@@ -32,7 +32,7 @@
         <activity
             android:name=".ui.SchoolOnMapView"
             android:label="@string/title_activity_school_on_map_view" />
-        <activity android:name=".ui.SettingView" />
+        <activity android:name=".ui.ArticleView" />
         <activity android:name=".ui.SearchLevelView" />
         <activity android:name=".ui.SearchView" />
         <activity
