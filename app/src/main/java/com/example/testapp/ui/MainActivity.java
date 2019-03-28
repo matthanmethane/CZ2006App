@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button searchBtn = findViewById(R.id.search);
         Button bookmarkBtn = findViewById(R.id.bookmark);
-        Button settingBtn = findViewById(R.id.setting);
+        Button articlBtn = findViewById(R.id.article);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity();
             }
         });*/
-        settingBtn.setOnClickListener(new View.OnClickListener() {
+        articlBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent openSetting = new Intent(getApplicationContext(), ArticleView.class);

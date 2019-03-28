@@ -42,7 +42,7 @@ public class SearchLevelView extends AppCompatActivity {
         primaryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openPri = new Intent(getApplicationContext(), SearchView.class);
+                Intent openPri = new Intent(getApplicationContext(), SetAddressView.class);
                 openPri.putExtra("schoolLevel", 1);
                 startActivity(openPri);
             }
@@ -51,7 +51,7 @@ public class SearchLevelView extends AppCompatActivity {
         secondaryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSec = new Intent(getApplicationContext(), SearchView.class);
+                Intent openSec = new Intent(getApplicationContext(), SetAddressView.class);
                 openSec.putExtra("schoolLevel", 2);
                 startActivity(openSec);
             }
@@ -60,7 +60,7 @@ public class SearchLevelView extends AppCompatActivity {
         jcBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openJc = new Intent(getApplicationContext(), SearchView.class);
+                Intent openJc = new Intent(getApplicationContext(), SetAddressView.class);
                 openJc.putExtra("schoolLevel", 3);
                 startActivity(openJc);
             }
