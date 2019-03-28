@@ -6,37 +6,29 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
 /**
- * An entity which maps SchoolEntity to course (many to many relationship)
+ * An entity denoting a bookmark by the user
  */
 @Entity(foreignKeys = {
         @ForeignKey(entity = SchoolEntity.class,
                 parentColumns = "schoolName",
                 childColumns = "schoolName")
 },
-        primaryKeys = {"schoolName", "courseName"}
+        primaryKeys = {"schoolName"}
 )
-public class SchoolToCourse {
+public class Bookmark {
     /**
      * The SchoolEntity name.
      */
     @NonNull
+    @ColumnInfo(name = "schoolName")
     public String schoolName;
 
     /**
-     * The Course name.
-     */
-    @NonNull
-    public String courseName;
-
-    /**
-     * Instantiates a new SchoolEntity to course.
+     * Instantiates a new Bookmark
      *
-     * @param schoolName the school name
-     * @param courseName the course name
+     * @param schoolName the name of the bookmarked school
      */
-    public SchoolToCourse(String schoolName,
-                          String courseName) {
+    public Bookmark(String schoolName) {
         this.schoolName = schoolName;
-        this.courseName = courseName;
     }
 }

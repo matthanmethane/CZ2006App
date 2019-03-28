@@ -11,6 +11,7 @@ import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.testapp.AppExecutors;
 import com.example.testapp.R;
+import com.example.testapp.db.dao.BookmarkDao;
 import com.example.testapp.db.dao.PreUniversitySchoolDao;
 import com.example.testapp.db.dao.PrimarySchoolDao;
 import com.example.testapp.db.dao.SchoolDao;
@@ -48,7 +49,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
                 SchoolToCourse.class, SecondarySchool.class,
         }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
-    private static final String DATABASE_NAME = "EmPathy DB v2";
+    private static final String DATABASE_NAME = "EmPathy DB v3 betas";
 
     // have a single reference to its object (singleton principle) to ensure data integrity.
     private static AppDatabase sInstance;
@@ -97,6 +98,11 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return the school to course dao
      */
     public abstract SchoolToCourseDao SchoolToCourseModel();
+
+    /**
+     * The collection which serves as an interface to Bookmark objects.
+     */
+    public abstract BookmarkDao BookmarkModel();
 
     /**
      * Gets the single instance of the database.

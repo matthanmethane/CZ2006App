@@ -1,14 +1,14 @@
 package com.example.testapp;
 
+import android.content.Context;
+
 import com.example.testapp.db.AppDatabase;
+import com.example.testapp.db.entity.Bookmark;
 import com.example.testapp.db.entity.SchoolEntity;
 import com.example.testapp.db.entity.SchoolToCCA;
 import com.example.testapp.db.entity.SchoolToCourse;
 
 import java.util.List;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 
 /**
  * Repository handling the work with each possible database type.
@@ -24,6 +24,14 @@ public class DataRepository {
 
     private DataRepository(final AppDatabase database) { // same point as above. Notice how the constructor for DataRepository is private.
         mDatabase = database;
+    }
+
+    /**
+     * Call this method to check whether the database is created. If it is not created, it will populate its data.
+     * @param context
+     */
+    public static void initializeDatabase(final Context context) {
+
     }
 
     /**
@@ -45,81 +53,51 @@ public class DataRepository {
     }
 
     /**
-     * Get the list of all schools from the database.
-     *
-     * @return the schools
-     */
-    public LiveData<List<SchoolEntity>> getSchools() {
-        System.out.println("From DataRepository: fetched all schools");
-        return mDatabase.SchoolModel().loadAllSchoolsAsLiveData();
-    }
-
-    /**
-     * Get list of primary schools
-     */
-    public LiveData<List<SchoolEntity>> getPrimarySchools() {
-        System.out.println("From DataRepository: fetched all primary schools");
-        return mDatabase.SchoolModel().getPrimarySchoolsAsLiveData();
-    }
-
-    /**
-     * Get list of secondary schools
-     */
-    public LiveData<List<SchoolEntity>> getSecondarySchools() {
-        System.out.println("From DataRepository: fetched all secondary schools");
-        return mDatabase.SchoolModel().getSecondarySchoolsAsLiveData();
-    }
-
-    /**
-     * Get list of junior colleges
-     */
-    public LiveData<List<SchoolEntity>> getJuniorColleges() {
-        System.out.println("From DataRepository: fetched all junior colleges");
-        return mDatabase.SchoolModel().getJuniorCollegesAsLiveData();
-    }
-
-    /**
      * Get the list of schools from the database based on the search pattern specified by the user.
      *
      * @param pattern the pattern
+     * @param entryScore
      * @return the schools by search pattern
      */
-    public LiveData<List<SchoolEntity>> getSchoolsBySearchPattern(String pattern, List<String> ccas, List<String> courses, int schoolLevel) {
+    public List<SchoolEntity> findSchools(String pattern, List<String> ccas, List<String> courses, int schoolLevel, int entryScore) {
         if (ccas.size() > 0 && courses.size() > 0)
         {
             if (schoolLevel == 1)
-                return mDatabase.SchoolModel().getPrimarySchoolsBySearchPattern("%" + pattern + "%", ccas, courses);
+                return mDatabase.SchoolModel().getPrimarySchoolsBySearchPattern("%" + pattern + "%", ccas, ccas.size(), courses, courses.size());
             else if (schoolLevel == 2)
-                return mDatabase.SchoolModel().getSecondarySchoolsBySearchPattern("%" + pattern + "%", ccas, courses);
+                return mDatabase.SchoolModel().getSecondarySchoolsBySearchPattern("%" + pattern + "%", ccas, ccas.size(), courses, courses.size(), entryScore);
             else if (schoolLevel == 3)
-                return mDatabase.SchoolModel().getJuniorCollegesBySearchPattern("%" + pattern + "%", ccas, courses);
+                return mDatabase.SchoolModel().getJuniorCollegesBySearchPattern("%" + pattern + "%", ccas, ccas.size(), courses, courses.size(), entryScore);
         }
+
         else if (ccas.size() > 0)
         {
             if (schoolLevel == 1)
-                return mDatabase.SchoolModel().getPrimarySchoolsByNameAndCCAs("%" + pattern + "%", ccas);
+                return mDatabase.SchoolModel().getPrimarySchoolsByNameAndCCAs("%" + pattern + "%", ccas, ccas.size());
             else if (schoolLevel == 2)
-                return mDatabase.SchoolModel().getSecondarySchoolsByNameAndCCAs("%" + pattern + "%", ccas);
+                return mDatabase.SchoolModel().getSecondarySchoolsByNameAndCCAs("%" + pattern + "%", ccas, ccas.size(), entryScore);
             else if (schoolLevel == 3)
-                return mDatabase.SchoolModel().getJuniorCollegesByNameAndCCAs("%" + pattern + "%", ccas);
+                return mDatabase.SchoolModel().getJuniorCollegesByNameAndCCAs("%" + pattern + "%", ccas, ccas.size(), entryScore);
         }
+
         else if (courses.size() > 0)
         {
             if (schoolLevel == 1)
-                return mDatabase.SchoolModel().getPrimarySchoolsByNameAndCourses("%" + pattern + "%", courses);
+                return mDatabase.SchoolModel().getPrimarySchoolsByNameAndCourses("%" + pattern + "%", courses, courses.size());
             else if (schoolLevel == 2)
-                return mDatabase.SchoolModel().getSecondarySchoolsByNameAndCourses("%" + pattern + "%", courses);
+                return mDatabase.SchoolModel().getSecondarySchoolsByNameAndCourses("%" + pattern + "%", courses, courses.size(), entryScore);
             else if (schoolLevel == 3)
-                return mDatabase.SchoolModel().getJuniorCollegesByNameAndCourses("%" + pattern + "%", courses);
+                return mDatabase.SchoolModel().getJuniorCollegesByNameAndCourses("%" + pattern + "%", courses, courses.size(), entryScore);
         }
+
         else
         {
             if (schoolLevel == 1)
                 return mDatabase.SchoolModel().getPrimarySchoolsByName("%" + pattern + "%");
             else if (schoolLevel == 2)
-                return mDatabase.SchoolModel().getSecondarySchoolsByName("%" + pattern + "%");
+                return mDatabase.SchoolModel().getSecondarySchoolsByName("%" + pattern + "%", entryScore);
             else if (schoolLevel == 3)
-                return mDatabase.SchoolModel().getJuniorCollegesByName("%" + pattern + "%");
+                return mDatabase.SchoolModel().getJuniorCollegesByName("%" + pattern + "%", entryScore);
         }
 
         return null;
@@ -141,6 +119,22 @@ public class DataRepository {
         }
     }
 
+    /**
+     * Get all bookmarks in the database.
+     */
+    public List<Bookmark> getBookmarks()
+    {
+        return mDatabase.BookmarkModel().getBookmarks();
+    }
+
+    /**
+     * Add a new bookmark to the database, based on the school name provided
+     * @param schoolName
+     */
+    void addNewBookmark(String schoolName)
+    {
+        mDatabase.BookmarkModel().insertBookmark(schoolName);
+    }
 
     /**
      * Get the CCAs for a school.
@@ -148,8 +142,8 @@ public class DataRepository {
      * @param schoolName
      * @return
      */
-    public List<SchoolToCCA> getCCAsOfASchool(String schoolName) {
-        return mDatabase.SchoolToCCAModel().getCCAsOfASchool(schoolName);
+    public List<SchoolToCCA> getSchoolCCAs(String schoolName) {
+        return mDatabase.SchoolToCCAModel().getSchoolCCAs(schoolName);
     }
 
     /**
@@ -158,29 +152,33 @@ public class DataRepository {
      * @param schoolName
      * @return
      */
-    public List<SchoolToCourse> getCoursesOfASchool(String schoolName) {
-        return mDatabase.SchoolToCourseModel().getCoursesOfASchool(schoolName);
+    public List<SchoolToCourse> getSchoolCourses(String schoolName) {
+        return mDatabase.SchoolToCourseModel().getSchoolCourses(schoolName);
     }
 
-    public List<String> getPrimarySchoolCCAs() {
-        return mDatabase.SchoolToCCAModel().getPrimarySchoolCCAs();
+    /**
+     * Get all CCAs offered in that education level
+     * @param level
+     * @return
+     */
+    public List<String> getCCAsForLevel(int level) {
+        if (level == 1) {
+            return mDatabase.SchoolToCCAModel().getPrimarySchoolCCAs();
+        } else if (level == 2) {
+            return mDatabase.SchoolToCCAModel().getSecondarySchoolCCAs();
+        } else if (level == 3) {
+            return mDatabase.SchoolToCCAModel().getJuniorCollegeCCAs();
+        }
+        return null;
     }
 
-    public List<String> getSecondarySchoolCCAs() {
-        return mDatabase.SchoolToCCAModel().getSecondarySchoolCCAs();
-    }
-
-    public List<String> getJuniorCollegeCCAs() {
-        return mDatabase.SchoolToCCAModel().getJuniorCollegeCCAs();
-    }
-
-    public List<String> getAllCCAs() {
-        return mDatabase.SchoolToCCAModel().getAllCCAs();
-    }
-
-    public List<String> getCourses(int schoolLevel) {
-        if (schoolLevel == 1)
-        {
+    /**
+     * Get all Courses offered in that education level
+     * @param schoolLevel
+     * @return
+     */
+    public List<String> getCoursesForLevel(int schoolLevel) {
+        if (schoolLevel == 1) {
             return mDatabase.SchoolToCourseModel().getPrimarySchoolCourses();
         } else if (schoolLevel == 2) {
             return mDatabase.SchoolToCourseModel().getSecondarySchoolCourses();

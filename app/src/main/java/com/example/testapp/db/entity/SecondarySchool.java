@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey;
 @Entity(foreignKeys = {
         @ForeignKey(entity = SchoolEntity.class,
                 parentColumns = "schoolName",
-                childColumns = "school_name")
+                childColumns = "schoolName")
 })
 public class SecondarySchool {
     /**
@@ -20,7 +20,6 @@ public class SecondarySchool {
      */
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "school_name")
     public String schoolName;
 
     /**

@@ -33,7 +33,7 @@ public class FullTextboxViewModel extends AndroidViewModel {
         mSchoolName = schoolName;
 
         sekolah = repository.getSchool(mSchoolName);
-        List<SchoolToCCA> schoolToCCAs = repository.getCCAsOfASchool(mSchoolName);
+        List<SchoolToCCA> schoolToCCAs = repository.getSchoolCCAs(mSchoolName);
         for (SchoolToCCA schoolToCCA : schoolToCCAs) {
             stringOfCCAsOfferedBySchool += (schoolToCCA.ccaName + ", ");
         }
@@ -47,7 +47,7 @@ public class FullTextboxViewModel extends AndroidViewModel {
                             stringOfCCAsOfferedBySchool.lastIndexOf(','));
         }
 
-        List<SchoolToCourse> schoolToCourses = repository.getCoursesOfASchool(mSchoolName);
+        List<SchoolToCourse> schoolToCourses = repository.getSchoolCourses(mSchoolName);
         for (SchoolToCourse schoolToCourse : schoolToCourses) {
             stringOfCoursesOfferedBySchool += (schoolToCourse.courseName + ", ");
         }
