@@ -1,8 +1,11 @@
 package com.example.testapp.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -59,10 +62,17 @@ public class ArticleView extends AppCompatActivity {
             source.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
             source.setGravity(Gravity.RIGHT);
 
-            //
-            //<solid android:color="@android:color/white" />
-            //   <stroke android:width="1dip" android:color="#4fa5d5"/>
-            //
+            // Link news url to view
+            String url = articleList[i].getUrl();
+
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                }
+            });
+
             linearLayout.addView(title);
             linearLayout.addView(source);
 

@@ -56,6 +56,7 @@ public class SchoolFullTextboxFragment extends Fragment {
         Button schoolWebsiteButton = this.getActivity().findViewById(R.id.schoolWebsiteButton);
 
         schoolWebsiteButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View arg0) {
 
