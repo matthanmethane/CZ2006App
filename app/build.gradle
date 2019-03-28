@@ -46,7 +46,6 @@ dependencies {
     implementation deps.support.design
     implementation deps.support.cardview
     implementation deps.support.volley
-
     // Architecture components
     implementation deps.lifecycle.runtime
     implementation deps.lifecycle.extensions
@@ -59,22 +58,20 @@ dependencies {
     annotationProcessor deps.lifecycle.compiler
     implementation deps.room.runtime
     annotationProcessor deps.room.compiler
-
     // Android Testing Support Library's runner and rules
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.atsl.rules
     androidTestImplementation deps.room.testing
     androidTestImplementation deps.arch_core.testing
-
     // Espresso UI Testing
     androidTestImplementation deps.espresso.core
     androidTestImplementation deps.espresso.contrib
     androidTestImplementation deps.espresso.intents
-
     // Resolve conflicts between main and test APK:
     androidTestImplementation deps.support.annotations
     androidTestImplementation deps.support.v4
     androidTestImplementation deps.support.app_compat
     androidTestImplementation deps.support.design
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    implementation files('libs/jsoup-1.11.3.jar')
 }
