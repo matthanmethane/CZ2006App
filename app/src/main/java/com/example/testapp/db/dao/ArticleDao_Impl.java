@@ -12,7 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class ArticleDao_Impl extends AsyncTask<Void, Void, Article[]> implements ArticleDao{
+public class ArticleDao_Impl extends AsyncTask<Void, Void, Article[]> {
 
     private Article[] articles;
 
