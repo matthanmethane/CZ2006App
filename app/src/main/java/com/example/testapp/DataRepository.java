@@ -27,14 +27,6 @@ public class DataRepository {
     }
 
     /**
-     * Call this method to check whether the database is created. If it is not created, it will populate its data.
-     * @param context
-     */
-    public static void initializeDatabase(final Context context) {
-
-    }
-
-    /**
      * Gets instance of the data repository. This method is important because Singleton pattern is used for DataRepository, which means
      * the constructor should only be called once in the lifecycle of the application.
      *

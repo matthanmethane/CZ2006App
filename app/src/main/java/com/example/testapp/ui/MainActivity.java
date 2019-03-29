@@ -30,11 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
         // this is how the data repository can be fetched
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
-
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                System.out.println("CallingFromSearchButtonListener");
 
                 //
                 // this is how to interact with the data repository
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 courses.add("MALAY");
                 courses.add("COMPUTING");
 
-                // in this case we are not specifying any CCAs in particular, so pass an empty arraylist (don't pass null because code will break)s
+                // in this case we are not specifying any CCAs in particular, so pass an empty arraylist (don't pass null because code will break)
                 List<SchoolEntity> secondarySchools = dataRepository.findSchools("", new ArrayList<>(), courses, 2, -1);
                 for (SchoolEntity school : secondarySchools)
                 {

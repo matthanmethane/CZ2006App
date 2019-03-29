@@ -8,11 +8,7 @@ import androidx.room.ForeignKey;
 /**
  * An entity that maps Schools to CCAs (many to many relationship)
  */
-@Entity(foreignKeys = {
-        @ForeignKey(entity = SchoolEntity.class,
-                parentColumns = "schoolName",
-                childColumns = "schoolName")
-},
+@Entity(
         primaryKeys = {"schoolName", "ccaName"}
 )
 public class SchoolToCCA {

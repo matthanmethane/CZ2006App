@@ -27,6 +27,7 @@ import com.example.testapp.db.AppDatabase;
 public class EmpathyApp extends Application {
 
     private AppExecutors mAppExecutors;
+    private DataRepository dbRepo;
 
     @Override
     public void onCreate() {
@@ -34,8 +35,9 @@ public class EmpathyApp extends Application {
 
         mAppExecutors = new AppExecutors();
 
-        System.out.println("Why didn't this run?");
-        initializeDatabaseOnCreation();
+        // initalize the database
+        dbRepo = DataRepository.getInstance(getDatabase());
+
     }
 
     private void initializeDatabaseOnCreation()
@@ -59,6 +61,6 @@ public class EmpathyApp extends Application {
      * @return the repository
      */
     public DataRepository getRepository() {
-        return DataRepository.getInstance(getDatabase());
+        return dbRepo;
     }
 }

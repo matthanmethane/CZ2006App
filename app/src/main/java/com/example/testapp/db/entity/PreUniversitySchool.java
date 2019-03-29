@@ -9,11 +9,7 @@ import androidx.room.PrimaryKey;
 /**
  * The type Pre university school. Consists of JC, Poly and Millenia Institute. Subclass of SchoolEntity.
  */
-@Entity(foreignKeys = {
-        @ForeignKey(entity = SchoolEntity.class,
-                parentColumns = "schoolName",
-                childColumns = "schoolName")
-})
+@Entity
 public class PreUniversitySchool {
     /**
      * The SchoolEntity name.
