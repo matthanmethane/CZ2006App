@@ -35,31 +35,28 @@ public class MainActivity extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("CallingFromSearchButtonListener");
+                Intent openSearch = new Intent(getApplicationContext(), SearchLevelView.class);
+                startActivity(openSearch);
 
-                //
-                // this is how to interact with the data repository
-                //
-
-                // fetching secondary schools with the word 'SECONDARY' inside, and with Malay and Computing
-                List<String> courses = new ArrayList<>();
-                courses.add("MALAY");
-                courses.add("COMPUTING");
-
-                // in this case we are not specifying any CCAs in particular, so pass an empty arraylist (don't pass null because code will break)
-                List<SchoolEntity> secondarySchools = dataRepository.findSchools("", new ArrayList<>(), courses, 2, -1);
-                for (SchoolEntity school : secondarySchools)
-                {
-                    System.out.println(school.schoolName);
-                }
+//                // fetching secondary schools with the word 'SECONDARY' inside, and with Malay and Computing
+//                List<String> courses = new ArrayList<>();
+//                courses.add("MALAY");
+//                courses.add("COMPUTING");
+//
+//                // in this case we are not specifying any CCAs in particular, so pass an empty arraylist (don't pass null because code will break)
+//                List<SchoolEntity> secondarySchools = dataRepository.findSchools("", new ArrayList<>(), courses, 2, -1);
+//                for (SchoolEntity school : secondarySchools)
+//                {
+//                    System.out.println(school.schoolName);
+//                }
             }
         });
 
         newsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSetting = new Intent(getApplicationContext(), ArticleView.class);
-                startActivity(openSetting);
+                Intent openArticle = new Intent(getApplicationContext(), ArticleView.class);
+                startActivity(openArticle);
             }
         });
     }
