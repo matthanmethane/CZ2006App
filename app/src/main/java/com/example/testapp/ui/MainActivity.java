@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button searchBtn = findViewById(R.id.search);
+        Button newsBtn = findViewById(R.id.news);
+
 
         // this is how the data repository can be fetched
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
@@ -50,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
                 {
                     System.out.println(school.schoolName);
                 }
+            }
+        });
+
+        newsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openSetting = new Intent(getApplicationContext(), ArticleView.class);
+                startActivity(openSetting);
             }
         });
     }

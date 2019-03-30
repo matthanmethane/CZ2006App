@@ -29,6 +29,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".ui.ArticleView" />
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
