@@ -60,8 +60,20 @@ public class ResultView extends AppCompatActivity {
                 public void onClick(View arg0) {
                     Intent openSearch = new Intent(getApplicationContext(),InformationView.class);
                     // Insert school info here
-                    openSearch.putExtra("schoolName",school.getSchoolName());
-                    openSearch.putExtra("schoolMission",school.getMission());
+                    openSearch.putExtra("name",school.getSchoolName());
+                    openSearch.putExtra("address",school.getPhysicalAddress());
+                    openSearch.putExtra("postalCode",school.getPostalCode());
+                    openSearch.putExtra("telephoneNumber1",school.getTelephoneNumber1());
+                    openSearch.putExtra("telephoneNumber2",school.getTelephoneNumber2());
+                    openSearch.putExtra("vision",school.getVision());
+                    openSearch.putExtra("mission",school.getMission());
+                    openSearch.putExtra("autonomyType",school.getSchoolAutonomyType());
+                    openSearch.putExtra("gender",school.getSchoolGender());
+                    openSearch.putExtra("giftedEducation",school.getGiftedEducationProgramOffered());
+                    openSearch.putExtra("integratedProgram",school.getIntegratedProgram());
+                    openSearch.putExtra("sap",school.getSAPSchool());
+                    openSearch.putExtra("zoneCode",school.getZoneCode());
+                    openSearch.putExtra("clusterCode",school.getClusterCode());
                     startActivity(openSearch);
                 }
             });
