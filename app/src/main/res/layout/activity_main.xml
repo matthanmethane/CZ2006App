@@ -41,11 +41,11 @@
         android:layout_marginVertical="@dimen/margin_val"
         android:layout_marginHorizontal="@dimen/margin_val"/>
     <Button
-        android:id="@+id/setting"
+        android:id="@+id/article"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="News"
+        android:text="Article"
         android:fontFamily="sans-serif"
         android:textColor="@color/colorAccent"
         android:background="#B39DDB"

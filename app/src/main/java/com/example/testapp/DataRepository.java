@@ -8,7 +8,6 @@ import com.example.testapp.db.entity.SchoolToCourse;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 
 /**
  * Repository handling the work with each possible database type.
@@ -94,7 +93,7 @@ public class DataRepository {
             else if (schoolLevel == 3)
                 return mDatabase.SchoolModel().getJuniorCollegesBySearchPattern("%" + pattern + "%", ccas, courses);
         }
-        else if (ccas.size() > 0)
+        else if (ccas.size() > 0)///////
         {
             if (schoolLevel == 1)
                 return mDatabase.SchoolModel().getPrimarySchoolsByNameAndCCAs("%" + pattern + "%", ccas);

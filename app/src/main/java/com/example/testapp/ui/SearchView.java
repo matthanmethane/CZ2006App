@@ -1,8 +1,6 @@
 package com.example.testapp.ui;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.CheckBox;
 
 import com.example.testapp.R;
 
@@ -14,7 +12,7 @@ public class SearchView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_view);
-
+        
         // put schoolLevel in args (and set args for each fragment)
         int schoolLevel = getIntent().getIntExtra("schoolLevel", -1);
         Bundle args = new Bundle();
