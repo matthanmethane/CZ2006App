@@ -3,13 +3,6 @@
 <!-- TODO: create a RecyclerView for CCAs and courses in the schoolEntity -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-
-        <import type="com.example.testapp.viewmodel.FullTextboxViewModel"/>
-
-        <variable name="schoolFullTextboxViewModel"
-            type="com.example.testapp.viewmodel.FullTextboxViewModel"/>
-    </data>
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -35,7 +28,6 @@
                     android:id="@+id/full_textbox_school_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.schoolName}"
                     android:gravity="right"
                     android:padding="3dip" />
             </TableRow>
@@ -52,7 +44,6 @@
                     android:id="@+id/full_textbox_school_physical_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.physicalAddress}"
                     android:gravity="right"
                     android:padding="3dip" />
             </TableRow>
@@ -65,7 +56,6 @@
                     android:id="@+id/full_textbox_school_postal_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{((Integer)schoolFullTextboxViewModel.sekolah.postalCode).toString()}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
@@ -79,7 +69,6 @@
                     android:id="@+id/full_textbox_school_telephone_number_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.telephoneNumber1}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
@@ -94,7 +83,6 @@
                     android:id="@+id/full_textbox_school_telephone_number_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.telephoneNumber2}"
                     android:gravity="right"
                     android:padding="3dip"
                     />
@@ -112,8 +100,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:padding="3dip"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.vision}" />
+                    android:padding="3dip" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -126,7 +113,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/cd_school_name"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.mission}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
@@ -141,7 +127,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/cd_school_name"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.schoolAutonomyType}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
@@ -157,18 +142,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/cd_school_name"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.schoolGender}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
 
             <!-- TODO: figure out how to dynamically display this only for primary schools -->
             <!--<TextView-->
-                <!--android:id="@+id/full_textbox_school_session"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:contentDescription="@string/cd_school_name"-->
-                <!--android:text="@{schoolDetails.}" />-->
+            <!--android:id="@+id/full_textbox_school_session"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:contentDescription="@string/cd_school_name"-->
+            <!--android:text="@{schoolDetails.}" />-->
 
             <TableRow>
                 <TextView
@@ -180,7 +164,6 @@
                     android:id="@+id/full_textbox_gifted_education_program_offered"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{(schoolFullTextboxViewModel.sekolah.giftedEducationProgramOffered == 1) ? @string/yes : @string/no}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
@@ -194,7 +177,6 @@
                     android:id="@+id/full_textbox_integrated_program"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{(schoolFullTextboxViewModel.sekolah.integratedProgram == 1) ? @string/yes : @string/no}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
@@ -209,7 +191,6 @@
                     android:id="@+id/full_textbox_SAP_school"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{(schoolFullTextboxViewModel.sekolah.SAPSchool == 1) ? @string/yes : @string/no}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
@@ -224,7 +205,6 @@
                     android:id="@+id/full_textbox_zone_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.zoneCode}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
@@ -239,7 +219,6 @@
                     android:id="@+id/full_textbox_cluster_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{schoolFullTextboxViewModel.sekolah.clusterCode}"
                     android:gravity="right"
                     android:padding="3dip"/>
             </TableRow>
@@ -250,12 +229,14 @@
                     android:padding="3dip"
                     >
                 </TextView>
+
                 <TextView
+                    android:id="@+id/full_textbox_cca"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{schoolFullTextboxViewModel.stringOfCCAsOfferedBySchool}"
                     android:gravity="right"
-                    android:padding="3dip"/>
+                    android:padding="3dip"
+                    ></TextView>
             </TableRow>
 
 
@@ -265,12 +246,13 @@
                     android:padding="3dip"
                     >
                 </TextView>
+
                 <TextView
+                    android:id="@+id/full_textbox_course"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{schoolFullTextboxViewModel.stringOfCoursesOfferedBySchool}"
                     android:gravity="right"
-                    android:padding="3dip"/>
+                    android:padding="3dip"></TextView>
             </TableRow>
             <LinearLayout
                 android:layout_width="wrap_content"

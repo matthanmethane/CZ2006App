@@ -25,8 +25,8 @@ public interface SchoolToCCADao {
      * @return
      */
     @Query("SELECT * FROM SchoolToCCA " +
-            "WHERE SchoolToCCA.school_name LIKE :schoolName")
-    List<SchoolToCCA> getCCAsOfASchool(String schoolName);
+            "WHERE SchoolToCCA.schoolName LIKE :schoolName")
+    List<SchoolToCCA> getSchoolCCAs(String schoolName);
 
     /**
      * Insert school to cca.
@@ -51,18 +51,18 @@ public interface SchoolToCCADao {
     void deleteAll();
 
     @Query("SELECT DISTINCT ccaName FROM SchoolToCCA " +
-            "WHERE school_name IN " +
+            "WHERE schoolName IN " +
             "(SELECT schoolName FROM PrimarySchool)")
     List<String> getPrimarySchoolCCAs();
 
     @Query("SELECT DISTINCT ccaName FROM SchoolToCCA " +
-            "WHERE school_name IN " +
-            "(SELECT school_name FROM SecondarySchool)")
+            "WHERE schoolName IN " +
+            "(SELECT schoolName FROM SecondarySchool)")
     List<String> getSecondarySchoolCCAs();
 
     @Query("SELECT DISTINCT ccaName FROM SchoolToCCA " +
-            "WHERE school_name IN " +
-            "(SELECT school_name FROM PreUniversitySchool)")
+            "WHERE schoolName IN " +
+            "(SELECT schoolName FROM PreUniversitySchool)")
     List<String> getJuniorCollegeCCAs();
 
     @Query("SELECT DISTINCT ccaName FROM SchoolToCCA")

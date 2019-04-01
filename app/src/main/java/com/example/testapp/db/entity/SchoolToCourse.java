@@ -8,19 +8,14 @@ import androidx.room.ForeignKey;
 /**
  * An entity which maps SchoolEntity to course (many to many relationship)
  */
-@Entity(foreignKeys = {
-        @ForeignKey(entity = SchoolEntity.class,
-                parentColumns = "schoolName",
-                childColumns = "school_name")
-},
-        primaryKeys = {"school_name", "courseName"}
+@Entity(
+        primaryKeys = {"schoolName", "courseName"}
 )
 public class SchoolToCourse {
     /**
      * The SchoolEntity name.
      */
     @NonNull
-    @ColumnInfo(name = "school_name")
     public String schoolName;
 
     /**

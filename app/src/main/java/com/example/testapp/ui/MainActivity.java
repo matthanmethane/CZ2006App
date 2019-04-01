@@ -2,10 +2,17 @@ package com.example.testapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.testapp.DataRepository;
+import com.example.testapp.EmpathyApp;
 import com.example.testapp.R;
+import com.example.testapp.db.entity.SchoolEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,29 +27,36 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button searchBtn = findViewById(R.id.search);
-        Button bookmarkBtn = findViewById(R.id.bookmark);
-        Button articlBtn = findViewById(R.id.article);
+        Button newsBtn = findViewById(R.id.news);
 
+
+        // this is how the data repository can be fetched
+        DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent openSearch = new Intent(getApplicationContext(), SearchLevelView.class);
                 startActivity(openSearch);
+
+//                // fetching secondary schools with the word 'SECONDARY' inside, and with Malay and Computing
+//                List<String> courses = new ArrayList<>();
+//                courses.add("MALAY");
+//                courses.add("COMPUTING");
+//
+//                // in this case we are not specifying any CCAs in particular, so pass an empty arraylist (don't pass null because code will break)
+//                List<SchoolEntity> secondarySchools = dataRepository.findSchools("", new ArrayList<>(), courses, 2, -1);
+//                for (SchoolEntity school : secondarySchools)
+//                {
+//                    System.out.println(school.schoolName);
+//                }
             }
         });
-        /*openBookmark to be implemented later
-        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+
+        newsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openBookmark = new Intent(getApplicationContext(),#PUT_ACTIVITY_NAME);
-                startActivity();
-            }
-        });*/
-        articlBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent openSetting = new Intent(getApplicationContext(), ArticleView.class);
-                startActivity(openSetting);
+                Intent openArticle = new Intent(getApplicationContext(), ArticleView.class);
+                startActivity(openArticle);
             }
         });
     }

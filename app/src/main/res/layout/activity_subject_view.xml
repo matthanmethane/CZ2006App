@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.SetAddressView"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.SubjectView">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_top"
         android:background="@drawable/round_edge">
         <TextView
-            android:id="@+id/view_lvl"
+            android:id="@+id/view_lvl_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -22,29 +22,29 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal">
-        <EditText
-            android:id="@+id/set_address"
-            android:inputType="number"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ScrollView
+            android:id="@+id/courseList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your postal code"
-            android:layout_margin="@dimen/margin_val"
-            />
+            android:layout_weight="4">
+
+            <LinearLayout
+                android:id="@+id/courseLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
         <Button
-            android:id="@+id/submit_address"
+            android:id="@+id/submit_subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Submit"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"/>
 
-        <TextView
-            android:id="@+id/errorMsg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
     </LinearLayout>
 
 </LinearLayout>

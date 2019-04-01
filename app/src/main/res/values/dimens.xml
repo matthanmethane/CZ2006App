@@ -27,4 +27,7 @@
     <!--Dimension for text size in setting -->
     <dimen name="setting_text">20dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="level_size">100dp</dimen>
+    <dimen name="level_textsize">30dp</dimen>
+    <dimen name="selection_top">150dp</dimen>
 </resources>

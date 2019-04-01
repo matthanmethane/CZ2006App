@@ -199,4 +199,42 @@ public class SchoolEntity {
     public String getSchoolName() {
         return this.schoolName;
     }
+    public String getPhysicalAddress() { return  this.physicalAddress;}
+    public String getTelephoneNumber1() {return this.telephoneNumber1;}
+    public String getTelephoneNumber2() {return  this.telephoneNumber2;}
+    public String getHomePageAddress() {return  this.homePageAddress;}
+    public String getEmailAddress() {return this.emailAddress;}
+    public String getMission() {return this.mission;}
+    public String getVision() {return this.vision;}
+    public String getSchoolAutonomyType() {return this.schoolAutonomyType;}
+    public String getSchoolGender() {return  this.schoolGender;}
+    public String getZoneCode() {return this.zoneCode;}
+    public String getClusterCode() {return  this.clusterCode;}
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public int getAutonomousSchool() {
+        return autonomousSchool;
+    }
+
+    public int getGiftedEducationProgramOffered() {
+        return giftedEducationProgramOffered;
+    }
+
+    public int getIntegratedProgram() {
+        return integratedProgram;
+    }
+
+    public int getPostalCode() {
+        return postalCode;
+    }
+
+    public int getSAPSchool() {
+        return SAPSchool;
+    }
 }
