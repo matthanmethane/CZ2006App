@@ -57,7 +57,7 @@ public class SetAddressView extends AppCompatActivity {
                 String address = setAddress.getText().toString();
                 if (address.length() != 6 | !address.matches("[0-9]+")) {
                     TextView text = findViewById(R.id.errorMsg);
-                    text.setText("Please input valid postal code.");
+                    text.setText("Please input valid postal code");
                 } else {
                     // TO DO: Check whether valid postal code
 
