@@ -1,8 +1,13 @@
 package com.example.testapp.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.example.testapp.DataRepository;
 import com.example.testapp.EmpathyApp;
@@ -42,6 +47,36 @@ public class ResultView extends AppCompatActivity {
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         List<SchoolEntity> schools = dataRepository.findSchools("",selectedCcas,selectedCourses,schoolLevel,-1);
 
-        
+        LinearLayout schoolList = findViewById(R.id.schoolList);
+        for (int i =0; i < schools.size(); i ++) {
+            TextView schoolName = new TextView(this);
+            // Do formatting for school box here
+            schoolName.setText(schools.get(i).getSchoolName());
+            schoolList.addView(schoolName);
+
+            SchoolEntity school = schools.get(i);
+            schoolName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    Intent openSearch = new Intent(getApplicationContext(),InformationView.class);
+                    // Insert school info here
+                    openSearch.putExtra("name",school.getSchoolName());
+                    openSearch.putExtra("address",school.getPhysicalAddress());
+                    openSearch.putExtra("postalCode",school.getPostalCode());
+                    openSearch.putExtra("telephoneNumber1",school.getTelephoneNumber1());
+                    openSearch.putExtra("telephoneNumber2",school.getTelephoneNumber2());
+                    openSearch.putExtra("vision",school.getVision());
+                    openSearch.putExtra("mission",school.getMission());
+                    openSearch.putExtra("autonomyType",school.getSchoolAutonomyType());
+                    openSearch.putExtra("gender",school.getSchoolGender());
+                    openSearch.putExtra("giftedEducation",school.getGiftedEducationProgramOffered());
+                    openSearch.putExtra("integratedProgram",school.getIntegratedProgram());
+                    openSearch.putExtra("sap",school.getSAPSchool());
+                    openSearch.putExtra("zoneCode",school.getZoneCode());
+                    openSearch.putExtra("clusterCode",school.getClusterCode());
+                    startActivity(openSearch);
+                }
+            });
+            }
     }
 }
