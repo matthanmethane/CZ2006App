@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.testapp.DataRepository;
 import com.example.testapp.EmpathyApp;
@@ -27,6 +28,22 @@ public class SubjectView extends AppCompatActivity {
         int schoolLevel = intent.getIntExtra("schoolLevel", -1);
         String address = intent.getStringExtra("address");
 
+        String schoolLvl;
+
+        switch(schoolLevel){
+            case 1:
+                schoolLvl = "Primary School";
+                break;
+            case 2:
+                schoolLvl = "Secondary School";
+                break;
+            case 3 :
+                schoolLvl = "Junior College";
+                break;
+            default:
+                schoolLvl = ".";
+                break;
+        }
         // Display all Subjects
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         List<String> allCourses = dataRepository.getCoursesForLevel(schoolLevel);
@@ -37,6 +54,10 @@ public class SubjectView extends AppCompatActivity {
             courseCheckbox.setText(course);
             ll.addView(courseCheckbox);
         }
+        TextView viewLvlAddress = (TextView) findViewById(R.id.view_lvl_address);
+        String viewLvlAddressText= "School Level: "+schoolLvl+"\nAddress: "
+                +address+"\n \nSubjects(Step 3 of 4)";
+        viewLvlAddress.setText(viewLvlAddressText);
 
         // Submission
         Button submitSubject = (Button) findViewById(R.id.submit_subject);

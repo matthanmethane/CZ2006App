@@ -33,11 +33,15 @@ public class SearchLevelView extends AppCompatActivity {
 
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setTitle("Search");
+        bar.setTitle("School Level");
 
         Button primaryBtn = findViewById(R.id.primary);
         Button secondaryBtn = findViewById(R.id.secondary);
         Button jcBtn = findViewById(R.id.jc);
+
+        primaryBtn.getBackground().setAlpha(80);
+        secondaryBtn.getBackground().setAlpha(80);
+        jcBtn.getBackground().setAlpha(80);
 
         primaryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
