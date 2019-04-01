@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.testapp.DataRepository;
 import com.example.testapp.EmpathyApp;
@@ -27,6 +28,39 @@ public class CcaView extends AppCompatActivity {
         int schoolLevel = intent.getIntExtra("schoolLevel",-1);
         String address = intent.getStringExtra("address");
         String[] courses = intent.getStringArrayExtra("courses");
+
+        String schoolLvl;
+
+        switch(schoolLevel){
+            case 1:
+                schoolLvl = "Primary School";
+                break;
+            case 2:
+                schoolLvl = "Secondary School";
+                break;
+            case 3 :
+                schoolLvl = "Junior College";
+                break;
+            default:
+                schoolLvl = ".";
+                break;
+        }
+        TextView viewLvlAddressSubject = (TextView) findViewById(R.id.view_lvl_address_subject);
+        String subjectStr = "";
+        int num = 0;
+        if(courses.length <3)
+            num = courses.length;
+        else
+            num = 3;
+        for(int i=0;i<num;i++){
+            subjectStr += courses[i]+"|";
+        }
+        if(courses.length>3)
+            subjectStr += "...";
+
+        String viewLvlAddressSubjectText= "School Level: "+schoolLvl+"\nAddress: "
+                +address+"\nSubject: "+subjectStr+"\nCCA(Step 4 of 4)";
+        viewLvlAddressSubject.setText(viewLvlAddressSubjectText);
 
         // Display all CCAs
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();

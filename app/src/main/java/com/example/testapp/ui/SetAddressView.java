@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.example.testapp.R;
 
-import org.w3c.dom.Text;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,7 +21,23 @@ public class SetAddressView extends AppCompatActivity {
         setContentView(R.layout.activity_set_address_view);
 
         Intent intent = getIntent();
-        int schoolLevel = intent.getIntExtra("schoolLevel", -1);
+        int schoolLevel = intent.getIntExtra("schoolLevel",-1);
+        String schoolLvl;
+
+        switch(schoolLevel){
+            case 1:
+                schoolLvl = "Primary School";
+                break;
+            case 2:
+                schoolLvl = "Secondary School";
+                break;
+            case 3 :
+                schoolLvl = "Junior College";
+                break;
+            default:
+                schoolLvl = "we";
+                break;
+        }
 
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
@@ -31,6 +45,10 @@ public class SetAddressView extends AppCompatActivity {
 
         EditText setAddress = (EditText) findViewById(R.id.set_address);
         Button submitAddress = (Button) findViewById(R.id.submit_address);
+        TextView viewLvl = (TextView) findViewById(R.id.view_lvl);
+
+        String viewLvlText= "School Level: "+schoolLvl+"\n \n \nAddress(Step 2 of 4)";
+        viewLvl.setText(viewLvlText);
 
         submitAddress.setOnClickListener(new View.OnClickListener() {
             @Override
