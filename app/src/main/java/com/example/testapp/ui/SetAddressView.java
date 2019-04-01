@@ -47,7 +47,7 @@ public class SetAddressView extends AppCompatActivity {
         Button submitAddress = (Button) findViewById(R.id.submit_address);
         TextView viewLvl = (TextView) findViewById(R.id.view_lvl);
 
-        String viewLvlText= "School Level: "+schoolLvl+"\n \n \nAddress(Step 2 of 4)";
+        String viewLvlText= "School Level: "+schoolLvl+"\n \n \nPostal code(Step 2 of 4)";
         viewLvl.setText(viewLvlText);
 
         submitAddress.setOnClickListener(new View.OnClickListener() {
