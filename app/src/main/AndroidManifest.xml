@@ -36,6 +36,7 @@
         <activity android:name=".ui.SubjectView"/>
         <activity android:name=".ui.ResultView"/>
         <activity android:name=".ui.InformationView"/>
+        <activity android:name=".ui.SchoolOnMapView"/>
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

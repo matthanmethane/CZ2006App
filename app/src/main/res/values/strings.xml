@@ -25,5 +25,12 @@
     <string name="title_activity_school_on_map_view">Map</string>
     <string name="title_activity_name_and_score_search_view">NameAndScoreSearchView</string>
 
+    <!-- Strings for result view-->
+    <string-array name="filter_options">
+        <item>Alphabetical (Default)</item>
+        <item>Distance</item>
+        <item>Cut-off points</item>
+    </string-array>
+
 
 </resources>

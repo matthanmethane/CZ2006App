@@ -1,24 +1,25 @@
 package com.example.testapp.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.testapp.DataRepository;
 import com.example.testapp.EmpathyApp;
 import com.example.testapp.R;
 import com.example.testapp.db.entity.SchoolEntity;
+import com.example.testapp.viewmodel.ResultViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 public class ResultView extends AppCompatActivity {
 
@@ -45,9 +46,48 @@ public class ResultView extends AppCompatActivity {
 
         // Display school results
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
-        List<SchoolEntity> schools = dataRepository.findSchools("",selectedCcas,selectedCourses,schoolLevel,-1);
+        final List<SchoolEntity> schools = dataRepository.findSchools("",selectedCcas,selectedCourses,schoolLevel,-1);
 
+        // Sort schools
+        final ResultViewModel viewModel = ViewModelProviders.of(this).get(ResultViewModel.class);
+        List<SchoolEntity> sorted = viewModel.sortSchools(schools);
+        displaySchool(sorted);
+
+        // Filter button
+        Spinner spinner = findViewById(R.id.fliterList);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                System.out.println(position);
+                List<SchoolEntity> sorted;
+                switch(position) {
+                    case 0:
+                        viewModel.setFilterMode(0);
+                        break;
+                    case 1:
+                        viewModel.setUserPostalCode(address);
+                        viewModel.setFilterMode(1);
+                        break;
+                    case 2:
+                        viewModel.setFilterMode(2);
+                        break;
+                }
+                sorted = viewModel.sortSchools(schools);
+                displaySchool(sorted);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    public void displaySchool(List<SchoolEntity> schools) {
         LinearLayout schoolList = findViewById(R.id.schoolList);
+        if(schoolList.getChildCount() > 0)
+            schoolList.removeAllViews();
+
         for (int i =0; i < schools.size(); i ++) {
             TextView schoolName = new TextView(this);
             // Do formatting for school box here
@@ -74,9 +114,12 @@ public class ResultView extends AppCompatActivity {
                     openSearch.putExtra("sap",school.getSAPSchool());
                     openSearch.putExtra("zoneCode",school.getZoneCode());
                     openSearch.putExtra("clusterCode",school.getClusterCode());
+                    openSearch.putExtra("website",school.getHomePageAddress());
+                    openSearch.putExtra("longitude",school.getLongitude());
+                    openSearch.putExtra("latitude",school.getLatitude());
                     startActivity(openSearch);
                 }
             });
-            }
+        }
     }
 }
