@@ -83,10 +83,10 @@ public class EntryScoreFetcher {
                         secondarySchool.PSLEIntegratedProgramScore = eachScore.getInt("lower");
                     } else if (programme.equals("'O' Level Programme") || programme.equals("Express")) {
                         secondarySchool.PSLEExpressScore = eachScore.getInt("lower");
-                        if (eachScore.get("lowerAffiliated").equals(new JSONObject())) {
-                            System.out.println(eachScore.get("lowerAffiliated"));
-                            System.out.println(eachScore.get("lowerAffiliated").getClass().getName());
+                        try {
                             secondarySchool.PSLEExpressAffiliationScore = eachScore.getInt("lowerAffiliated");
+                        } catch (Exception e) {
+                            System.out.println("No affiliation for: " + schoolName);
                         }
                     } else if (programme.equals("Normal Academic")) {
                         secondarySchool.PSLENormalAcademicScore = eachScore.getInt("lower");
