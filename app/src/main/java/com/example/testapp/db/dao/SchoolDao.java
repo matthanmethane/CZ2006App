@@ -105,8 +105,8 @@ public interface SchoolDao {
 
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
             "WHERE schoolName IN (SELECT schoolName FROM PreUniversitySchool" +
-            "                       WHERE entryScore1 > :entryScore " +
-            "                       OR entryScore2 > :entryScore) " +
+            "                       WHERE scienceStreamScore > :entryScore " +
+            "                       OR artsStreamScore > :entryScore) " +
             "AND schoolName IN (SELECT schoolName FROM " +
             "(SELECT * FROM SchoolToCCA " +
             " WHERE ccaName IN (:ccas)" +
@@ -148,8 +148,8 @@ public interface SchoolDao {
 
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
             "WHERE schoolName IN (SELECT schoolName FROM PreUniversitySchool" +
-            "                       WHERE entryScore1 > :entryScore " +
-            "                       OR entryScore2 > :entryScore) " +
+            "                       WHERE scienceStreamScore > :entryScore " +
+            "                       OR artsStreamScore > :entryScore) " +
             "AND schoolName IN (SELECT schoolName FROM" +
             "                   (SELECT * FROM SchoolToCCA" +
             "                    WHERE ccaName IN (:ccas)" +
@@ -187,8 +187,8 @@ public interface SchoolDao {
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
             "WHERE schoolName IN (SELECT schoolName FROM PreUniversitySchool" +
             "                       WHERE " +
-            "                       entryScore1 > :entryScore" +
-            "                       OR entryScore2 > :entryScore) " +
+            "                       scienceStreamScore > :entryScore" +
+            "                       OR artsStreamScore > :entryScore) " +
             "AND schoolName IN (SELECT schoolName FROM " +
             "                   (SELECT * FROM SchoolToCourse " +
             "                    WHERE courseName IN(:courses)" +
@@ -216,8 +216,8 @@ public interface SchoolDao {
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
             "WHERE schoolName IN (SELECT schoolName FROM PreUniversitySchool" +
             "                       WHERE " +
-            "                       entryScore1 > :entryScore" +
-            "                       OR entryScore2 > :entryScore) " +
+            "                       scienceStreamScore > :entryScore" +
+            "                       OR artsStreamScore > :entryScore) " +
             "AND schoolName LIKE :s")
     List<SchoolEntity> getJuniorCollegesByName(String s, int entryScore);
 }
