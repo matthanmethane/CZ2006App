@@ -52,8 +52,11 @@ public class ResultView extends AppCompatActivity {
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         final List<SchoolEntity> schools = dataRepository.findSchools("",selectedCcas,selectedCourses,schoolLevel,-1);
 
-        // Sort schools
+        // Initialize viewModel and sort schools
         final ResultViewModel viewModel = ViewModelProviders.of(this).get(ResultViewModel.class);
+        viewModel.setSchoolLevel(schoolLevel);
+        viewModel.setRepo(((EmpathyApp)this.getApplication()).getRepository());
+
         List<SchoolEntity> sorted = viewModel.sortSchools(schools);
         displaySchool(sorted);
 
