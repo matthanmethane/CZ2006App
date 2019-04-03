@@ -21,7 +21,7 @@ public class Bookmark {
      */
     @NonNull
     @ColumnInfo(name = "schoolName")
-    public String schoolName;
+    private String schoolName;
 
     /**
      * Instantiates a new Bookmark
@@ -30,5 +30,10 @@ public class Bookmark {
      */
     public Bookmark(String schoolName) {
         this.schoolName = schoolName;
+    }
+
+    @NonNull
+    public String getSchoolName() {
+        return schoolName;
     }
 }

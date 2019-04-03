@@ -153,10 +153,24 @@ public class DataRepository {
      * Add a new bookmark to the database, based on the school name provided
      * @param schoolName
      */
-    void addNewBookmark(String schoolName)
+    public void addNewBookmark(String schoolName)
     {
         Bookmark newBookmark = new Bookmark(schoolName);
         mDatabase.BookmarkModel().insertBookmark(newBookmark);
+    }
+
+    public void deleteBookmark(String schoolName) {
+        Bookmark newBookmark = new Bookmark(schoolName);
+        mDatabase.BookmarkModel().deleteBookmark(newBookmark);
+    }
+
+    public boolean isBookmark(String schoolName) {
+        Bookmark result = mDatabase.BookmarkModel().getBookmark(schoolName);
+        if (result == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**

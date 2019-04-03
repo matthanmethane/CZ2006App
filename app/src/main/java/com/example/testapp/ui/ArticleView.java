@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.testapp.DataRepository;
+import com.example.testapp.EmpathyApp;
 import com.example.testapp.R;
 import com.example.testapp.db.dao.ArticleDao_Impl;
 import com.example.testapp.db.entity.Article;
@@ -23,10 +25,6 @@ public class ArticleView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_view);
-
-        // Network on main thread exception
-        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        //StrictMode.setThreadPolicy(policy);
 
         ArticleDao_Impl articleDao = new ArticleDao_Impl();
         try {
