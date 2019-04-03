@@ -7,7 +7,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.testapp.AppExecutors;
 import com.example.testapp.R;
@@ -31,19 +30,17 @@ import com.example.testapp.db.utils.EntryScoreFetcher;
 import com.example.testapp.db.utils.Fetcher;
 import com.example.testapp.db.utils.GeneralInfoFetcher;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 /**
  * The abstraction over the actual database. Used to register the database and all views and entities associated with it,
@@ -56,7 +53,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
                 Bookmark.class
         }, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-    private static final String DATABASE_NAME = "EmPathy DB beta";
+    private static final String DATABASE_NAME = "EmPathy DB v5";
 
     // have a single reference to its object (singleton principle) to ensure data integrity.
     private static AppDatabase sInstance;
@@ -204,30 +201,36 @@ public abstract class AppDatabase extends RoomDatabase {
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(appContext);
 
+            // Instantiate all requests
+            List<JsonObjectRequest> allRequests = new ArrayList<>();
+
             // create the JSON request for CCAs offered by each school
             Fetcher ccaFetcher = new CCAFetcher();
-            JsonObjectRequest schoolToCCAJsonRequest = ccaFetcher.fetchData(database);
+            allRequests.add(ccaFetcher.fetchData(database));
 
-            // create the JSON request for courses offered by each school
+            // create the JSON request for courses offered by each schoool
             Fetcher courseFetcher = new CourseFetcher();
-            JsonObjectRequest schoolToCourseJsonRequest = courseFetcher.fetchData(database);
-            queue.add(schoolToCCAJsonRequest);
+            allRequests.add(courseFetcher.fetchData(database));
 
             // create the JSON request for school general information
             Fetcher generalFetcher = new GeneralInfoFetcher();
-            JsonObjectRequest schoolGeneralInfoJsonRequest = generalFetcher.fetchData(database);
+            allRequests.add(generalFetcher.fetchData(database));
+
+            // create the JSON request for grades ( but how to make sure it only runs after everything is complete?)
+            Fetcher entryScoreFetcher = new EntryScoreFetcher();
+            allRequests.add(entryScoreFetcher.fetchData(database));
+
+            // add all requests to the queue
+            for (JsonObjectRequest request : allRequests)
+            {
+                queue.add(request);
+            }
 
             // add geolocation of schools
             List<SchoolEntity> allSchools = database.SchoolModel().loadAllSchoolsAsList();
             for (SchoolEntity school : allSchools) {
                 addGeocodingForSchool(school, queue);
             }
-            queue.add(schoolToCourseJsonRequest);
-
-            // Access the RequestQueue through your singleton class. Add each request into the queue.
-            queue.add(schoolGeneralInfoJsonRequest);
-
-            Fetcher entryScoreFetcher = new EntryScoreFetcher();
 
             // notify that the database was created and it's ready to be used
             database.setDatabaseCreated();

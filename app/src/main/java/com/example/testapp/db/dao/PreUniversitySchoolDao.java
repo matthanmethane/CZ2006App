@@ -17,6 +17,12 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface PreUniversitySchoolDao {
     /**
+     * Get pre university school
+     */
+    @Query("SELECT * FROM PreUniversitySchool WHERE schoolName LIKE :schoolName")
+    PreUniversitySchool getPreUniversity(String schoolName);
+
+    /**
      * Insert pre university school.
      *
      * @param preUniversitySchool the pre university school
