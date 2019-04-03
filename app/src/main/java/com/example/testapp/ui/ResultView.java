@@ -85,6 +85,19 @@ public class ResultView extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        Button mapResultButton = findViewById(R.id.mapResultButton);
+        mapResultButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent openMap = new Intent(getApplicationContext(),ResultMapView.class);
+                openMap.putExtra("schoolLevel",schoolLevel);
+                openMap.putExtra("address",address);
+                openMap.putExtra("courses",courses);
+                openMap.putExtra("ccas",ccas);
+                startActivity(openMap);
+            }
+        });
     }
 
     public void displaySchool(List<SchoolEntity> schools) {

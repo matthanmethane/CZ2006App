@@ -3,13 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Switch
-        android:id="@+id/view_switch"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/mapResultButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Option"
-        android:textOff="No"
-        android:textOn="Yes" />
+        android:text="Map View" />
 
     <Spinner
         android:id="@+id/fliterList"

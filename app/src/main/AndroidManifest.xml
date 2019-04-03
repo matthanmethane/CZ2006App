@@ -38,6 +38,7 @@
         <activity android:name=".ui.InformationView"/>
         <activity android:name=".ui.SchoolOnMapView"/>
         <activity android:name=".ui.BookmarkView"/>
+        <activity android:name=".ui.ResultMapView"/>
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
