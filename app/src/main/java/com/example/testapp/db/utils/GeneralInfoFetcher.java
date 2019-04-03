@@ -4,6 +4,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.example.testapp.db.AppDatabase;
 import com.example.testapp.db.entity.PreUniversitySchool;
 import com.example.testapp.db.entity.PrimarySchool;
@@ -14,41 +15,49 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class GeneralInfoFetcher implements Fetcher {
-    @Override
-    public JsonObjectRequest fetchData(AppDatabase database) {
+public class GeneralInfoFetcher {
+
+    public JsonObjectRequest fetchData(AppDatabase database, RequestFuture<JSONObject> future) {
+
+//        Response.Listener GeneralInfoFetcherResponseListener = new Response.Listener<JSONObject>() {
+//
+//            @Override
+//            public void onResponse(JSONObject response) {
+//
+//                try {
+//                    // parse results as json array
+//                    JSONArray allSchoolsAsJSONArray = getResultsAsJSONArray(response);
+//
+//                    parseJSONArrayAndStoreInDatabase(database, allSchoolsAsJSONArray);
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        };
+
+        Response.ErrorListener el = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+                System.out.println("Rabak la bro: " + error.toString());
+            }
+        };
+
         return new JsonObjectRequest
-                (Request.Method.GET, "https://data.gov.sg/api/action/datastore_search?resource_id=ede26d32-01af-4228-b1ed-f05c45a1d8ee&limit=500000", null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-                            // parse results as json array
-                            JSONArray allSchoolsAsJSONArray = getResultsAsJSONArray(response);
-
-                            parseJSONArrayAndStoreInDatabase(database, allSchoolsAsJSONArray);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        System.out.println("Rabak la bro: " + error.toString());
-                    }
-                });
+                (Request.Method.GET,
+                        "https://data.gov.sg/api/action/datastore_search?resource_id=ede26d32-01af-4228-b1ed-f05c45a1d8ee&limit=500000",
+                        null,
+                        future,
+                        el
+                );
     }
 
-    @Override
     public JSONArray getResultsAsJSONArray(JSONObject rawJson) throws JSONException {
         return rawJson.getJSONObject("result").getJSONArray("records");
     }
 
-    @Override
     public void parseJSONArrayAndStoreInDatabase(final AppDatabase database,
                                                        JSONArray allSchoolsAsJSONArray) throws JSONException {
         for (int i = 0; i < allSchoolsAsJSONArray.length(); i++) {

@@ -3,7 +3,7 @@ package com.example.testapp.db.utils;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.testapp.db.AppDatabase;
 import com.example.testapp.db.entity.PreUniversitySchool;
 import com.example.testapp.db.entity.SecondarySchool;
@@ -12,25 +12,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class EntryScoreFetcher implements Fetcher {
-    @Override
-    public JsonObjectRequest fetchData(AppDatabase database) {
-        return new JsonObjectRequest
+public class EntryScoreFetcher {
+    public JsonArrayRequest fetchData(AppDatabase database) {
+        return new JsonArrayRequest
                 (Request.Method.GET,
                         "https://raw.githubusercontent.com/datagovsg/school-picker/master/public/data/entityList.json",
                         null,
-                        new Response.Listener<JSONObject>() {
+                        new Response.Listener<JSONArray>() {
 
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray entryScoreAsJSONArray) {
                         try {
-                            // parse results as json array
-                            JSONArray entryScoreAsJSONArray = new JSONArray(response) ;
-
                             // get each entry in results and store in database
                             parseJSONArrayAndStoreInDatabase(database, entryScoreAsJSONArray);
 
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -38,13 +34,12 @@ public class EntryScoreFetcher implements Fetcher {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        System.out.println("Rabak la bro: " + error.toString());
+                        System.out.println("Idkmanfeelsbad");
+                        error.printStackTrace();
                     }
                 });
     }
 
-    @Override
     public JSONArray getResultsAsJSONArray(JSONObject rawJson) throws JSONException {
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < rawJson.length(); i ++) {
@@ -53,8 +48,7 @@ public class EntryScoreFetcher implements Fetcher {
         return jsonArray;
     }
 
-    @Override
-    public void parseJSONArrayAndStoreInDatabase(AppDatabase database, JSONArray entryScore_AsJSONArray) throws JSONException {
+    public void parseJSONArrayAndStoreInDatabase(AppDatabase database, JSONArray entryScore_AsJSONArray) throws Exception {
         for (int i = 0; i < entryScore_AsJSONArray.length(); i++) {
             JSONObject record = entryScore_AsJSONArray.getJSONObject(i);
             String schoolName = record.getString("name").toUpperCase(); // standardize such that all names are uppercase;
@@ -73,12 +67,15 @@ public class EntryScoreFetcher implements Fetcher {
                  *
                  */
                 SecondarySchool secondarySchool = database.SecondarySchoolModel().getSecondarySchool(schoolName);
-
+                if (secondarySchool == null)
+                {
+                    System.err.println("Secondary School: " + schoolName + " not found!");
+                    continue;
+                }
                 JSONArray allPSLEScores = record.getJSONArray("psleAggregate");
-
                 for (int j = 0; j < allPSLEScores.length(); j++)
                 {
-                    JSONObject eachScore = allPSLEScores.getJSONObject(i);
+                    JSONObject eachScore = allPSLEScores.getJSONObject(j);
 
                     String programme = eachScore.getString("programme");
 
@@ -86,7 +83,9 @@ public class EntryScoreFetcher implements Fetcher {
                         secondarySchool.PSLEIntegratedProgramScore = eachScore.getInt("lower");
                     } else if (programme.equals("'O' Level Programme") || programme.equals("Express")) {
                         secondarySchool.PSLEExpressScore = eachScore.getInt("lower");
-                        if (eachScore.get("lowerAffiliated") != null) {
+                        if (eachScore.get("lowerAffiliated").equals(new JSONObject())) {
+                            System.out.println(eachScore.get("lowerAffiliated"));
+                            System.out.println(eachScore.get("lowerAffiliated").getClass().getName());
                             secondarySchool.PSLEExpressAffiliationScore = eachScore.getInt("lowerAffiliated");
                         }
                     } else if (programme.equals("Normal Academic")) {
@@ -100,7 +99,11 @@ public class EntryScoreFetcher implements Fetcher {
             }
             if (level.contains("J")) {
                 PreUniversitySchool preUniversitySchool = database.PreUniversitySchoolModel().getPreUniversity(schoolName);
-
+                if (preUniversitySchool == null)
+                {
+                    System.err.println("preUniversitySchool: " + schoolName + " not found!");
+                    continue;
+                }
                 JSONArray allJCScores = record.getJSONArray("l1r5Aggregate");
 
                 for (int j = 0; j < allJCScores.length(); j++)

@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.testapp.AppExecutors;
 import com.example.testapp.R;
@@ -30,11 +31,15 @@ import com.example.testapp.db.utils.EntryScoreFetcher;
 import com.example.testapp.db.utils.Fetcher;
 import com.example.testapp.db.utils.GeneralInfoFetcher;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -204,33 +209,54 @@ public abstract class AppDatabase extends RoomDatabase {
             // Instantiate all requests
             List<JsonObjectRequest> allRequests = new ArrayList<>();
 
-            // create the JSON request for CCAs offered by each school
-            Fetcher ccaFetcher = new CCAFetcher();
-            allRequests.add(ccaFetcher.fetchData(database));
+            // create the JSON request for school general information.
+            // For this we should create a RequestFuture as well, so it blocks other requests before this is completed.
+            JSONObject response = null;
+            RequestFuture<JSONObject> future = RequestFuture.newFuture();
+            GeneralInfoFetcher generalFetcher = new GeneralInfoFetcher();
+            queue.add(generalFetcher.fetchData(database, future));
 
-            // create the JSON request for courses offered by each schoool
-            Fetcher courseFetcher = new CourseFetcher();
-            allRequests.add(courseFetcher.fetchData(database));
+            // block the damn request
 
-            // create the JSON request for school general information
-            Fetcher generalFetcher = new GeneralInfoFetcher();
-            allRequests.add(generalFetcher.fetchData(database));
+            try {
 
-            // create the JSON request for grades ( but how to make sure it only runs after everything is complete?)
-            Fetcher entryScoreFetcher = new EntryScoreFetcher();
-            allRequests.add(entryScoreFetcher.fetchData(database));
+                response = future.get(10, TimeUnit.SECONDS); // Blocks for at most 10 seconds.
+                JSONArray results = generalFetcher.getResultsAsJSONArray(response);
+                generalFetcher.parseJSONArrayAndStoreInDatabase(database, results);
 
-            // add all requests to the queue
-            for (JsonObjectRequest request : allRequests)
-            {
-                queue.add(request);
+                // okay lets continue
+
+                // create the JSON request for CCAs offered by each school
+                Fetcher ccaFetcher = new CCAFetcher();
+                queue.add(ccaFetcher.fetchData(database));
+
+                // create the JSON request for courses offered by each schoool
+                Fetcher courseFetcher = new CourseFetcher();
+                queue.add(courseFetcher.fetchData(database));
+
+                // create the JSON request for grades
+                EntryScoreFetcher entryScoreFetcher = new EntryScoreFetcher();
+                queue.add(entryScoreFetcher.fetchData(database));
+
+                // add geolocation of schools
+                List<SchoolEntity> allSchools = database.SchoolModel().loadAllSchoolsAsList();
+                for (SchoolEntity school : allSchools) {
+                    addGeocodingForSchool(school, queue);
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-            // add geolocation of schools
-            List<SchoolEntity> allSchools = database.SchoolModel().loadAllSchoolsAsList();
-            for (SchoolEntity school : allSchools) {
-                addGeocodingForSchool(school, queue);
-            }
+
+
+
 
             // notify that the database was created and it's ready to be used
             database.setDatabaseCreated();
