@@ -6,6 +6,7 @@ import com.example.testapp.db.entity.SecondarySchool;
 import java.util.List;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -18,14 +19,14 @@ public interface BookmarkDao {
     @Query("SELECT * FROM Bookmark")
     List<Bookmark> getBookmarks();
 
-    @Query("SELECT * FROM Bookmark WHERE schoolName LIKE :schoolName")
-    Bookmark getBookmark(String schoolName);
-
     @Insert(onConflict = IGNORE)
     void insertBookmark(Bookmark bookmark);
 
-    @Update(onConflict = REPLACE)
-    void updateBookmark(Bookmark bookmark);
+    @Delete
+    void deleteBookmark(Bookmark bookmark);
+
+    @Query("SELECT * FROM Bookmark WHERE schoolName LIKE :schoolName")
+    Bookmark getBookmark(String schoolName);
 
     /**
      * Delete all.
