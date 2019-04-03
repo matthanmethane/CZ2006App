@@ -1,12 +1,12 @@
 package com.example.testapp;
 
-import android.content.Context;
-
 import com.example.testapp.db.AppDatabase;
 import com.example.testapp.db.entity.Bookmark;
+import com.example.testapp.db.entity.PreUniversitySchool;
 import com.example.testapp.db.entity.SchoolEntity;
 import com.example.testapp.db.entity.SchoolToCCA;
 import com.example.testapp.db.entity.SchoolToCourse;
+import com.example.testapp.db.entity.SecondarySchool;
 
 import java.util.List;
 
@@ -96,7 +96,7 @@ public class DataRepository {
     }
 
     /**
-     * Get a school by its name. Must be an exact match.
+     * Get a school entity by its name. Must be an exact match.
      *
      * @param schoolName
      * @return
@@ -107,7 +107,37 @@ public class DataRepository {
         if (result == null) {
             throw new Exception("Cannot find a school with that name");
         } else {
-            return mDatabase.SchoolModel().findSchoolByName(schoolName);
+            return result;
+        }
+    }
+
+    /**
+     * Get a Secondary School by its name.
+     * @param schoolName
+     * @return
+     * @throws Exception
+     */
+    public SecondarySchool getSecondarySchool(String schoolName) throws Exception {
+        SecondarySchool result =  mDatabase.SecondarySchoolModel().getSecondarySchool(schoolName);
+        if (result == null) {
+            throw new Exception("Cannot find a school with that name");
+        } else {
+            return result;
+        }
+    }
+
+    /**
+     * Get a PreUniversitySchool by its name.
+     * @param schoolName
+     * @return
+     * @throws Exception
+     */
+    public PreUniversitySchool getPreUniversitySchool(String schoolName) throws Exception {
+        PreUniversitySchool result = mDatabase.PreUniversitySchoolModel().getPreUniversity(schoolName);
+        if (result == null) {
+            throw new Exception("Cannot find a school with that name");
+        } else {
+            return result;
         }
     }
 
