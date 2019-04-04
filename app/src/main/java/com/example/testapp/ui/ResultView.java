@@ -188,6 +188,12 @@ public class ResultView extends AppCompatActivity {
                     openSearch.putExtra("website", school.getHomePageAddress());
                     openSearch.putExtra("longitude", school.getLongitude());
                     openSearch.putExtra("latitude", school.getLatitude());
+                    if (schoolLevel == 1)
+                        try {
+                            openSearch.putExtra("sessionCode", dataRepository.getPrimarySchool(school.getSchoolName()).sessionCode);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     startActivity(openSearch);
                 }
             });

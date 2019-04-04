@@ -40,6 +40,7 @@ public class InformationView extends AppCompatActivity {
         int sapSchool = intent.getIntExtra("sap",-1);
         String zoneCode = intent.getStringExtra("zoneCode");
         String clusterCode = intent.getStringExtra("clusterCode");
+        String sessionCode = intent.getStringExtra("sessionCode");
 
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         List<SchoolToCCA> ccas = dataRepository.getSchoolCCAs(name);
@@ -96,7 +97,7 @@ public class InformationView extends AppCompatActivity {
         TextView sessionText = findViewById(R.id.full_textbox_school_session);
         if(schoolLevel==1){
             sessionTitle.setText("School Session:");
-            sessionText.setText("NiHao");
+            sessionText.setText(sessionCode);
         }
         else{
             sessionTitle.setVisibility(View.GONE);
