@@ -5,14 +5,25 @@ import com.example.testapp.db.entity.SchoolEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class to sort schools in alphabetical order.
+ */
 public class AlphabetFilter implements Filter{
     private List<SchoolEntity> beforeSort;
     private List<SchoolEntity> afterSort;
 
+    /**
+     * Class constructor.
+     * @param beforeSort list of schools before sorted
+     */
     public AlphabetFilter(List<SchoolEntity> beforeSort) {
         this.beforeSort = beforeSort;
     }
 
+    /**
+     * Get list of sorted schools in alphabetical order.
+     * @return list of sorted schools
+     */
     public List<SchoolEntity> getSorted() {
         alphabetSort();
         return afterSort;

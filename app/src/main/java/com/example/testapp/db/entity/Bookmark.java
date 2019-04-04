@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
 /**
- * An entity denoting a bookmark by the user
+ * An entity denoting a bookmark by the user.
  */
 @Entity(foreignKeys = {
         @ForeignKey(entity = SchoolEntity.class,
@@ -24,7 +24,7 @@ public class Bookmark {
     private String schoolName;
 
     /**
-     * Instantiates a new Bookmark
+     * Instantiates a new Bookmark.
      *
      * @param schoolName the name of the bookmarked school
      */
@@ -32,6 +32,10 @@ public class Bookmark {
         this.schoolName = schoolName;
     }
 
+    /**
+     * Get school name from bookmark.
+     * @return school name
+     */
     @NonNull
     public String getSchoolName() {
         return schoolName;

@@ -13,6 +13,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+/**
+ * Single school on a map view.
+ */
 public class SchoolOnMapView extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

@@ -3,7 +3,7 @@ package com.example.testapp.db.entity;
 import androidx.annotation.NonNull;
 
 /**
- * entity Article class
+ * entity Article class.
  */
 public class Article {
     /**
@@ -35,8 +35,6 @@ public class Article {
         this.url = url;
         this.source = source;
     }
-
-    // Accessor
 
     /**
      * Get title

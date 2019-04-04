@@ -17,6 +17,9 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Choose CCA view.
+ */
 public class CcaView extends AppCompatActivity {
 
     @Override

@@ -20,17 +20,17 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface SchoolDao {
 
+    /**
+     * Get a list of all schools.
+     * @return all schools in database
+     */
     @Query("SELECT * FROM SchoolEntity ")
     List<SchoolEntity> loadAllSchoolsAsList();
 
-    @Query("SELECT longitude FROM SchoolEntity WHERE schoolName LIKE :pattern")
-    Double getLongitudeOfSchool(String pattern);
-
-    @Query("SELECT latitude FROM SchoolEntity WHERE schoolName LIKE :pattern")
-    Double getLatitudeOfSchool(String pattern);
-
     /**
      * Get a school using its school name. It must be an exact match.
+     * @param schoolName school name
+     * @return school
      */
     @Query("select * from SchoolEntity " +
             "WHERE SchoolEntity.schoolName LIKE :schoolName")
@@ -38,7 +38,6 @@ public interface SchoolDao {
 
     /**
      * Insert schoolEntity.
-     *
      * @param schoolEntity the schoolEntity
      */
     @Insert(onConflict = IGNORE)

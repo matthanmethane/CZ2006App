@@ -31,4 +31,9 @@
         <item>Distance</item>
         <item>Cut-off points</item>
     </string-array>
+
+    <string-array name="filter_options2">
+        <item>Alphabetical (Default)</item>
+        <item>Distance</item>
+    </string-array>
 </resources>

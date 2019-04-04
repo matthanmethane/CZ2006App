@@ -13,6 +13,9 @@ import com.example.testapp.R;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Set user's address view.
+ */
 public class SetAddressView extends AppCompatActivity {
 
     @Override
@@ -59,7 +62,7 @@ public class SetAddressView extends AppCompatActivity {
                     TextView text = findViewById(R.id.errorMsg);
                     text.setText("Please input valid postal code");
                 } else {
-                    // TO DO: Check whether valid postal code
+                    // TODO: Check whether valid postal code
 
                     Intent openSubject = new Intent(getApplicationContext(), SubjectView.class);
                     openSubject.putExtra("schoolLevel", schoolLevel);

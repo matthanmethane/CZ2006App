@@ -1,11 +1,17 @@
 package com.example.testapp.ui;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -25,6 +31,9 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+/**
+ * Result view.
+ */
 public class ResultView extends AppCompatActivity {
 
     @Override
@@ -60,13 +69,23 @@ public class ResultView extends AppCompatActivity {
         List<SchoolEntity> sorted = viewModel.sortSchools(schools);
         displaySchool(sorted);
 
-        // Filter button
         Spinner spinner = findViewById(R.id.fliterList);
+        // Hide score filter if primary school
+        if (schoolLevel == 1) {
+            System.out.println("!@#$$#@%#^^#^");
+            Resources res = getResources();
+            String[] stringArray = res.getStringArray(R.array.filter_options2);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, stringArray);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(dataAdapter);
+        }
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                System.out.println(position);
                 List<SchoolEntity> sorted;
+
                 switch(position) {
                     case 0:
                         viewModel.setFilterMode(0);
@@ -81,7 +100,6 @@ public class ResultView extends AppCompatActivity {
                 }
                 sorted = viewModel.sortSchools(schools);
                 displaySchool(sorted);
-
             }
 
             @Override
@@ -103,6 +121,10 @@ public class ResultView extends AppCompatActivity {
         });
     }
 
+    /**
+     * Display school results.
+     * @param schools list of schools
+     */
     public void displaySchool(List<SchoolEntity> schools) {
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         LinearLayout schoolList = findViewById(R.id.schoolList);

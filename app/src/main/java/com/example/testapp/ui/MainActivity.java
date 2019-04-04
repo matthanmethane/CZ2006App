@@ -40,20 +40,6 @@ public class MainActivity extends AppCompatActivity {
         bookmarkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*                DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
-                List<String> courses = new ArrayList<>();
-                courses.add("MALAY");
-                courses.add("COMPUTING");
-                //courses.add("MOBILE ROBOTICS");
-                courses.add("HIGHER TAMIL");
-                List<SchoolEntity> schools = dataRepository.findSchools("", new ArrayList<>(), courses, 2, -1);
-                for (SchoolEntity school : schools)
-                {
-                    System.out.println(school.getSchoolName());
-                }
-                System.out.println("##################3");
-
-                System.out.println("##################3");*/
                 Intent openBookmark = new Intent(getApplicationContext(), BookmarkView.class);
                 startActivity(openBookmark);
             }

@@ -11,7 +11,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Class that fetches CCAs of schools.
+ */
 public class CCAFetcher implements Fetcher{
+    /**
+     * Fetch and store information into the database.
+     * @param database
+     * @return json object request
+     */
     public JsonObjectRequest fetchData(final AppDatabase database) {
         // create the JSON request for CCAs offered by each school
         return new JsonObjectRequest

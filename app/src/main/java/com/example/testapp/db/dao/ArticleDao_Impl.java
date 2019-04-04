@@ -12,23 +12,29 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class ArticleDao_Impl extends AsyncTask<Void, Void, Article[]> {
+/**
+ * The news article Dao.
+ */
+public class ArticleDao_Impl extends AsyncTask<Void, Void, Void> {
 
     private Article[] articles;
 
+    /**
+     * Class constructor.
+     */
     public ArticleDao_Impl() {
     }
 
+    /**
+     * Run the retrieval of news articles from StraitTimes and CNA in the background.
+     * @param voids
+     */
     @Override
-    protected Article[] doInBackground(Void... voids) {
+    protected Void doInBackground(Void... voids) {
         getAllArticlesAsArray();
-        return articles;
+        return null;
     }
 
-    /**
-     * Retrieve education related activity_news_view article from Straits Times
-     * @return a list of articles
-     */
     private Article[] retrieveST() {
         // Variables
         Article[] a = new Article[10];
@@ -59,10 +65,6 @@ public class ArticleDao_Impl extends AsyncTask<Void, Void, Article[]> {
         }
     }
 
-    /**
-     * Retrieve education related activity_news_view article from Channel NewsAsia
-     * @return a list of articles
-     */
     private Article[] retrieveCNA() {
         // Variables
         Article[] a = new Article[10];
@@ -108,7 +110,10 @@ public class ArticleDao_Impl extends AsyncTask<Void, Void, Article[]> {
         articles = newsList;
     }
 
-
+    /**
+     * Returns a list of recent education-related news articles from Straits Times and CNA
+     * @return list of recent news articles
+     */
     public Article[] getArticleList() {
         return articles;
     }

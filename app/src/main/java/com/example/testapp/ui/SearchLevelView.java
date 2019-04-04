@@ -11,6 +11,9 @@ import com.example.testapp.R;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Search education level view.
+ */
 public class SearchLevelView extends AppCompatActivity {
 
     @Override

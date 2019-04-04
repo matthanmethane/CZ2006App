@@ -196,45 +196,117 @@ public class SchoolEntity {
         return this.id;
     }
 
-    public String getSchoolName() {
-        return this.schoolName;
-    }
+    /**
+     * Get school name.
+     * @return school name
+     */
+    public String getSchoolName() {return this.schoolName;}
+
+    /**
+     * Get school's physical address.
+     * @return physical address
+     */
     public String getPhysicalAddress() { return  this.physicalAddress;}
+
+    /**
+     * Get school's main telephone number.
+     * @return main telephone number
+     */
     public String getTelephoneNumber1() {return this.telephoneNumber1;}
+
+    /**
+     * Get school's alternative telephone number.
+     * @return alternative telephone number
+     */
     public String getTelephoneNumber2() {return  this.telephoneNumber2;}
+
+    /**
+     * Get school's website url.
+     * @return website url
+     */
     public String getHomePageAddress() {return  this.homePageAddress;}
+
+    /**
+     * Get school's email address.
+     * @return email address
+     */
     public String getEmailAddress() {return this.emailAddress;}
+
+    /**
+     * Get school's mission.
+     * @return mission
+     */
     public String getMission() {return this.mission;}
+
+    /**
+     * Get school's vision.
+     * @return vision
+     */
     public String getVision() {return this.vision;}
+
+    /**
+     * Get school's autonomy type.
+     * @return autonomy type
+     */
     public String getSchoolAutonomyType() {return this.schoolAutonomyType;}
+
+    /**
+     * Get school's gender intake type.
+     * @return gender
+     */
     public String getSchoolGender() {return  this.schoolGender;}
+
+    /**
+     * Get school's zone code.
+     * @return zone code
+     */
     public String getZoneCode() {return this.zoneCode;}
+
+    /**
+     * Get school's cluster code.
+     * @return cluster code
+     */
     public String getClusterCode() {return  this.clusterCode;}
-    public double getLatitude() {
-        return latitude;
-    }
 
-    public double getLongitude() {
-        return longitude;
-    }
+    /**
+     * Get school's latitude.
+     * @return latitude
+     */
+    public double getLatitude() { return latitude; }
 
-    public int getAutonomousSchool() {
-        return autonomousSchool;
-    }
+    /**
+     * Get school's longitude.
+     * @return longitude
+     */
+    public double getLongitude() { return longitude; }
 
-    public int getGiftedEducationProgramOffered() {
-        return giftedEducationProgramOffered;
-    }
+    /**
+     * Get confirmation of whether school is autonomous.
+     * @return autonomous
+     */
+    public int getAutonomousSchool() { return autonomousSchool; }
 
-    public int getIntegratedProgram() {
-        return integratedProgram;
-    }
+    /**
+     * Get confirmation of whether the school offers gifted education program.
+     * @return confirmation of gifted education program
+     */
+    public int getGiftedEducationProgramOffered() { return giftedEducationProgramOffered; }
 
-    public int getPostalCode() {
-        return postalCode;
-    }
+    /**
+     * Get confirmation of whether the school offers integrated program.
+     * @return confirmation of integrated program
+     */
+    public int getIntegratedProgram() { return integratedProgram; }
 
-    public int getSAPSchool() {
-        return SAPSchool;
-    }
+    /**
+     * Get school's postal code.
+     * @return postal code
+     */
+    public int getPostalCode() { return postalCode; }
+
+    /**
+     * Get confirmation whether the school is a SAP school
+     * @return confirmation of SAP
+     */
+    public int getSAPSchool() { return SAPSchool; }
 }

@@ -27,6 +27,9 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+/**
+ * Map view of search results.
+ */
 public class ResultMapView extends FragmentActivity implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -60,6 +63,20 @@ public class ResultMapView extends FragmentActivity implements GoogleMap.OnInfoW
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
+
+        // Switch back to textbox view
+        Button textboxButton = findViewById(R.id.textboxViewButton);
+        textboxButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent openTextbox = new Intent(getApplicationContext(),ResultView.class);
+                openTextbox.putExtra("schoolLevel",schoolLevel);
+                openTextbox.putExtra("address",address);
+                openTextbox.putExtra("courses",courses);
+                openTextbox.putExtra("ccas",ccas);
+                startActivity(openTextbox);
+            }
+        });
     }
 
 
@@ -90,7 +107,10 @@ public class ResultMapView extends FragmentActivity implements GoogleMap.OnInfoW
         mMap.setOnInfoWindowClickListener(this);
     }
 
-
+    /**
+     * Display the school's detailed information when information window of the school's marker is selected.
+     * @param marker school's marker
+     */
     @Override
     public void onInfoWindowClick(Marker marker) {
         for (int i = 0; i < schools.size(); i ++) {

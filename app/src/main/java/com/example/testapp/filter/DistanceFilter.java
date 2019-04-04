@@ -16,29 +16,44 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DistanceFilter extends AsyncTask<Void, Void, List<SchoolEntity>> implements Filter{
+/**
+ * Class to sort schools based on user distance.
+ */
+public class DistanceFilter extends AsyncTask<Void, Void, Void> implements Filter{
     String postalCode;
     List<SchoolEntity> beforeSort;
     List<SchoolEntity> afterSort;
     String longitude;
     String latitude;
 
+    /**
+     * Class constructor.
+     * @param postalCode user's postal code
+     * @param schools list of unsorted schools
+     */
     public DistanceFilter(String postalCode, List<SchoolEntity> schools) {
         super();
         this.postalCode = postalCode;
         this.beforeSort = schools;
     }
 
+    /**
+     * Get distance between the user and schools, and sort the schools based on distance.
+     * @param arg0
+     */
     @Override
-    protected List<SchoolEntity> doInBackground(Void... arg0) {
+    protected Void doInBackground(Void... arg0) {
         // Making a request to url and getting response
 
         postalCodeToCoor(postalCode);
         distanceSort();
-
-        return afterSort;
+        return null;
     }
 
+    /**
+     * Get sorted school based on distance.
+     * @return list of sorted schools
+     */
     public List<SchoolEntity> getSorted() {
         return afterSort;
     }
