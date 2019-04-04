@@ -2,6 +2,7 @@ package com.example.testapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,10 +16,20 @@ import com.example.testapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CcaView extends AppCompatActivity {
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +56,10 @@ public class CcaView extends AppCompatActivity {
                 schoolLvl = ".";
                 break;
         }
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle("Set CCA(Step 4 of 4)");
+
         TextView viewLvlAddressSubject = (TextView) findViewById(R.id.view_lvl_address_subject);
         String subjectStr = "";
         int num = 0;
@@ -59,7 +74,7 @@ public class CcaView extends AppCompatActivity {
             subjectStr += "...";
 
         String viewLvlAddressSubjectText= "School Level: "+schoolLvl+"\nAddress: "
-                +address+"\nSubject: "+subjectStr+"\nCCA(Step 4 of 4)";
+                +address+"\nSubject: "+subjectStr+"\n";
         viewLvlAddressSubject.setText(viewLvlAddressSubjectText);
 
         // Display all CCAs
