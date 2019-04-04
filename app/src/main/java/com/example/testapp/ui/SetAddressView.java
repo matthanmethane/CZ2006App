@@ -41,13 +41,13 @@ public class SetAddressView extends AppCompatActivity {
 
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setTitle("Set Address");
+        bar.setTitle("Set Postal code(Step 2 of 4)");
 
         EditText setAddress = (EditText) findViewById(R.id.set_address);
         Button submitAddress = (Button) findViewById(R.id.submit_address);
         TextView viewLvl = (TextView) findViewById(R.id.view_lvl);
 
-        String viewLvlText= "School Level: "+schoolLvl+"\n \n \nPostal code(Step 2 of 4)";
+        String viewLvlText= "School Level: "+schoolLvl+"\n \n \n";
         viewLvl.setText(viewLvlText);
 
         submitAddress.setOnClickListener(new View.OnClickListener() {

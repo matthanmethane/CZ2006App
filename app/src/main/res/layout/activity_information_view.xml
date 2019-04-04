@@ -1,278 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- TODO: create a RecyclerView for CCAs and courses in the schoolEntity -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:scrollbars="none"
+        android:layout_above="@id/llButton"
         android:layout_weight="1">
-        <TableLayout
+
+        <LinearLayout
             android:id="@+id/full_textbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="1"
-            android:shrinkColumns="0"
-            android:isScrollContainer="true">
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="School Name: "
+                android:textColor="#000000" />
 
-            <TableRow>
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="School Name: "
-                    android:padding="3dip"/>
-                <TextView
-                    android:id="@+id/full_textbox_school_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip" />
-            </TableRow>
+            <TextView
+                android:id="@+id/full_textbox_school_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address: "
+                android:textColor="#000000" />
 
-            <TableRow>
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Address: "
-                    android:padding="3dip"/>
-                <TextView
-                    android:id="@+id/full_textbox_school_physical_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip" />
-            </TableRow>
+            <TextView
+                android:id="@+id/full_textbox_school_physical_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <TableRow>
-                <TextView
-                    android:text="Postal code: "
-                    android:padding="3dip" />
-                <TextView
-                    android:id="@+id/full_textbox_school_postal_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Postal code: "
+                android:textColor="#000000" />
 
-            <TableRow>
-                <TextView
-                    android:text="Telephone Number 1:"
-                    android:padding="3dip">
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_school_telephone_number_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
+            <TextView
+                android:id="@+id/full_textbox_school_postal_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <TableRow>
-                <TextView
-                    android:text="Telephone Number 2:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_school_telephone_number_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"
-                    />
-            </TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Telephone Number 1:"
+                android:textColor="#000000" />
 
-            <!-- Credits to https://stackoverflow.com/questions/4329175/android-table-layout-formatting-problems -->
-            <TableRow>
-                <TextView
-                    android:text="School Vision:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_school_vision"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip" />
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:text="School Mission:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_school_mission"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/cd_school_name"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:text="School autonomy type:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_school_autonomy_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/cd_school_name"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
+            <TextView
+                android:id="@+id/full_textbox_school_telephone_number_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <TableRow>
-                <TextView
-                    android:text="School Gender:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_school_gender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/cd_school_name"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Telephone Number 2:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_school_telephone_number_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="School Vision:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_school_vision"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="School Mission:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_school_mission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/cd_school_name" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="School autonomy type:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_school_autonomy_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/cd_school_name" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="School Gender:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_school_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/cd_school_name" />
 
             <!-- TODO: figure out how to dynamically display this only for primary schools -->
-            <!--<TextView-->
-            <!--android:id="@+id/full_textbox_school_session"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:contentDescription="@string/cd_school_name"-->
-            <!--android:text="@{schoolDetails.}" />-->
-
-            <TableRow>
-                <TextView
-                    android:text="Gifted education program offered:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_gifted_education_program_offered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:text="Integrated Program:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_integrated_program"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
-
-            <TableRow>
-                <TextView
-                    android:text="SAP School:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_SAP_school"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
-
-            <TableRow>
-                <TextView
-                    android:text="Zone Code:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_zone_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
-
-            <TableRow>
-                <TextView
-                    android:text="Cluster Code:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-                <TextView
-                    android:id="@+id/full_textbox_cluster_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"/>
-            </TableRow>
-
-            <TableRow>
-                <TextView
-                    android:text="List of CCAs offered:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-
-                <TextView
-                    android:id="@+id/full_textbox_cca"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"
-                    ></TextView>
-            </TableRow>
-
-
-            <TableRow>
-                <TextView
-                    android:text="List of Courses offered:"
-                    android:padding="3dip"
-                    >
-                </TextView>
-
-                <TextView
-                    android:id="@+id/full_textbox_course"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:padding="3dip"></TextView>
-            </TableRow>
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/title_school_session"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
-                <Button
-                    android:id="@+id/schoolWebsiteButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Link to Website" />
-                <Button
-                    android:id="@+id/schoolOnMapButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Show on Map" />
-            </LinearLayout>
-        </TableLayout>
+                android:textColor="#000000" />
+            <TextView
+                android:id="@+id/full_textbox_school_session"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gifted education program offered:"
+                android:textColor="#000000" />
 
+            <TextView
+                android:id="@+id/full_textbox_gifted_education_program_offered"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Integrated Program:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_integrated_program"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SAP School:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_SAP_school"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zone Code:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_zone_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cluster Code:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_cluster_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List of CCAs offered:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_cca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List of Courses offered:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/full_textbox_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/llButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/schoolWebsiteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Link to Website" />
+
+        <Button
+            android:id="@+id/schoolOnMapButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show on Map" />
+    </LinearLayout>
 
 
-</layout>
+</RelativeLayout>

@@ -33,7 +33,7 @@ public class SearchLevelView extends AppCompatActivity {
 
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setTitle("School Level");
+        bar.setTitle("Choose School Level(Step 1 of 4)");
 
         Button primaryBtn = findViewById(R.id.primary);
         Button secondaryBtn = findViewById(R.id.secondary);

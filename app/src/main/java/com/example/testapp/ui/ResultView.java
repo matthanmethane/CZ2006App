@@ -1,14 +1,17 @@
 package com.example.testapp.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.example.testapp.DataRepository;
 import com.example.testapp.EmpathyApp;
@@ -16,21 +19,33 @@ import com.example.testapp.R;
 import com.example.testapp.db.entity.SchoolEntity;
 import com.example.testapp.viewmodel.ResultViewModel;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 public class ResultView extends AppCompatActivity {
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_view);
+
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle("Search Result");
 
         Intent intent = getIntent();
         int schoolLevel = intent.getIntExtra("schoolLevel",-1);
@@ -58,7 +73,7 @@ public class ResultView extends AppCompatActivity {
         displaySchool(sorted);
 
         // Filter button
-        Spinner spinner = findViewById(R.id.fliterList);
+        Spinner spinner = findViewById(R.id.filterList);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -101,22 +116,48 @@ public class ResultView extends AppCompatActivity {
     }
 
     public void displaySchool(List<SchoolEntity> schools) {
+        Intent intent = getIntent();
+        int schoolLevel = intent.getIntExtra("schoolLevel",-1);
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         LinearLayout schoolList = findViewById(R.id.schoolList);
         if(schoolList.getChildCount() > 0)
             schoolList.removeAllViews();
 
         for (int i = 0; i < schools.size(); i++) {
-            LinearLayout box = new LinearLayout(this);
-            box.setOrientation(LinearLayout.HORIZONTAL);
+            RelativeLayout box = new RelativeLayout(this);
+
+            RelativeLayout.LayoutParams layoutparams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+            );
+            RelativeLayout.LayoutParams LayoutParamsButton = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            RelativeLayout.LayoutParams LayoutParamsText = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            LayoutParamsButton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            LayoutParamsText.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            box.setPadding(20,0,20,0);
+            box.setLayoutParams(layoutparams);
+
+            //box.setOrientation(LinearLayout.HORIZONTAL);
             TextView schoolNameTextView = new TextView(this);
             schoolNameTextView.setText(schools.get(i).getSchoolName());
+            schoolNameTextView.setTextColor(Color.BLACK);
+            schoolNameTextView.setTextSize(15);
+            schoolNameTextView.setLayoutParams(LayoutParamsText);
 
             SchoolEntity school = schools.get(i);
-            ToggleButton button = new ToggleButton(this);
+
+            CheckBox button = new CheckBox(this,null,android.R.attr.starStyle);
             if (dataRepository.isBookmark(school.getSchoolName())) {
                 button.setChecked(true);
             }
+            button.setLayoutParams(LayoutParamsButton);
+
             box.addView(schoolNameTextView);
             box.addView(button);
             schoolList.addView(box);
@@ -126,6 +167,7 @@ public class ResultView extends AppCompatActivity {
                 public void onClick(View arg0) {
                     Intent openSearch = new Intent(getApplicationContext(), InformationView.class);
                     // Insert school info here
+                    openSearch.putExtra("schoolLevel",schoolLevel);
                     openSearch.putExtra("name", school.getSchoolName());
                     openSearch.putExtra("address", school.getPhysicalAddress());
                     openSearch.putExtra("postalCode", school.getPostalCode());

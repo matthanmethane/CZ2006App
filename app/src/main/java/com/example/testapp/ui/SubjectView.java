@@ -2,6 +2,7 @@ package com.example.testapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,10 +16,20 @@ import com.example.testapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SubjectView extends AppCompatActivity {
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +55,11 @@ public class SubjectView extends AppCompatActivity {
                 schoolLvl = ".";
                 break;
         }
+
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle("Set Subjects(Step 3 of 4)");
+
         // Display all Subjects
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         List<String> allCourses = dataRepository.getCoursesForLevel(schoolLevel);
@@ -56,7 +72,7 @@ public class SubjectView extends AppCompatActivity {
         }
         TextView viewLvlAddress = (TextView) findViewById(R.id.view_lvl_address);
         String viewLvlAddressText= "School Level: "+schoolLvl+"\nAddress: "
-                +address+"\n \nSubjects(Step 3 of 4)";
+                +address+"\n \n";
         viewLvlAddress.setText(viewLvlAddressText);
 
         // Submission

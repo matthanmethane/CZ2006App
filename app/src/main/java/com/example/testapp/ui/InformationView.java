@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.testapp.DataRepository;
@@ -26,6 +25,7 @@ public class InformationView extends AppCompatActivity {
         setContentView(R.layout.activity_information_view);
 
         Intent intent = getIntent();
+        int schoolLevel = intent.getIntExtra("schoolLevel",-1);
         String name = intent.getStringExtra("name");
         String address = intent.getStringExtra("address");
         int postalCode = intent.getIntExtra("postalCode",-1);
@@ -47,11 +47,18 @@ public class InformationView extends AppCompatActivity {
         for (int i = 0; i < ccas.size(); i ++) {
             ccaList[i] = ccas.get(i).ccaName;
         }
+        //String[] ccaArr =  new String[ccaList.length];
+       // ccaArr = ccas.toArray(ccaArr);
+
         List<SchoolToCourse> courses = dataRepository.getSchoolCourses(name);
         String[] courseList = new String[courses.size()];
         for (int i = 0; i < courses.size(); i ++) {
             courseList[i] = courses.get(i).courseName;
         }
+       // ArrayAdapter<String> adapterCca = new ArrayAdapter(this, android.R.layout.simple_list_item_1, ccaArr);
+        //ArrayAdapter<String> adapterCourse = new ArrayAdapter(this, android.R.layout.simple_list_item_1, courseList);
+
+
 
         // Display information
         TextView nameText = findViewById(R.id.full_textbox_school_name);
@@ -84,6 +91,17 @@ public class InformationView extends AppCompatActivity {
 
         TextView genderText = findViewById(R.id.full_textbox_school_gender);
         genderText.setText(gender);
+        //Todo: Set the text
+        TextView sessionTitle = findViewById(R.id.title_school_session);
+        TextView sessionText = findViewById(R.id.full_textbox_school_session);
+        if(schoolLevel==1){
+            sessionTitle.setText("School Session:");
+            sessionText.setText("NiHao");
+        }
+        else{
+            sessionTitle.setVisibility(View.GONE);
+            sessionText.setVisibility(View.GONE);
+        }
 
         TextView giftedText = findViewById(R.id.full_textbox_gifted_education_program_offered);
         if (giftedEducation == 0) {
@@ -112,6 +130,10 @@ public class InformationView extends AppCompatActivity {
         TextView clusterText = findViewById(R.id.full_textbox_cluster_code);
         clusterText.setText(clusterCode);
 
+
+        //ListView ccaText = findViewById(R.id.full_textbox_cca);
+        //ccaText.setAdapter(adapterCca);
+
         TextView ccaText = findViewById(R.id.full_textbox_cca);
         String ccaString = "";
         if (ccaList.length > 1)
@@ -122,7 +144,8 @@ public class InformationView extends AppCompatActivity {
         }
         ccaText.setText(ccaString);
 
-
+        //ListView courseText = findViewById(R.id.full_textbox_course);
+        //courseText.setAdapter(adapterCourse);
         TextView courseText = findViewById(R.id.full_textbox_course);
         String courseString = "";
         if (courseList.length > 1)

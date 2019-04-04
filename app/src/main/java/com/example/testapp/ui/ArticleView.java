@@ -1,6 +1,7 @@
 package com.example.testapp.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -11,8 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.testapp.DataRepository;
-import com.example.testapp.EmpathyApp;
 import com.example.testapp.R;
 import com.example.testapp.db.dao.ArticleDao_Impl;
 import com.example.testapp.db.entity.Article;
@@ -50,14 +49,17 @@ public class ArticleView extends AppCompatActivity {
         for (int i = 0; i < articleList.length; i ++) {
             LinearLayout linearLayout = new LinearLayout(this);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.setBackgroundResource(R.drawable.border);
 
             TextView title = new TextView(this);
             title.setText(articleList[i].getTitle());
-            title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
+            title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
+            title.setTextColor(Color.BLACK);
+            title.setPadding(20,20,20,20);
 
             TextView source = new TextView(this);
             source.setText(articleList[i].getSource().toString());
-            source.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+            source.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             source.setGravity(Gravity.RIGHT);
 
             // Link news url to view
