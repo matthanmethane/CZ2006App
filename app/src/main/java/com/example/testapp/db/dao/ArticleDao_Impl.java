@@ -38,6 +38,7 @@ public class ArticleDao_Impl extends AsyncTask<Void, Void, Article[]> {
         try {
             final Document stDocument = Jsoup.connect("https://www.straitstimes.com/singapore/education").get();
             Elements news = stDocument.select("div.view.view-articles.view-id-articles > div.view-content > div");
+            System.out.println("Generating news articles");
             // For each news section
             for (int i = 0; i < 10; i++) {
                 Element row = news.get(i);

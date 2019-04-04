@@ -3,17 +3,19 @@ package com.example.testapp.db.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 
 /**
  * An entity that maps Schools to CCAs (many to many relationship)
  */
-@Entity(primaryKeys = {"school_name", "ccaName"})
+@Entity(
+        primaryKeys = {"schoolName", "ccaName"}
+)
 public class SchoolToCCA {
     /**
      * The SchoolEntity name.
      */
     @NonNull
-    @ColumnInfo(name = "school_name")
     public String schoolName;
 
     /**

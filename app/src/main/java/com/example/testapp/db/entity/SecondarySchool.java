@@ -9,18 +9,13 @@ import androidx.room.PrimaryKey;
 /**
  * The Secondary SchoolEntity entity, which should be a subclass of SchoolEntity.
  */
-@Entity(foreignKeys = {
-        @ForeignKey(entity = SchoolEntity.class,
-                parentColumns = "schoolName",
-                childColumns = "school_name")
-})
+@Entity
 public class SecondarySchool {
     /**
      * The SchoolEntity name.
      */
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "school_name")
     public String schoolName;
 
     /**

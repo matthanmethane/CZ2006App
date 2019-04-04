@@ -19,13 +19,6 @@ import static androidx.room.OnConflictStrategy.REPLACE;
  */
 @Dao
 public interface SchoolDao {
-    /**
-     * Load all schools live data.
-     *
-     * @return the live data
-     */
-    @Query("SELECT * FROM SchoolEntity ")
-    LiveData<List<SchoolEntity>> loadAllSchoolsAsLiveData();
 
     @Query("SELECT * FROM SchoolEntity ")
     List<SchoolEntity> loadAllSchoolsAsList();
@@ -36,55 +29,12 @@ public interface SchoolDao {
     @Query("SELECT latitude FROM SchoolEntity WHERE schoolName LIKE :pattern")
     Double getLatitudeOfSchool(String pattern);
 
-    @Query("SELECT * FROM SchoolEntity " +
-            "WHERE schoolName IN " +
-            " (SELECT schoolName FROM PrimarySchool)")
-    LiveData<List<SchoolEntity>> getPrimarySchoolsAsLiveData();
-
-    @Query("SELECT * FROM SchoolEntity " +
-            "WHERE schoolName IN " +
-            " (SELECT school_name FROM SecondarySchool)")
-    LiveData<List<SchoolEntity>> getSecondarySchoolsAsLiveData();
-
-    @Query("SELECT * FROM SchoolEntity " +
-            "WHERE schoolName IN " +
-            " (SELECT school_name FROM PreUniversitySchool)")
-    LiveData<List<SchoolEntity>> getJuniorCollegesAsLiveData();
-
-    /**
-     * Find schools by name pattern live data.
-     *
-     * @param pattern the pattern
-     * @return the live data
-     */
-    @Query("select * from SchoolEntity where schoolName LIKE :pattern")
-    LiveData<List<SchoolEntity>> findSchoolsByNamePattern(String pattern);
-
-    /**
-     * Find secondary school names using name and cc as and courses live data.
-     *
-     * @param name    the name
-     * @param CCAs    the cc as
-     * @param Courses the courses
-     * @return the live data
-     */
-    @Query("select schoolName from SchoolEntity " +
-            "INNER JOIN SchoolToCCA on SchoolEntity.schoolName=SchoolToCCA.school_name " +
-            "INNER JOIN SchoolToCourse on SchoolEntity.schoolName=SchoolToCourse.school_name " +
-            "INNER JOIN SecondarySchool on SchoolEntity.schoolName=SecondarySchool.school_name " +
-            "WHERE SchoolEntity.schoolName LIKE :name " +
-            "AND SchoolToCCA.ccaName IN (:CCAs) " +
-            "AND SchoolToCourse.courseName IN (:Courses)")
-    LiveData<List<String>> findSecondarySchoolNamesUsingNameAndCCAsAndCourses(String name, List<String> CCAs, List<String> Courses);
-
     /**
      * Get a school using its school name. It must be an exact match.
      */
     @Query("select * from SchoolEntity " +
             "WHERE SchoolEntity.schoolName LIKE :schoolName")
     SchoolEntity findSchoolByName(String schoolName);
-
-//    LiveData<SchoolEntity> findSchoolByName(String schoolName);
 
     /**
      * Insert schoolEntity.
@@ -108,87 +58,166 @@ public interface SchoolDao {
     @Query("DELETE FROM SchoolEntity")
     void deleteAll();
 
+    /**
+     * Search patterns
+     * @param s
+     * @param ccas
+     * @param numberOfCCAs
+     * @param courses
+     * @param numberOfCourses
+     * @return
+     */
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
             "WHERE schoolName IN (SELECT schoolName FROM PrimarySchool) " +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCCA" +
-            "                   WHERE ccaName IN (:ccas))" +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCourse " +
-            "                   WHERE courseName IN(:courses))" +
+            "AND schoolName IN (SELECT schoolName FROM " +
+                                "(SELECT * FROM SchoolToCCA " +
+                                " WHERE ccaName IN (:ccas)" +
+                                " GROUP BY schoolName" +
+                                " HAVING COUNT(*) = :numberOfCCAs))" +
+            "AND schoolName IN (SELECT schoolName FROM " +
+                                "(SELECT * FROM SchoolToCourse" +
+                                " WHERE courseName IN (:courses)" +
+                                " GROUP BY schoolName" +
+                                " HAVING COUNT(*) = :numberOfCourses))" +
             "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getPrimarySchoolsBySearchPattern(String s, List<String> ccas, List<String> courses);
+    List<SchoolEntity> getPrimarySchoolsBySearchPattern(String s, List<String> ccas, int numberOfCCAs, List<String> courses, int numberOfCourses);
 
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT school_name FROM SecondarySchool) " +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCCA" +
-            "                   WHERE ccaName IN (:ccas))" +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCourse " +
-            "                   WHERE courseName IN(:courses))" +
+            "WHERE schoolName IN (SELECT schoolName FROM SecondarySchool " +
+                                    "WHERE " +
+                                    "PSLEIntegratedProgramScore > :entryScore " +
+                                    "OR PSLEExpressScore > :entryScore " +
+                                    "OR PSLEExpressAffiliationScore > :entryScore " +
+                                    "OR PSLENormalAcademicScore > :entryScore " +
+                                    "OR PSLENormalTechnicalScore > :entryScore ) " +
+            "AND schoolName IN (SELECT schoolName FROM " +
+            "(SELECT * FROM SchoolToCCA " +
+            " WHERE ccaName IN (:ccas)" +
+            " GROUP BY schoolName" +
+            " HAVING COUNT(*) = :numberOfCCAs))" +
+            "AND schoolName IN (SELECT schoolName FROM " +
+            "(SELECT * FROM SchoolToCourse" +
+            " WHERE courseName IN (:courses)" +
+            " GROUP BY schoolName" +
+            " HAVING COUNT(*) = :numberOfCourses))" +
             "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getSecondarySchoolsBySearchPattern(String s, List<String> ccas, List<String> courses);
+    List<SchoolEntity> getSecondarySchoolsBySearchPattern(String s, List<String> ccas, int numberOfCCAs, List<String> courses, int numberOfCourses, int entryScore);
 
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT school_name FROM PreUniversitySchool) " +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCCA" +
-            "                   WHERE ccaName IN (:ccas))" +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCourse " +
-            "                   WHERE courseName IN(:courses))" +
+            "WHERE schoolName IN (SELECT schoolName FROM PreUniversitySchool" +
+            "                       WHERE scienceStreamScore > :entryScore " +
+            "                       OR artsStreamScore > :entryScore) " +
+            "AND schoolName IN (SELECT schoolName FROM " +
+            "(SELECT * FROM SchoolToCCA " +
+            " WHERE ccaName IN (:ccas)" +
+            " GROUP BY schoolName" +
+            " HAVING COUNT(*) = :numberOfCCAs))" +
+            "AND schoolName IN (SELECT schoolName FROM " +
+            "(SELECT * FROM SchoolToCourse" +
+            " WHERE courseName IN (:courses)" +
+            " GROUP BY schoolName" +
+            " HAVING COUNT(*) = :numberOfCourses))" +
             "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getJuniorCollegesBySearchPattern(String s, List<String> ccas, List<String> courses);
-
-    @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT schoolName FROM PrimarySchool) " +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCCA" +
-            "                   WHERE ccaName IN (:ccas))" +
-            "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getPrimarySchoolsByNameAndCCAs(String s, List<String> ccas);
-
-    @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT school_name FROM SecondarySchool) " +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCCA" +
-            "                   WHERE ccaName IN (:ccas))" +
-            "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getSecondarySchoolsByNameAndCCAs(String s, List<String> ccas);
-
-    @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT school_name FROM PreUniversitySchool) " +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCCA" +
-            "                   WHERE ccaName IN (:ccas))" +
-            "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getJuniorCollegesByNameAndCCAs(String s, List<String> ccas);
-
-    @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT schoolName FROM PrimarySchool) " +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCourse " +
-            "                   WHERE courseName IN(:courses))" +
-            "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getPrimarySchoolsByNameAndCourses(String s, List<String> courses);
-
-    @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT school_name FROM SecondarySchool) " +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCourse " +
-            "                   WHERE courseName IN(:courses))" +
-            "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getSecondarySchoolsByNameAndCourses(String s, List<String> courses);
-
-    @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT school_name FROM PreUniversitySchool) " +
-            "AND schoolName IN (SELECT school_name FROM SchoolToCourse " +
-            "                   WHERE courseName IN(:courses))" +
-            "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getJuniorCollegesByNameAndCourses(String s, List<String> courses);
+    List<SchoolEntity> getJuniorCollegesBySearchPattern(String s, List<String> ccas, int numberOfCCAs, List<String> courses, int numberOfCourses, int entryScore);
 
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
             "WHERE schoolName IN (SELECT schoolName FROM PrimarySchool) " +
+            "AND schoolName IN (SELECT schoolName FROM " +
+            "                   (SELECT * FROM SchoolToCCA" +
+            "                    WHERE ccaName IN (:ccas)" +
+            "                    GROUP BY schoolName" +
+            "                    HAVING COUNT(*) = :numberOfCCAs))" +
             "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getPrimarySchoolsByName(String s);
+    List<SchoolEntity> getPrimarySchoolsByNameAndCCAs(String s, List<String> ccas, int numberOfCCAs);
 
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT school_name FROM SecondarySchool) " +
+            "WHERE schoolName IN (SELECT schoolName FROM SecondarySchool " +
+                                    "WHERE " +
+                                    "PSLEIntegratedProgramScore > :entryScore " +
+                                    "OR PSLEExpressScore > :entryScore " +
+                                    "OR PSLEExpressAffiliationScore > :entryScore " +
+                                    "OR PSLENormalAcademicScore > :entryScore " +
+                                    "OR PSLENormalTechnicalScore > :entryScore ) " +
+            "AND schoolName IN (SELECT schoolName FROM" +
+            "                   (SELECT * FROM SchoolToCCA" +
+            "                    WHERE ccaName IN (:ccas)" +
+            "                    GROUP BY schoolName" +
+            "                    HAVING COUNT(*) = :numberOfCCAs))" +
             "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getSecondarySchoolsByName(String s);
+    List<SchoolEntity> getSecondarySchoolsByNameAndCCAs(String s, List<String> ccas, int numberOfCCAs, int entryScore);
 
     @Query("SELECT DISTINCT * FROM SchoolEntity " +
-            "WHERE schoolName IN (SELECT school_name FROM PreUniversitySchool) " +
+            "WHERE schoolName IN (SELECT schoolName FROM PreUniversitySchool" +
+            "                       WHERE scienceStreamScore > :entryScore " +
+            "                       OR artsStreamScore > :entryScore) " +
+            "AND schoolName IN (SELECT schoolName FROM" +
+            "                   (SELECT * FROM SchoolToCCA" +
+            "                    WHERE ccaName IN (:ccas)" +
+            "                    GROUP BY schoolName" +
+            "                    HAVING COUNT(*) = :numberOfCCAs))" +
             "AND schoolName LIKE :s")
-    LiveData<List<SchoolEntity>> getJuniorCollegesByName(String s);
+    List<SchoolEntity> getJuniorCollegesByNameAndCCAs(String s, List<String> ccas, int numberOfCCAs, int entryScore);
+
+    @Query("SELECT DISTINCT * FROM SchoolEntity " +
+            "WHERE schoolName IN (SELECT schoolName FROM PrimarySchool) " +
+            "AND schoolName IN (SELECT schoolName FROM " +
+            "                   (SELECT * FROM SchoolToCourse " +
+            "                    WHERE courseName IN(:courses)" +
+            "                    GROUP BY schoolName" +
+            "                    HAVING COUNT(*) = :numberOfCourses))" +
+            "AND schoolName LIKE :s")
+    List<SchoolEntity> getPrimarySchoolsByNameAndCourses(String s, List<String> courses, int numberOfCourses);
+
+    @Query("SELECT DISTINCT * FROM SchoolEntity " +
+            "WHERE schoolName IN (SELECT schoolName FROM SecondarySchool " +
+            "                     WHERE " +
+            "PSLEIntegratedProgramScore > :entryScore " +
+            "OR PSLEExpressScore > :entryScore " +
+            "OR PSLEExpressAffiliationScore > :entryScore " +
+            "OR PSLENormalAcademicScore > :entryScore " +
+            "OR PSLENormalTechnicalScore > :entryScore ) " +
+            "AND schoolName IN (SELECT schoolName FROM " +
+            "                   (SELECT * FROM SchoolToCourse " +
+            "                    WHERE courseName IN(:courses)" +
+            "                    GROUP BY schoolName" +
+            "                    HAVING COUNT(*) = :numberOfCourses))" +
+            "AND schoolName LIKE :s")
+    List<SchoolEntity> getSecondarySchoolsByNameAndCourses(String s, List<String> courses, int numberOfCourses, int entryScore);
+
+    @Query("SELECT DISTINCT * FROM SchoolEntity " +
+            "WHERE schoolName IN (SELECT schoolName FROM PreUniversitySchool" +
+            "                       WHERE " +
+            "                       scienceStreamScore > :entryScore" +
+            "                       OR artsStreamScore > :entryScore) " +
+            "AND schoolName IN (SELECT schoolName FROM " +
+            "                   (SELECT * FROM SchoolToCourse " +
+            "                    WHERE courseName IN(:courses)" +
+            "                    GROUP BY schoolName" +
+            "                    HAVING COUNT(*) = :numberOfCourses))" +
+            "AND schoolName LIKE :s")
+    List<SchoolEntity> getJuniorCollegesByNameAndCourses(String s, List<String> courses, int numberOfCourses, int entryScore);
+
+    @Query("SELECT DISTINCT * FROM SchoolEntity " +
+            "WHERE schoolName IN (SELECT schoolName FROM PrimarySchool) " +
+            "AND schoolName LIKE :s")
+    List<SchoolEntity> getPrimarySchoolsByName(String s);
+
+    @Query("SELECT DISTINCT * FROM SchoolEntity " +
+            "WHERE schoolName IN (SELECT schoolName FROM SecondarySchool" +
+            "                       WHERE " +
+            "PSLEIntegratedProgramScore > :entryScore " +
+            "OR PSLEExpressScore > :entryScore " +
+            "OR PSLEExpressAffiliationScore > :entryScore " +
+            "OR PSLENormalAcademicScore > :entryScore " +
+            "OR PSLENormalTechnicalScore > :entryScore ) " +
+            "AND schoolName LIKE :s")
+    List<SchoolEntity> getSecondarySchoolsByName(String s, int entryScore);
+
+    @Query("SELECT DISTINCT * FROM SchoolEntity " +
+            "WHERE schoolName IN (SELECT schoolName FROM PreUniversitySchool" +
+            "                       WHERE " +
+            "                       scienceStreamScore > :entryScore" +
+            "                       OR artsStreamScore > :entryScore) " +
+            "AND schoolName LIKE :s")
+    List<SchoolEntity> getJuniorCollegesByName(String s, int entryScore);
 }

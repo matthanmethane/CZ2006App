@@ -6,22 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".ui.SetAddressView"
     android:orientation="vertical">
-    <TextView
-        android:id="@+id/address_text"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/selection_top"
+        android:background="@drawable/round_edge">
+        <TextView
+            android:id="@+id/view_lvl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="@dimen/setting_text"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Address"
-        android:textColor="#000000"
-        android:textSize="@dimen/setting_text"/>
-    <EditText
-        android:id="@+id/set_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your address"/>
-    <Button
-        android:id="@+id/submit_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"/>
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
+        <EditText
+            android:id="@+id/set_address"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your postal code"
+            android:layout_margin="@dimen/margin_val"
+            />
+        <Button
+            android:id="@+id/submit_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/errorMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -19,8 +19,8 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 public interface SchoolToCourseDao {
 
     @Query("SELECT * FROM SchoolToCourse " +
-            "WHERE SchoolToCourse.school_name LIKE :schoolName")
-    List<SchoolToCourse> getCoursesOfASchool(String schoolName);
+            "WHERE SchoolToCourse.schoolName LIKE :schoolName")
+    List<SchoolToCourse> getSchoolCourses(String schoolName);
 
     /**
      * Insert school to course.
@@ -45,14 +45,14 @@ public interface SchoolToCourseDao {
     void deleteAll();
 
     @Query("SELECT DISTINCT courseName FROM SchoolToCourse " +
-            "WHERE SchoolToCourse.school_name IN (SELECT schoolName FROM PrimarySchool)")
+            "WHERE SchoolToCourse.schoolName IN (SELECT schoolName FROM PrimarySchool)")
     List<String> getPrimarySchoolCourses();
 
     @Query("SELECT DISTINCT courseName FROM SchoolToCourse " +
-            "WHERE SchoolToCourse.school_name IN (SELECT school_name FROM SecondarySchool)")
+            "WHERE SchoolToCourse.schoolName IN (SELECT schoolName FROM SecondarySchool)")
     List<String> getSecondarySchoolCourses();
 
     @Query("SELECT DISTINCT courseName FROM SchoolToCourse " +
-            "WHERE SchoolToCourse.school_name IN (SELECT school_name FROM PreUniversitySchool)")
+            "WHERE SchoolToCourse.schoolName IN (SELECT schoolName FROM PreUniversitySchool)")
     List<String> getJuniorCollegeCourses();
 }

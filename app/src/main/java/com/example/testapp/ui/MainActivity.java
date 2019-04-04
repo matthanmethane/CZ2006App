@@ -5,7 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.testapp.DataRepository;
+import com.example.testapp.EmpathyApp;
 import com.example.testapp.R;
+import com.example.testapp.db.entity.SchoolEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button searchBtn = findViewById(R.id.search);
         Button bookmarkBtn = findViewById(R.id.bookmark);
-        Button articlBtn = findViewById(R.id.article);
+        Button newsBtn = findViewById(R.id.news);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,19 +36,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(openSearch);
             }
         });
-        /*openBookmark to be implemented later
+
         bookmarkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openBookmark = new Intent(getApplicationContext(),#PUT_ACTIVITY_NAME);
-                startActivity();
+/*                DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
+                List<String> courses = new ArrayList<>();
+                courses.add("MALAY");
+                courses.add("COMPUTING");
+                //courses.add("MOBILE ROBOTICS");
+                courses.add("HIGHER TAMIL");
+                List<SchoolEntity> schools = dataRepository.findSchools("", new ArrayList<>(), courses, 2, -1);
+                for (SchoolEntity school : schools)
+                {
+                    System.out.println(school.getSchoolName());
+                }
+                System.out.println("##################3");
+
+                System.out.println("##################3");*/
+                Intent openBookmark = new Intent(getApplicationContext(), BookmarkView.class);
+                startActivity(openBookmark);
             }
-        });*/
-        articlBtn.setOnClickListener(new View.OnClickListener() {
+        });
+
+        newsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSetting = new Intent(getApplicationContext(), ArticleView.class);
-                startActivity(openSetting);
+                Intent openArticle = new Intent(getApplicationContext(), ArticleView.class);
+                startActivity(openArticle);
             }
         });
     }

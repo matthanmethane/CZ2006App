@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.SearchLevelView"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/primary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/level_size"
+        android:layout_weight="1"
+        android:text="Primary"
+        android:textStyle="italic"
+        android:textSize="@dimen/level_textsize"
+        android:background="@drawable/pri"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="5dip"
+        android:layout_margin="@dimen/margin_val"/>
+    <Button
+        android:id="@+id/secondary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/level_size"
+        android:layout_weight="1"
+        android:text="Secondary"
+        android:textStyle="italic"
+        android:textSize="@dimen/level_textsize"
+        android:background="@drawable/sec"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="5dip"
+        android:layout_margin="@dimen/margin_val"/>
+    <Button
+        android:id="@+id/jc"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/level_size"
+        android:text="Junior College"
+        android:textStyle="italic"
+        android:textSize="@dimen/level_textsize"
+        android:layout_weight="1"
+        android:background="@drawable/jc"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="5dip"
+        android:layout_margin="@dimen/margin_val"/>
+
+</LinearLayout>

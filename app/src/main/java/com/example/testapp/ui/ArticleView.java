@@ -1,6 +1,7 @@
 package com.example.testapp.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -23,10 +24,6 @@ public class ArticleView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_view);
-
-        // Network on main thread exception
-        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        //StrictMode.setThreadPolicy(policy);
 
         ArticleDao_Impl articleDao = new ArticleDao_Impl();
         try {
@@ -52,14 +49,17 @@ public class ArticleView extends AppCompatActivity {
         for (int i = 0; i < articleList.length; i ++) {
             LinearLayout linearLayout = new LinearLayout(this);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.setBackgroundResource(R.drawable.border);
 
             TextView title = new TextView(this);
             title.setText(articleList[i].getTitle());
-            title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
+            title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
+            title.setTextColor(Color.BLACK);
+            title.setPadding(20,20,20,20);
 
             TextView source = new TextView(this);
             source.setText(articleList[i].getSource().toString());
-            source.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+            source.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             source.setGravity(Gravity.RIGHT);
 
             // Link news url to view

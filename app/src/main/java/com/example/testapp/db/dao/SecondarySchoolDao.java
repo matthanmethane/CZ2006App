@@ -16,6 +16,11 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface SecondarySchoolDao {
     /**
+     * Get a secondary school by its name.
+     */
+    @Query("SELECT * FROM SecondarySchool WHERE schoolName LIKE :name")
+    SecondarySchool getSecondarySchool(String name);
+    /**
      * Insert secondary school.
      *
      * @param secondarySchool the secondary school

@@ -11,32 +11,41 @@ import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.testapp.AppExecutors;
 import com.example.testapp.R;
+import com.example.testapp.db.dao.BookmarkDao;
 import com.example.testapp.db.dao.PreUniversitySchoolDao;
 import com.example.testapp.db.dao.PrimarySchoolDao;
 import com.example.testapp.db.dao.SchoolDao;
 import com.example.testapp.db.dao.SchoolToCCADao;
 import com.example.testapp.db.dao.SchoolToCourseDao;
 import com.example.testapp.db.dao.SecondarySchoolDao;
+import com.example.testapp.db.entity.Bookmark;
 import com.example.testapp.db.entity.PreUniversitySchool;
 import com.example.testapp.db.entity.PrimarySchool;
 import com.example.testapp.db.entity.SchoolEntity;
 import com.example.testapp.db.entity.SchoolToCCA;
 import com.example.testapp.db.entity.SchoolToCourse;
 import com.example.testapp.db.entity.SecondarySchool;
+import com.example.testapp.db.utils.CCAFetcher;
+import com.example.testapp.db.utils.CourseFetcher;
+import com.example.testapp.db.utils.EntryScoreFetcher;
+import com.example.testapp.db.utils.Fetcher;
+import com.example.testapp.db.utils.GeneralInfoFetcher;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 /**
  * The abstraction over the actual database. Used to register the database and all views and entities associated with it,
@@ -46,9 +55,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
         {SchoolEntity.class, PreUniversitySchool.class,
                 PrimarySchool.class, SchoolToCCA.class,
                 SchoolToCourse.class, SecondarySchool.class,
-        }, version = 1)
+                Bookmark.class
+        }, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-    private static final String DATABASE_NAME = "EmPathy DB v2";
+    private static final String DATABASE_NAME = "EmPathy DB v5";
 
     // have a single reference to its object (singleton principle) to ensure data integrity.
     private static AppDatabase sInstance;
@@ -99,6 +109,11 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract SchoolToCourseDao SchoolToCourseModel();
 
     /**
+     * The collection which serves as an interface to Bookmark objects.
+     */
+    public abstract BookmarkDao BookmarkModel();
+
+    /**
      * Gets the single instance of the database.
      *
      * @param context   the context
@@ -106,10 +121,13 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return the instance
      */
     public static AppDatabase getInstance(final Context context, final AppExecutors executors) {
+        System.out.println("CallingFromGetInstanceInAppDatabase");
         if (sInstance == null) {
             synchronized (AppDatabase.class) {
                 if (sInstance == null) {
+                    System.out.println("BuildingInGetInstanceInAppDatabase");
                     sInstance = buildDatabase(context.getApplicationContext(), executors);
+                    executors.diskIO().execute(new SchoolDataUpdater(context.getApplicationContext(), sInstance));
                     sInstance.updateDatabaseCreated(context.getApplicationContext());
                 }
             }
@@ -124,18 +142,8 @@ public abstract class AppDatabase extends RoomDatabase {
      */
     private static AppDatabase buildDatabase(final Context appContext,
                                              final AppExecutors executors) {
-        // TODO: Prevent main thread queries from being run.
         return Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME)
                 .allowMainThreadQueries()
-                .addCallback(new Callback() {
-                    @Override
-                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-
-                        executors.diskIO().execute(new SchoolDataUpdater(appContext, AppDatabase.getInstance(appContext, executors)));
-
-                    }
-                })
                 .build();
     }
 
@@ -198,99 +206,60 @@ public abstract class AppDatabase extends RoomDatabase {
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(appContext);
 
-            // create the JSON request for CCAs offered by each school
-            JsonObjectRequest schoolToCCAJsonRequest = new JsonObjectRequest
-                    (Request.Method.GET, appContext.getString(R.string.CCAS_OFFERED_URL), null, new Response.Listener<JSONObject>() {
+            // Instantiate all requests
+            List<JsonObjectRequest> allRequests = new ArrayList<>();
 
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                // parse results as json array
-                                JSONArray allSchoolToCCA_AsJSONArray = getResultsAsJSONArray(response);
+            // create the JSON request for school general information.
+            // For this we should create a RequestFuture as well, so it blocks other requests before this is completed.
+            JSONObject response = null;
+            RequestFuture<JSONObject> future = RequestFuture.newFuture();
+            GeneralInfoFetcher generalFetcher = new GeneralInfoFetcher();
+            queue.add(generalFetcher.fetchData(database, future));
 
-                                // get each entry in results and store in database
-                                parseSchoolToCCAJSONArrayAndStoreInDatabase(database, allSchoolToCCA_AsJSONArray);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
+            // block the damn request
 
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            System.out.println("Rabak la bro: " + error.toString());
-                        }
-                    });
+            try {
 
-            // create the JSON request for courses offered by each school
-            JsonObjectRequest schoolToCourseJsonRequest = new JsonObjectRequest
-                    (Request.Method.GET, appContext.getString(R.string.SUBJECTS_OFFERED_URL), null, new Response.Listener<JSONObject>() {
+                response = future.get(10, TimeUnit.SECONDS); // Blocks for at most 10 seconds.
+                JSONArray results = generalFetcher.getResultsAsJSONArray(response);
+                generalFetcher.parseJSONArrayAndStoreInDatabase(database, results);
 
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                // parse results as json array
-                                JSONArray allSchoolToCourseAsJSONArray = getResultsAsJSONArray(response);
+                // okay lets continue
 
-                                // get each entry in results and store in database
-                                parseSchoolToCourseJSONArrayAndStoreInDatabase(database, allSchoolToCourseAsJSONArray);
+                // create the JSON request for CCAs offered by each school
+                Fetcher ccaFetcher = new CCAFetcher();
+                queue.add(ccaFetcher.fetchData(database));
 
-                                queue.add(schoolToCCAJsonRequest);
+                // create the JSON request for courses offered by each schoool
+                Fetcher courseFetcher = new CourseFetcher();
+                queue.add(courseFetcher.fetchData(database));
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                // create the JSON request for grades
+                EntryScoreFetcher entryScoreFetcher = new EntryScoreFetcher();
+                queue.add(entryScoreFetcher.fetchData(database));
 
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            System.out.println("Rabak la bro: " + error.toString());
-                        }
-                    });
+                // add geolocation of schools
+                List<SchoolEntity> allSchools = database.SchoolModel().loadAllSchoolsAsList();
+                for (SchoolEntity school : allSchools) {
+                    addGeocodingForSchool(school, queue);
+                }
 
-            // create the JSON request for school general information
-            JsonObjectRequest schoolGeneralInfoJsonRequest = new JsonObjectRequest
-                    (Request.Method.GET, appContext.getString(R.string.SCHOOL_GENERAL_INFORMATION_URL), null, new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                            try {
-                                // parse results as json array
-                                JSONArray allSchoolsAsJSONArray = getResultsAsJSONArray(response);
-
-                                parseSchoolJSONArrayAndStoreInDatabase(database, allSchoolsAsJSONArray);
-
-                                // notify that the database was created and it's ready to be used
-                                database.setDatabaseCreated();
-
-                                // add geolocation of schools
-                                List<SchoolEntity> allSchools = database.SchoolModel().loadAllSchoolsAsList();
-                                for (SchoolEntity school : allSchools) {
-                                    addGeocodingForSchool(school, queue);
-                                }
-                                queue.add(schoolToCourseJsonRequest);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            System.out.println("Rabak la bro: " + error.toString());
-                        }
-                    });
-
-            // Access the RequestQueue through your singleton class. Add each request into the queue.
-            queue.add(schoolGeneralInfoJsonRequest);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
 
+
+
+            // notify that the database was created and it's ready to be used
+            database.setDatabaseCreated();
         }
 
         // geocode school
@@ -333,117 +302,6 @@ public abstract class AppDatabase extends RoomDatabase {
                                 }
                             });
             queue.add(geoCodingRequest);
-        }
-
-        // this parsing format is specific to data.gov.sg's API
-        private JSONArray getResultsAsJSONArray(JSONObject rawJson) throws JSONException {
-            return rawJson.getJSONObject("result").getJSONArray("records");
-        }
-
-        private void parseSchoolJSONArrayAndStoreInDatabase(final AppDatabase database,
-                                                            JSONArray allSchoolsAsJSONArray) throws JSONException {
-            for (int i = 0; i < allSchoolsAsJSONArray.length(); i++) {
-
-                JSONObject school = allSchoolsAsJSONArray.getJSONObject(i);
-                String schoolName = school.getString("school_name");
-                String physicalAddress = school.getString("address");
-                int postalCode = school.getInt("postal_code");
-                String telephoneNumber1 = school.getString("telephone_no");
-                String telephoneNumber2 = school.getString("telephone_no_2");
-                String homePageAddress = school.getString("url_address");
-                String emailAddress = school.getString("email_address");
-                String mission = school.getString("missionstatement_desc");
-                String vision = school.getString("visionstatement_desc");
-                String schoolAutonomyType = school.getString("type_code");
-                String schoolGender = school.getString("nature_code");
-                int SAPSchool = school.getString("sap_ind").equalsIgnoreCase("Yes") ? 1 : 0;
-                int autonomousSchool = school.getString("autonomous_ind").equalsIgnoreCase("Yes") ? 1 : 0;
-                int integratedProgram = school.getString("ip_ind").equalsIgnoreCase("Yes") ? 1 : 0;
-                int giftedEducationProgramOffered = school.getString("gifted_ind").equalsIgnoreCase("Yes") ? 1 : 0;
-                String zoneCode = school.getString("zone_code");
-                String clusterCode = school.getString("cluster_code");
-
-
-                // for determining which level to put the school
-                String level = school.getString("mainlevel_code");
-
-                System.err.println("ParsingLevelCode: " + level);
-                System.err.println("EqualToPrimary: " + level.equalsIgnoreCase("primary"));
-
-                // for primary school
-                String sessionCode = school.getString("session_code");
-
-                // store school in database
-                SchoolEntity parsedSchoolEntity = new SchoolEntity(i + 1,
-                        schoolName,
-                        physicalAddress,
-                        postalCode,
-                        telephoneNumber1,
-                        telephoneNumber2,
-                        homePageAddress,
-                        emailAddress,
-                        mission,
-                        vision,
-                        schoolAutonomyType,
-                        schoolGender,
-                        SAPSchool,
-                        autonomousSchool,
-                        integratedProgram,
-                        giftedEducationProgramOffered,
-                        zoneCode,
-                        clusterCode);
-                database.SchoolModel().insertSchool(parsedSchoolEntity);
-
-                // check which other school table to insert data into
-                if (level.equalsIgnoreCase("primary")) {
-                    PrimarySchool parsedPrimarySchool = new PrimarySchool(schoolName, sessionCode);
-                    database.PrimarySchoolModel().insertPrimarySchool(parsedPrimarySchool);
-                } else if (level.equalsIgnoreCase("secondary")) {
-                    SecondarySchool parsedSecondarySchool = new SecondarySchool(schoolName, 0, 0, 0, 0, 0);
-                    database.SecondarySchoolModel().insertSecondarySchool(parsedSecondarySchool);
-                } else if (level.equalsIgnoreCase("junior college") || level.equalsIgnoreCase("CENTRALISED INSTITUTE")) {
-                    PreUniversitySchool parsedPreUniversitySchool = new PreUniversitySchool(schoolName, 10, 10);
-                    database.PreUniversitySchoolModel().insertPreUniversitySchool(parsedPreUniversitySchool);
-                } else if (level.equalsIgnoreCase("mixed level")) {
-                    // TODO: Load exceptional cases of mixed levels from another file
-                    if (schoolName.equalsIgnoreCase("MARIS STELLA HIGH SCHOOL") ||
-                            schoolName.equalsIgnoreCase("CHIJ ST. NICHOLAS GIRLS' SCHOOL") ||
-                            schoolName.equalsIgnoreCase("CATHOLIC HIGH SCHOOL")) {
-                        PrimarySchool parsedPrimarySchool = new PrimarySchool(schoolName, sessionCode);
-                        database.PrimarySchoolModel().insertPrimarySchool(parsedPrimarySchool);
-                    } else {
-                        PreUniversitySchool parsedPreUniversitySchool = new PreUniversitySchool(schoolName, 10, 10);
-                        database.PreUniversitySchoolModel().insertPreUniversitySchool(parsedPreUniversitySchool);
-                    }
-                    SecondarySchool parsedSecondarySchool = new SecondarySchool(schoolName, 0, 0, 0, 0, 0);
-                    database.SecondarySchoolModel().insertSecondarySchool(parsedSecondarySchool);
-                }
-            }
-        }
-
-        private void parseSchoolToCCAJSONArrayAndStoreInDatabase(final AppDatabase database,
-                                                                 JSONArray allSchoolToCCA_AsJSONArray) throws JSONException {
-            for (int i = 0; i < allSchoolToCCA_AsJSONArray.length(); i++) {
-                JSONObject record = allSchoolToCCA_AsJSONArray.getJSONObject(i);
-                String schoolName = record.getString("school_name");
-                String ccaGroup = record.getString("cca_grouping_desc");
-                String ccaName = record.getString("cca_generic_name");
-
-                SchoolToCCA parsedSchoolToCCA = new SchoolToCCA(schoolName, ccaName, ccaGroup);
-                database.SchoolToCCAModel().insertSchoolToCCA(parsedSchoolToCCA);
-            }
-        }
-
-        private void parseSchoolToCourseJSONArrayAndStoreInDatabase(final AppDatabase database,
-                                                                    JSONArray allSchoolToCourseAsJSONArray) throws JSONException {
-            for (int i = 0; i < allSchoolToCourseAsJSONArray.length(); i++) {
-                JSONObject record = allSchoolToCourseAsJSONArray.getJSONObject(i);
-                String schoolName = record.getString("school_name");
-                String courseName = record.getString("subject_desc");
-
-                SchoolToCourse parsedSchoolToCourse = new SchoolToCourse(schoolName, courseName);
-                database.SchoolToCourseModel().insertSchoolToCourse(parsedSchoolToCourse);
-            }
         }
     }
 }
