@@ -97,7 +97,7 @@ public class DataRepository {
     }
 
     /**
-     * Get a school entity by its name. Must be an exact match.
+     * Get a school by its name. Must be an exact match.
      *
      * @param schoolName
      * @return
