@@ -2,7 +2,6 @@
 
 <!-- TODO: create a RecyclerView for CCAs and courses in the schoolEntity -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -129,10 +128,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000000" />
+
             <TextView
                 android:id="@+id/full_textbox_school_session"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -188,27 +189,69 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="List of CCAs offered:"
-                android:textColor="#000000" />
+                android:orientation="horizontal">
 
-            <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="List of CCAs offered"
+                    android:textColor="#000000" />
+
+                <ToggleButton
+                    android:id="@+id/cca_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:textOff="View"
+                    android:textOn="Hide"
+                    android:textSize="10dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:background="@drawable/border_pri"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/full_textbox_cca"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"/>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="List of Courses offered:"
-                android:textColor="#000000" />
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="List of Courses offered:"
+                    android:textColor="#000000" />
+
+                <ToggleButton
+                    android:id="@+id/course_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:textOff="View"
+                    android:textOn="Hide"
+                    android:textSize="10dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:background="@drawable/border_pri"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/full_textbox_course"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"/>
+
         </LinearLayout>
     </ScrollView>
 
@@ -224,13 +267,15 @@
             android:id="@+id/schoolWebsiteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Link to Website" />
+            android:text="Link to Website"
+            style="@style/Widget.AppCompat.Button.Colored"/>
 
         <Button
             android:id="@+id/schoolOnMapButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show on Map" />
+            android:text="Show on Map"
+            style="@style/Widget.AppCompat.Button.Colored"/>
     </LinearLayout>
 
 
