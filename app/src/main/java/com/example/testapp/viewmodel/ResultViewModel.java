@@ -1,12 +1,11 @@
 package com.example.testapp.viewmodel;
 
-import android.app.Application;
-import android.content.Intent;
-
+import com.example.testapp.DataRepository;
 import com.example.testapp.db.entity.SchoolEntity;
 import com.example.testapp.filter.AlphabetFilter;
 import com.example.testapp.filter.DistanceFilter;
 import com.example.testapp.filter.Filter;
+import com.example.testapp.filter.ScoreFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +15,8 @@ import androidx.lifecycle.ViewModel;
 public class ResultViewModel extends ViewModel {
     private String userPostalCode;
     private int filterMode = 0;
+    private int schoolLevel;
+    private DataRepository repo;
     /*
     filter_mode =   0 is default alphabetically
                     1 is distance
@@ -24,6 +25,14 @@ public class ResultViewModel extends ViewModel {
 
     public void setFilterMode(int filter_mode) {
         this.filterMode = filter_mode;
+    }
+
+    public void setSchoolLevel(int schoolLevel) {
+        this.schoolLevel = schoolLevel;
+    }
+
+    public void setRepo(DataRepository repo) {
+        this.repo = repo;
     }
 
     public void setUserPostalCode(String userPostalCode) {
@@ -47,7 +56,8 @@ public class ResultViewModel extends ViewModel {
                 }
                 break;
             case 2:
-
+                Filter scoreFilter = new ScoreFilter(schools, schoolLevel, repo);
+                sorted = scoreFilter.getSorted();
                 break;
         }
         return sorted;
