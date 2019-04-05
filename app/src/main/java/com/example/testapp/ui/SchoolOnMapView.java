@@ -1,6 +1,7 @@
 package com.example.testapp.ui;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.testapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -10,20 +11,33 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
-public class SchoolOnMapView extends FragmentActivity implements OnMapReadyCallback {
+public class SchoolOnMapView extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private String KEY_SCHOOL_NAME;
     private Double schoolLatitude;
     private Double schoolLongitude;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_on_map_view);
+
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -31,6 +45,10 @@ public class SchoolOnMapView extends FragmentActivity implements OnMapReadyCallb
         KEY_SCHOOL_NAME = getIntent().getStringExtra("school_name");
         schoolLongitude = getIntent().getDoubleExtra("longitude", -34); // TODO: set a proper default value
         schoolLatitude = getIntent().getDoubleExtra("latitude", 151); // TODO: set a proper default value
+
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle(KEY_SCHOOL_NAME);
 
         System.out.println("School to map: " + KEY_SCHOOL_NAME);
     }

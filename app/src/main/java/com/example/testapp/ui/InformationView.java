@@ -3,9 +3,13 @@ package com.example.testapp.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.example.testapp.DataRepository;
 import com.example.testapp.EmpathyApp;
@@ -15,10 +19,20 @@ import com.example.testapp.db.entity.SchoolToCourse;
 
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class InformationView extends AppCompatActivity {
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,22 +56,23 @@ public class InformationView extends AppCompatActivity {
         String clusterCode = intent.getStringExtra("clusterCode");
         String sessionCode = intent.getStringExtra("sessionCode");
 
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle(name);
+
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         List<SchoolToCCA> ccas = dataRepository.getSchoolCCAs(name);
         String[] ccaList = new String[ccas.size()];
         for (int i = 0; i < ccas.size(); i ++) {
             ccaList[i] = ccas.get(i).ccaName;
         }
-        //String[] ccaArr =  new String[ccaList.length];
-       // ccaArr = ccas.toArray(ccaArr);
+
 
         List<SchoolToCourse> courses = dataRepository.getSchoolCourses(name);
         String[] courseList = new String[courses.size()];
         for (int i = 0; i < courses.size(); i ++) {
             courseList[i] = courses.get(i).courseName;
         }
-       // ArrayAdapter<String> adapterCca = new ArrayAdapter(this, android.R.layout.simple_list_item_1, ccaArr);
-        //ArrayAdapter<String> adapterCourse = new ArrayAdapter(this, android.R.layout.simple_list_item_1, courseList);
 
 
 
@@ -132,30 +147,54 @@ public class InformationView extends AppCompatActivity {
         clusterText.setText(clusterCode);
 
 
-        //ListView ccaText = findViewById(R.id.full_textbox_cca);
-        //ccaText.setAdapter(adapterCca);
 
-        TextView ccaText = findViewById(R.id.full_textbox_cca);
-        String ccaString = "";
+        LinearLayout ccaText = findViewById(R.id.full_textbox_cca);
+        /* String ccaString = "";
         if (ccaList.length > 1)
-            ccaString = ccaList[0];
+            ccaString = ccaList[0];*/
         for (int i = 1; i < ccaList.length; i ++) {
-            ccaString = ccaString.concat(", ");
-            ccaString = ccaString.concat(ccaList[i]);
+            TextView textView = new TextView(this);
+            textView.setText(ccaList[i]);
+            ccaText.addView(textView);
         }
-        ccaText.setText(ccaString);
 
-        //ListView courseText = findViewById(R.id.full_textbox_course);
-        //courseText.setAdapter(adapterCourse);
-        TextView courseText = findViewById(R.id.full_textbox_course);
-        String courseString = "";
+
+        LinearLayout courseText = findViewById(R.id.full_textbox_course);
+        /*String courseString = "";
         if (courseList.length > 1)
-            courseString = courseList[0];
+            courseString = courseList[0];*/
         for (int i = 1; i < courseList.length; i ++) {
-            courseString = courseString.concat(", ");
-            courseString = courseString.concat(courseList[i]);
+            TextView textView = new TextView(this);
+            textView.setText(courseList[i]);
+            courseText.addView(textView);
         }
-        courseText.setText(courseString);
+
+        ToggleButton ccaToggle = findViewById(R.id.cca_toggle);
+        ccaToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    ccaText.setVisibility(View.GONE);
+                }
+                else{
+                    ccaText.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        ToggleButton courseToggle = findViewById(R.id.course_toggle);
+        courseToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    courseText.setVisibility(View.GONE);
+                }
+                else{
+                    courseText.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
 
         // set a listener for the school website link button
         Button schoolWebsiteButton = findViewById(R.id.schoolWebsiteButton);
