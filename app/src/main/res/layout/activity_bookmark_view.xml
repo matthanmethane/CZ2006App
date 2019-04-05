@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <ToggleButton
-        android:id="@+id/compareButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:textOff="Compare"
-        android:textOn="Return" />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@id/compare_btn">
 
         <LinearLayout
             android:id="@+id/bookmarkList"
@@ -22,5 +14,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
-
-</LinearLayout>
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/compare_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:text="Press to compare"/>
+</RelativeLayout>
