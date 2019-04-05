@@ -2,8 +2,11 @@ package com.example.testapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,21 +22,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BookmarkView extends AppCompatActivity {
     int bookmarkCnt = 0;
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark_view);
 
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle("Bookmark");
+
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
 
         List<SchoolEntity> schools = getBookmarkedSchools();
-        displaySchool(schools);
+        List<SchoolEntity> compareSchools = displaySchool(schools);
 
+        Button compareBtn = findViewById(R.id.compare_btn);
+        compareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(bookmarkCnt==2){
+                    Intent openCompare = new Intent(getApplicationContext(),compareView.class);
+                    int i = 0;
+                    for(SchoolEntity school:compareSchools){
+                        openCompare.putExtra("name"+i, school.getSchoolName());
+                        openCompare.putExtra("address"+i, school.getPhysicalAddress());
+                        openCompare.putExtra("postalCode"+i, school.getPostalCode());
+                        openCompare.putExtra("telephoneNumber1"+i, school.getTelephoneNumber1());
+                        openCompare.putExtra("telephoneNumber2"+i, school.getTelephoneNumber2());
+                        openCompare.putExtra("vision"+i, school.getVision());
+                        openCompare.putExtra("mission"+i, school.getMission());
+                        openCompare.putExtra("autonomyType"+i, school.getSchoolAutonomyType());
+                        openCompare.putExtra("gender"+i, school.getSchoolGender());
+                        openCompare.putExtra("giftedEducation"+i, school.getGiftedEducationProgramOffered());
+                        openCompare.putExtra("integratedProgram"+i, school.getIntegratedProgram());
+                        openCompare.putExtra("sap"+i, school.getSAPSchool());
+                        openCompare.putExtra("zoneCode"+i, school.getZoneCode());
+                        openCompare.putExtra("clusterCode"+i, school.getClusterCode());
+                        i++;
+                    }
+                    startActivity(openCompare);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Please choose 2 schools",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
     }
 
@@ -54,10 +102,12 @@ public class BookmarkView extends AppCompatActivity {
         return schools;
     }
 
-    public void displaySchool(List<SchoolEntity> schools) {
+    public List<SchoolEntity> displaySchool(List<SchoolEntity> schools) {
 
         if (schools.size() <= 0)
-            return;
+            return null;
+
+        List<SchoolEntity> compareSchools = new ArrayList<SchoolEntity>();
 
         LinearLayout schoolList = findViewById(R.id.bookmarkList);
         if (schoolList.getChildCount() > 0)
@@ -141,26 +191,35 @@ public class BookmarkView extends AppCompatActivity {
                     DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
                     dataRepository.deleteBookmark(school.getSchoolName());
                     schoolList.removeView(box);
+                    if(bookmarkBtn.isChecked()){
+                        compareSchools.remove(school);
+                        bookmarkCnt--;
+                    }
                 }
             });
 
-            bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            bookmarkBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
-
-                    if (bookmarkBtn.isChecked())
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        compareSchools.add(school);
                         bookmarkCnt++;
-                    else
+                    }
+                    else {
+                        compareSchools.remove(school);
                         bookmarkCnt--;
-
+                    }
                     if (bookmarkCnt > 2) {
                         bookmarkCnt--;
-                        Toast.makeText(getApplicationContext(),"2 schools already selected",Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(),"2 schools already selected",Toast.LENGTH_LONG).show();
                         bookmarkBtn.setChecked(false);
                     }
-
                 }
             });
+
+
         }
+        return compareSchools;
+
     }
 }
