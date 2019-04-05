@@ -3,9 +3,11 @@ package com.example.testapp.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.testapp.DataRepository;
 import com.example.testapp.EmpathyApp;
@@ -20,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BookmarkView extends AppCompatActivity {
+    int bookmarkCnt = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,8 @@ public class BookmarkView extends AppCompatActivity {
 
         List<SchoolEntity> schools = getBookmarkedSchools();
         displaySchool(schools);
+
+
     }
 
     public List<SchoolEntity> getBookmarkedSchools() {
@@ -36,7 +42,7 @@ public class BookmarkView extends AppCompatActivity {
 
         final List<Bookmark> bookmarks = dataRepository.getBookmarks();
         List<SchoolEntity> schools = new ArrayList<>();
-        for (Bookmark b: bookmarks) {
+        for (Bookmark b : bookmarks) {
             SchoolEntity s;
             try {
                 s = dataRepository.getSchool(b.getSchoolName());
@@ -49,6 +55,7 @@ public class BookmarkView extends AppCompatActivity {
     }
 
     public void displaySchool(List<SchoolEntity> schools) {
+
         if (schools.size() <= 0)
             return;
 
@@ -57,13 +64,47 @@ public class BookmarkView extends AppCompatActivity {
             schoolList.removeAllViews();
 
         for (int i = 0; i < schools.size(); i++) {
-            LinearLayout box = new LinearLayout(this);
-            box.setOrientation(LinearLayout.HORIZONTAL);
+            RelativeLayout box = new RelativeLayout(this);
+
+            RelativeLayout.LayoutParams layoutparams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+            );
+            RelativeLayout.LayoutParams LayoutParamsButton = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            RelativeLayout.LayoutParams LayoutParamsText = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            RelativeLayout.LayoutParams LayoutParamsCheck = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+
+
             TextView schoolName = new TextView(this);
             schoolName.setText(schools.get(i).getSchoolName());
 
             SchoolEntity school = schools.get(i);
-            Button button = new Button(this);
+            CheckBox button = new CheckBox(this, null, android.R.attr.starStyle);
+            button.setChecked(true);
+
+            CheckBox bookmarkBtn = new CheckBox(this, null, android.R.attr.checkboxStyle);
+            bookmarkBtn.setId(i);
+
+            LayoutParamsButton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            LayoutParamsCheck.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            LayoutParamsText.addRule(RelativeLayout.CENTER_VERTICAL);
+            LayoutParamsText.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+            box.setLayoutParams(layoutparams);
+            bookmarkBtn.setLayoutParams(LayoutParamsCheck);
+            button.setLayoutParams(LayoutParamsButton);
+            schoolName.setLayoutParams(LayoutParamsText);
+
+            box.addView(bookmarkBtn);
             box.addView(schoolName);
             box.addView(button);
             schoolList.addView(box);
@@ -100,6 +141,24 @@ public class BookmarkView extends AppCompatActivity {
                     DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
                     dataRepository.deleteBookmark(school.getSchoolName());
                     schoolList.removeView(box);
+                }
+            });
+
+            bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (bookmarkBtn.isChecked())
+                        bookmarkCnt++;
+                    else
+                        bookmarkCnt--;
+
+                    if (bookmarkCnt > 2) {
+                        bookmarkCnt--;
+                        Toast.makeText(getApplicationContext(),"2 schools already selected",Toast.LENGTH_LONG);
+                        bookmarkBtn.setChecked(false);
+                    }
+
                 }
             });
         }
