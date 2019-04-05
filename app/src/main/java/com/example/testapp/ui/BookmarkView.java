@@ -55,24 +55,45 @@ public class BookmarkView extends AppCompatActivity {
         compareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(bookmarkCnt==2){
+                    // dirty way to check if two schools are of the same level
+                    try {
+                        dataRepository.getPrimarySchool(compareSchools.get(0).getSchoolName());
+                        dataRepository.getPrimarySchool(compareSchools.get(1).getSchoolName());
+                    } catch (Exception e) {
+                        try {
+                            dataRepository.getSecondarySchool(compareSchools.get(0).getSchoolName());
+                            dataRepository.getSecondarySchool(compareSchools.get(1).getSchoolName());
+                        } catch (Exception e1) {
+                            try {
+                                dataRepository.getPreUniversitySchool(compareSchools.get(0).getSchoolName());
+                                dataRepository.getPreUniversitySchool(compareSchools.get(1).getSchoolName());
+                            } catch (Exception e2) {
+                                Toast.makeText(getApplicationContext(),"Please choose 2 schools of the same school level",Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        }
+                    }
+
                     Intent openCompare = new Intent(getApplicationContext(),compareView.class);
                     int i = 0;
                     for(SchoolEntity school:compareSchools){
-                        openCompare.putExtra("name"+i, school.getSchoolName());
-                        openCompare.putExtra("address"+i, school.getPhysicalAddress());
-                        openCompare.putExtra("postalCode"+i, school.getPostalCode());
-                        openCompare.putExtra("telephoneNumber1"+i, school.getTelephoneNumber1());
-                        openCompare.putExtra("telephoneNumber2"+i, school.getTelephoneNumber2());
-                        openCompare.putExtra("vision"+i, school.getVision());
-                        openCompare.putExtra("mission"+i, school.getMission());
-                        openCompare.putExtra("autonomyType"+i, school.getSchoolAutonomyType());
-                        openCompare.putExtra("gender"+i, school.getSchoolGender());
-                        openCompare.putExtra("giftedEducation"+i, school.getGiftedEducationProgramOffered());
-                        openCompare.putExtra("integratedProgram"+i, school.getIntegratedProgram());
-                        openCompare.putExtra("sap"+i, school.getSAPSchool());
-                        openCompare.putExtra("zoneCode"+i, school.getZoneCode());
-                        openCompare.putExtra("clusterCode"+i, school.getClusterCode());
+
+                        openCompare.putExtra("name".concat(Integer.toString(i)), school.getSchoolName());
+                        openCompare.putExtra("address".concat(Integer.toString(i)), school.getPhysicalAddress());
+                        openCompare.putExtra("postalCode".concat(Integer.toString(i)), school.getPostalCode());
+                        openCompare.putExtra("telephoneNumber1".concat(Integer.toString(i)), school.getTelephoneNumber1());
+                        openCompare.putExtra("telephoneNumber2".concat(Integer.toString(i)), school.getTelephoneNumber2());
+                        openCompare.putExtra("vision".concat(Integer.toString(i)), school.getVision());
+                        openCompare.putExtra("mission".concat(Integer.toString(i)), school.getMission());
+                        openCompare.putExtra("autonomyType".concat(Integer.toString(i)), school.getSchoolAutonomyType());
+                        openCompare.putExtra("gender".concat(Integer.toString(i)), school.getSchoolGender());
+                        openCompare.putExtra("giftedEducation".concat(Integer.toString(i)), school.getGiftedEducationProgramOffered());
+                        openCompare.putExtra("integratedProgram".concat(Integer.toString(i)), school.getIntegratedProgram());
+                        openCompare.putExtra("sap".concat(Integer.toString(i)), school.getSAPSchool());
+                        openCompare.putExtra("zoneCode".concat(Integer.toString(i)), school.getZoneCode());
+                        openCompare.putExtra("clusterCode".concat(Integer.toString(i)), school.getClusterCode());
                         i++;
                     }
                     startActivity(openCompare);
