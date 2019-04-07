@@ -19,6 +19,9 @@ import java.util.List;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Choose subjects view.
+ */
 public class SubjectView extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

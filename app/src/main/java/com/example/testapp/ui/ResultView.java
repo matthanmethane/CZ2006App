@@ -27,6 +27,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+/**
+ * Result view.
+ * Display the schools that matches the search result inserted by the user.
+ */
 public class ResultView extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -118,6 +122,10 @@ public class ResultView extends AppCompatActivity {
         });
     }
 
+    /**
+     * Given the ordered list of schools, the schools are display onto the UI.
+     * @param schools list of schools
+     */
     public void displaySchool(List<SchoolEntity> schools) {
         Intent intent = getIntent();
         int schoolLevel = intent.getIntExtra("schoolLevel",-1);

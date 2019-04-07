@@ -20,6 +20,10 @@ import java.util.List;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Compare view.
+ * Display 2 schools' information side-by-side for comparision.
+ */
 public class compareView extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

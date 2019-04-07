@@ -12,6 +12,9 @@ import java.util.List;
 
 import androidx.lifecycle.ViewModel;
 
+/**
+ * Class to retrieve sorted schools for ResultView
+ */
 public class ResultViewModel extends ViewModel {
     private String userPostalCode;
     private int filterMode = 0;
@@ -23,22 +26,43 @@ public class ResultViewModel extends ViewModel {
                     2 is cut-off points
      */
 
+    /**
+     * Set the type of filters. 0 for default (alphabetical order), 1 for distance, 2 for entryscore.
+     * @param filter_mode
+     */
     public void setFilterMode(int filter_mode) {
         this.filterMode = filter_mode;
     }
 
+    /**
+     * Set school level.
+     * @param schoolLevel school level
+     */
     public void setSchoolLevel(int schoolLevel) {
         this.schoolLevel = schoolLevel;
     }
 
+    /**
+     * Set data respository.
+     * @param repo data respository
+     */
     public void setRepo(DataRepository repo) {
         this.repo = repo;
     }
 
+    /**
+     * Set user's postal code.
+     * @param userPostalCode postal code
+     */
     public void setUserPostalCode(String userPostalCode) {
         this.userPostalCode = userPostalCode;
     }
 
+    /**
+     * Return sorted schools.
+     * @param schools list of schools
+     * @return list of sorted schools
+     */
     public List<SchoolEntity> sortSchools(List<SchoolEntity> schools) {
         List<SchoolEntity> sorted = new ArrayList<>();
         switch (filterMode) {

@@ -25,6 +25,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Bookmark view.
+ */
 public class BookmarkView extends AppCompatActivity {
     int bookmarkCnt = 0;
     @Override
@@ -85,6 +88,10 @@ public class BookmarkView extends AppCompatActivity {
 
     }
 
+    /**
+     * Retrieve user's bookmarks.
+     * @return list of bookmark schools
+     */
     public List<SchoolEntity> getBookmarkedSchools() {
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
 
@@ -102,6 +109,10 @@ public class BookmarkView extends AppCompatActivity {
         return schools;
     }
 
+    /**
+     * Display bookmarks.
+     * @param schools bookmarked schools
+     */
     public List<SchoolEntity> displaySchool(List<SchoolEntity> schools) {
 
         if (schools.size() <= 0)

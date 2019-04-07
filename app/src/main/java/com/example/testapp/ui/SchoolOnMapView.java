@@ -14,6 +14,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Single school on a map view.
+ */
 public class SchoolOnMapView extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

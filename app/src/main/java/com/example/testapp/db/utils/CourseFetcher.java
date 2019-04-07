@@ -11,7 +11,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Class that fetches courses of schools.
+ */
 public class CourseFetcher implements Fetcher {
+    /**
+     * Fetch and store information into the database.
+     * @param database
+     * @return json object request
+     */
     @Override
     public JsonObjectRequest fetchData(AppDatabase database) {
          // create the JSON request for courses offered by each school

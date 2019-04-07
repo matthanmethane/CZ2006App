@@ -22,6 +22,9 @@ import java.util.List;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Information view.
+ */
 public class InformationView extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

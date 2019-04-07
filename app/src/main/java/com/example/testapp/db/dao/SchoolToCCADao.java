@@ -50,21 +50,30 @@ public interface SchoolToCCADao {
     @Query("DELETE FROM SchoolToCCA")
     void deleteAll();
 
+    /**
+     * Get all primary school CCAs.
+     * @return list of primary school CCAs
+     */
     @Query("SELECT DISTINCT ccaName FROM SchoolToCCA " +
             "WHERE schoolName IN " +
             "(SELECT schoolName FROM PrimarySchool)")
     List<String> getPrimarySchoolCCAs();
 
+    /**
+     * Get all secondary school CCAs.
+     * @return list of secondary school CCAs
+     */
     @Query("SELECT DISTINCT ccaName FROM SchoolToCCA " +
             "WHERE schoolName IN " +
             "(SELECT schoolName FROM SecondarySchool)")
     List<String> getSecondarySchoolCCAs();
 
+    /**
+     * Get all junior college CCAs.
+     * @return list of junior college CCAs
+     */
     @Query("SELECT DISTINCT ccaName FROM SchoolToCCA " +
             "WHERE schoolName IN " +
             "(SELECT schoolName FROM PreUniversitySchool)")
     List<String> getJuniorCollegeCCAs();
-
-    @Query("SELECT DISTINCT ccaName FROM SchoolToCCA")
-    List<String> getAllCCAs();
 }
