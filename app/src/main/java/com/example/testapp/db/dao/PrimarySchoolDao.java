@@ -16,6 +16,12 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface PrimarySchoolDao {
     /**
+     * Get a primary school by its name.
+     */
+    @Query("SELECT * FROM PrimarySchool WHERE schoolName LIKE :name")
+    PrimarySchool getPrimarySchool(String name);
+
+    /**
      * Insert primary school.
      *
      * @param primarySchool the primary school

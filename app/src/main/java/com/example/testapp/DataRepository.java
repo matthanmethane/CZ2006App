@@ -3,6 +3,7 @@ package com.example.testapp;
 import com.example.testapp.db.AppDatabase;
 import com.example.testapp.db.entity.Bookmark;
 import com.example.testapp.db.entity.PreUniversitySchool;
+import com.example.testapp.db.entity.PrimarySchool;
 import com.example.testapp.db.entity.SchoolEntity;
 import com.example.testapp.db.entity.SchoolToCCA;
 import com.example.testapp.db.entity.SchoolToCourse;
@@ -96,7 +97,7 @@ public class DataRepository {
     }
 
     /**
-     * Get a school entity by its name. Must be an exact match.
+     * Get a school by its name. Must be an exact match.
      *
      * @param schoolName
      * @return
@@ -106,6 +107,19 @@ public class DataRepository {
 
         if (result == null) {
             throw new Exception("Cannot find a school with that name");
+        } else {
+            return result;
+        }
+    }
+
+    /**
+     * Get a primary school by its name.
+     */
+    public PrimarySchool getPrimarySchool(String schoolName) throws Exception {
+        PrimarySchool result = mDatabase.PrimarySchoolModel().getPrimarySchool(schoolName);
+
+        if (result == null) {
+            throw new Exception("Cannot find a PrimarySchool with that name");
         } else {
             return result;
         }
