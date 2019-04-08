@@ -19,6 +19,9 @@ import java.util.List;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * View that enables user to choose that CCA(s) the school must have.
+ */
 public class CcaView extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

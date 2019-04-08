@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -27,6 +28,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+/**
+ * Result view.
+ * Display the schools that matches the search result inserted by the user.
+ */
 public class ResultView extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -53,26 +58,17 @@ public class ResultView extends AppCompatActivity {
         String[] courses = intent.getStringArrayExtra("courses");
         String[] ccas = intent.getStringArrayExtra("ccas");
 
-        // Convert courses and ccas to array list
-        List<String> selectedCourses = new ArrayList<>();
-        List<String> selectedCcas = new ArrayList<>();
-        if (courses.length != 0) {
-            selectedCourses = Arrays.asList(courses);
-        }
-        if (ccas.length != 0) {
-            selectedCcas = Arrays.asList(ccas);
-        }
-
         // Display school results
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
-        final List<SchoolEntity> schools = dataRepository.findSchools("",selectedCcas,selectedCourses,schoolLevel,-1);
 
         // Initialize viewModel and sort schools
         final ResultViewModel viewModel = ViewModelProviders.of(this).get(ResultViewModel.class);
+        viewModel.setCcas(ccas);
+        viewModel.setCourses(courses);
         viewModel.setSchoolLevel(schoolLevel);
         viewModel.setRepo(((EmpathyApp)this.getApplication()).getRepository());
 
-        List<SchoolEntity> sorted = viewModel.sortSchools(schools);
+        List<SchoolEntity> sorted = viewModel.sortSchools();
         displaySchool(sorted);
 
         // Filter button
@@ -94,7 +90,7 @@ public class ResultView extends AppCompatActivity {
                         viewModel.setFilterMode(2);
                         break;
                 }
-                sorted = viewModel.sortSchools(schools);
+                sorted = viewModel.sortSchools();
                 displaySchool(sorted);
 
             }
@@ -116,8 +112,25 @@ public class ResultView extends AppCompatActivity {
                 startActivity(openMap);
             }
         });
+
+        // Search by school name
+        Button schoolNameButton = findViewById(R.id.schoolNameButton);
+        schoolNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                EditText schoolNameInput = findViewById(R.id.schoolNameInput);
+                String name = schoolNameInput.getText().toString();
+
+                viewModel.setSchoolName(name);
+                displaySchool(viewModel.sortSchools());
+            }
+        });
     }
 
+    /**
+     * Given the ordered list of schools, the schools are display onto the UI.
+     * @param schools list of schools
+     */
     public void displaySchool(List<SchoolEntity> schools) {
         Intent intent = getIntent();
         int schoolLevel = intent.getIntExtra("schoolLevel",-1);
@@ -143,7 +156,7 @@ public class ResultView extends AppCompatActivity {
             );
             LayoutParamsButton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             LayoutParamsText.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            box.setPadding(20,0,20,0);
+            box.setPadding(30,30,30,30);
             box.setLayoutParams(layoutparams);
 
             //box.setOrientation(LinearLayout.HORIZONTAL);

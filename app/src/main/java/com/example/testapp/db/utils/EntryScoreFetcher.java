@@ -12,7 +12,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Class that fetches entry scores of schools.
+ */
 public class EntryScoreFetcher {
+    /**
+     * Fetch and store information into the database.
+     * @param database
+     * @return json object request
+     */
     public JsonArrayRequest fetchData(AppDatabase database) {
         return new JsonArrayRequest
                 (Request.Method.GET,

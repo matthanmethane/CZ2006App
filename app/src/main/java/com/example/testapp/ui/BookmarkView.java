@@ -25,6 +25,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Bookmark view.
+ */
 public class BookmarkView extends AppCompatActivity {
     int bookmarkCnt = 0;
     @Override
@@ -57,23 +60,25 @@ public class BookmarkView extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(bookmarkCnt==2){
-                    // dirty way to check if two schools are of the same level
-                    try {
-                        dataRepository.getPrimarySchool(compareSchools.get(0).getSchoolName());
-                        dataRepository.getPrimarySchool(compareSchools.get(1).getSchoolName());
-                    } catch (Exception e) {
-                        try {
-                            dataRepository.getSecondarySchool(compareSchools.get(0).getSchoolName());
-                            dataRepository.getSecondarySchool(compareSchools.get(1).getSchoolName());
-                        } catch (Exception e1) {
-                            try {
-                                dataRepository.getPreUniversitySchool(compareSchools.get(0).getSchoolName());
-                                dataRepository.getPreUniversitySchool(compareSchools.get(1).getSchoolName());
-                            } catch (Exception e2) {
-                                Toast.makeText(getApplicationContext(),"Please choose 2 schools of the same school level",Toast.LENGTH_LONG).show();
-                                return;
-                            }
-                        }
+                    // Check whether the schools are of the same type
+                    boolean flag = false;
+
+                    if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 1,-1).size() == 1) {
+                        if (dataRepository.findSchools(compareSchools.get(1).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 1,-1).size() == 1)
+                            flag = true;
+                    }
+                    else if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 2,-1).size() == 1) {
+                        if (dataRepository.findSchools(compareSchools.get(1).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 2,-1).size() == 1)
+                            flag = true;
+                    }
+                    else if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 3,-1).size() == 1) {
+                        if (dataRepository.findSchools(compareSchools.get(1).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 3,-1).size() == 1)
+                            flag = true;
+                    }
+
+                    if (flag == false) {
+                        Toast.makeText(getApplicationContext(),"Please choose 2 schools of the same education level",Toast.LENGTH_LONG).show();
+                        return;
                     }
 
                     Intent openCompare = new Intent(getApplicationContext(),compareView.class);
@@ -106,6 +111,10 @@ public class BookmarkView extends AppCompatActivity {
 
     }
 
+    /**
+     * Retrieve user's bookmarks.
+     * @return list of bookmark schools
+     */
     public List<SchoolEntity> getBookmarkedSchools() {
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
 
@@ -123,6 +132,10 @@ public class BookmarkView extends AppCompatActivity {
         return schools;
     }
 
+    /**
+     * Display bookmarks.
+     * @param schools bookmarked schools
+     */
     public List<SchoolEntity> displaySchool(List<SchoolEntity> schools) {
 
         if (schools.size() <= 0)

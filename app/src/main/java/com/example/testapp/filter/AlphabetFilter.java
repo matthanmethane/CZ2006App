@@ -4,11 +4,17 @@ import com.example.testapp.db.entity.SchoolEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class to sort schools in alphabetical order.
+ */
 public class AlphabetFilter implements Filter{
     private List<SchoolEntity> beforeSort;
     private List<SchoolEntity> afterSort;
 
+    /**
+     * Class constructor.
+     * @param beforeSort list of schools before sorted
+     */
     public AlphabetFilter(List<SchoolEntity> beforeSort) {
         this.beforeSort = beforeSort;
     }
@@ -18,6 +24,10 @@ public class AlphabetFilter implements Filter{
         return afterSort;
     }
 
+    /**
+     * Get list of sorted schools in alphabetical order.
+     * @return list of sorted schools
+     */
     private void alphabetSort() {
         List<SchoolEntity> sorted = new ArrayList<SchoolEntity>();
         for (int i = 0; i < beforeSort.size(); i++) {

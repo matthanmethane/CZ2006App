@@ -1,6 +1,7 @@
 package com.example.testapp.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,10 @@ import java.util.List;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Compare view.
+ * Display 2 schools' information side-by-side for comparision.
+ */
 public class compareView extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -74,8 +79,10 @@ public class compareView extends AppCompatActivity {
         }
         TextView name1 = findViewById(R.id.name1);
         name1.setText(name[0]);
+        name1.setTextColor(Color.BLACK);
         TextView name2 = findViewById(R.id.name2);
         name2.setText(name[1]);
+        name2.setTextColor(Color.BLACK);
 
         TextView address1 = findViewById(R.id.address1);
         address1.setText(address[0]);
@@ -96,17 +103,7 @@ public class compareView extends AppCompatActivity {
         tele21.setText(telephoneNumber2[0]);
         TextView tele22 = findViewById(R.id.telephoneNumber22);
         tele22.setText(telephoneNumber2[1]);
-        /*Todo: Format, can remove? Comparing vision and mission might be unnecessary
-        TextView vision1 = findViewById(R.id.vision1);
-        vision1.setText(vision[0]);
-        TextView vision2 = findViewById(R.id.vision2);
-        vision2.setText(vision[1]);
 
-        TextView mission1 = findViewById(R.id.mission1);
-        mission1.setText(mission[0]);
-        TextView mission2 = findViewById(R.id.mission2);
-        mission2.setText(mission[1]);
-        */
         TextView autonomyType1 = findViewById(R.id.autonomyType1);
         if (autonomyType[0] == 0) {
             autonomyType1.setText("YES");
@@ -248,9 +245,11 @@ public class compareView extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(!isChecked){
                     cca1.setVisibility(View.GONE);
+                    cca2.setVisibility(View.GONE);
                 }
                 else{
                     cca1.setVisibility(View.VISIBLE);
+                    cca2.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -261,36 +260,14 @@ public class compareView extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(!isChecked){
                     course1.setVisibility(View.GONE);
-                }
-                else{
-                    course1.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        ToggleButton ccaToggle2= findViewById(R.id.cca2_toggle);
-        ccaToggle2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked){
-                    cca2.setVisibility(View.GONE);
-                }
-                else{
-                    cca2.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        ToggleButton courseToggle2 = findViewById(R.id.course2_toggle);
-        courseToggle2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked){
                     course2.setVisibility(View.GONE);
                 }
                 else{
+                    course1.setVisibility(View.VISIBLE);
                     course2.setVisibility(View.VISIBLE);
                 }
             }
         });
+
     }
 }

@@ -23,6 +23,9 @@ import java.util.List;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Map view of search results.
+ */
 public class ResultMapView extends AppCompatActivity implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -99,7 +102,10 @@ public class ResultMapView extends AppCompatActivity implements GoogleMap.OnInfo
         mMap.setOnInfoWindowClickListener(this);
     }
 
-
+    /**
+     * Display the school's detailed information when information window of the school's marker is selected.
+     * @param marker school's marker
+     */
     @Override
     public void onInfoWindowClick(Marker marker) {
         for (int i = 0; i < schools.size(); i ++) {

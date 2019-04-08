@@ -10,18 +10,31 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Class to sort schools based on scores.
+ */
 public class ScoreFilter implements Filter{
     final int level;
     private DataRepository repo;
     private List<SchoolEntity> beforeSort;
     private List<SchoolEntity> afterSort = new ArrayList<>();
 
+    /**
+     * Class constructor.
+     * @param beforeSort school list before sorting
+     * @param level school level
+     * @param repo database
+     */
     public ScoreFilter(List<SchoolEntity> beforeSort, int level, DataRepository repo) {
         this.repo = repo;
         this.beforeSort = beforeSort;
         this.level = level;
     }
 
+    /**
+     * Get sorted school list based on scores.
+     * @return sorted school list
+     */
     public List<SchoolEntity> getSorted() {
         scoreSort();
         return afterSort;

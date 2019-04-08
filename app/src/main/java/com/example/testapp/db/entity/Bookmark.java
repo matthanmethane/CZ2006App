@@ -32,6 +32,10 @@ public class Bookmark {
         this.schoolName = schoolName;
     }
 
+    /**
+     * Get school name from bookmark.
+     * @return school name
+     */
     @NonNull
     public String getSchoolName() {
         return schoolName;

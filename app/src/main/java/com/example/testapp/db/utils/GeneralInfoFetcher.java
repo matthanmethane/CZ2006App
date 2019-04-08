@@ -15,8 +15,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Class that fetches general information of schools.
+ */
 public class GeneralInfoFetcher {
-
+    /**
+     * Fetch and store information into the database.
+     * @param database
+     * @return json object request
+     */
     public JsonObjectRequest fetchData(AppDatabase database, RequestFuture<JSONObject> future) {
 
 //        Response.Listener GeneralInfoFetcherResponseListener = new Response.Listener<JSONObject>() {

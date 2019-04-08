@@ -13,6 +13,9 @@ import com.example.testapp.R;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Set user's address view.
+ */
 public class SetAddressView extends AppCompatActivity {
 
     @Override
