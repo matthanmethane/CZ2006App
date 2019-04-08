@@ -15,7 +15,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Primary School"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:textSize="25dp"/>
             <LinearLayout
                 android:id="@+id/bookmarkListPri"
                 android:layout_width="match_parent"
@@ -25,7 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Secondary School"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:textSize="25dp"/>
             <LinearLayout
                 android:id="@+id/bookmarkListSec"
                 android:layout_width="match_parent"
@@ -35,7 +39,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Junior College"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:textSize="25dp"/>
             <LinearLayout
                 android:id="@+id/bookmarkListJc"
                 android:layout_width="match_parent"

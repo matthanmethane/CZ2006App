@@ -200,6 +200,7 @@ public class BookmarkView extends AppCompatActivity {
             box.addView(bookmarkBtn);
             box.addView(schoolName);
             box.addView(button);
+            box.setPadding(30,30,30,30);
 
             if(dataRepository.findSchools(schools.get(i).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 1,-1).size() == 1)
                 schoolListPri.addView(box);

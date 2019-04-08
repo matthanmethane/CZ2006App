@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bookmarkBtn"
+        android:title=""
+        android:checkable="true"
+        app:showAsAction="always"
+        android:icon="@android:drawable/btn_star_big_off" />
+</menu>

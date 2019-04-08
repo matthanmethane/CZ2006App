@@ -3,6 +3,7 @@ package com.example.testapp.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,11 +27,30 @@ import androidx.appcompat.app.AppCompatActivity;
  * Information view.
  */
 public class InformationView extends AppCompatActivity {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.bookmarkBtn:
+                //Enter the function
+                if(item.isChecked()){
+                    //Todo:Remove from the bookmark
+                    item.setChecked(false);
+                    item.setIcon(android.R.drawable.btn_star_big_off);
+                }
+                else{
+                    //Todo: Add to the bookmark
+                    item.setChecked(true);
+                    item.setIcon(android.R.drawable.btn_star_big_on);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -40,6 +60,14 @@ public class InformationView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information_view);
+
+        MenuItem item = (MenuItem) findViewById(R.id.bookmarkBtn);
+
+        //Todo: Initializ the bookmark state
+        //If it is bookmarked, add item.setChecked(true);item.setIcon(android.R.drawable.btn_star_big_on);
+        //If it is not bookmakred, item.setChecked(false);add item.setIcon(android.R.drawable.btn_star_big_off);
+
+
 
         Intent intent = getIntent();
         int schoolLevel = intent.getIntExtra("schoolLevel",-1);
