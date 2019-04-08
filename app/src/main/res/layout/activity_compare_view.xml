@@ -22,13 +22,15 @@
                     android:id="@+id/name1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/name2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textStyle="bold"/>
             </TableRow>
 
             <TableRow>
@@ -178,30 +180,6 @@
             <TableRow>
 
                 <TextView
-                    android:id="@+id/title_school_session"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000000" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/session1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/session2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Gifted education program offered:"
@@ -325,7 +303,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:text="List of CCAs offered"
                     android:textColor="#000000" />
             </TableRow>
@@ -370,6 +347,7 @@
                         android:layout_height="30dp"
                         android:background="@drawable/border_pri"
                         android:gravity="center"
+                        android:visibility="invisible"
                         android:textOff="View"
                         android:textOn="Hide"
                         android:textSize="10dp" />
@@ -388,7 +366,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:text="List of Courses offered:"
                     android:textColor="#000000" />
             </TableRow>
@@ -433,6 +410,7 @@
                         android:layout_height="30dp"
                         android:background="@drawable/border_pri"
                         android:gravity="center"
+                        android:visibility="invisible"
                         android:textOff="View"
                         android:textOn="Hide"
                         android:textSize="10dp" />

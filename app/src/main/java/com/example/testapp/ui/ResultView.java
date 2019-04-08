@@ -140,7 +140,7 @@ public class ResultView extends AppCompatActivity {
             );
             LayoutParamsButton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             LayoutParamsText.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            box.setPadding(20,0,20,0);
+            box.setPadding(30,30,30,30);
             box.setLayoutParams(layoutparams);
 
             //box.setOrientation(LinearLayout.HORIZONTAL);
