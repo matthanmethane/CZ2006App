@@ -11,10 +11,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * Class to sort schools based on user distance.
@@ -123,7 +129,7 @@ public class DistanceFilter extends AsyncTask<Void, Void, List<SchoolEntity>> im
 
     private long getDistance(double lat, double lng) {
         // API expires every 3 days
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI1NTcsInVzZXJfaWQiOjI1NTcsImVtYWlsIjoiamVzc2x5bi5jaGV3LnMueUBnbWFpbC5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE1NTQ2NTkyODMsImV4cCI6MTU1NTA5MTI4MywibmJmIjoxNTU0NjU5MjgzLCJqdGkiOiI1OGE2MmQ4ZDNjMGRjYmEwZTg0NmNlZmE3MzcwZWVlZSJ9.tXWjnCJ4E78eo3CPAKc2XKvWBdy8sACjtnmSEK3tT-0";
+        String token = getToken();
         String distanceAPI = "https://developers.onemap.sg/privateapi/routingsvc/route?start={start}&end={end}&routeType=drive&token={token}";
         String start = latitude + "," + longitude;
         String end = Double.toString(lat) + "," + Double.toString(lng);
@@ -149,7 +155,35 @@ public class DistanceFilter extends AsyncTask<Void, Void, List<SchoolEntity>> im
     }
 
     private String getToken() {
-        return "";
+        String token = "yJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI1NTcsInVzZXJfaWQiOjI1NTcsImVtYWlsIjoiamVzc2x5bi5jaGV3LnMueUBnbWFpbC5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE1NTQ2NTkyODMsImV4cCI6MTU1NTA5MTI4MywibmJmIjoxNTU0NjU5MjgzLCJqdGkiOiI1OGE2MmQ4ZDNjMGRjYmEwZTg0NmNlZmE3MzcwZWVlZSJ9.tXWjnCJ4E78eo3CPAKc2XKvWBdy8sACjtnmSEK3tT-0";
+        try {
+            URL url = new URL("https://developers.onemap.sg/privateapi/auth/post/getToken");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            Map<String,String> arguments = new HashMap<>();
+            arguments.put("email", "jesslyn.chew.s.y@gmail.com");
+            arguments.put("password", "zAch1pam"); // This is a fake password obviously
+            StringJoiner sj = new StringJoiner("&");
+            for(Map.Entry<String,String> entry : arguments.entrySet())
+                sj.add(URLEncoder.encode(entry.getKey(), "UTF-8") + "="
+                        + URLEncoder.encode(entry.getValue(), "UTF-8"));
+            byte[] out = sj.toString().getBytes(StandardCharsets.UTF_8);
+            int length = out.length;
+
+
+            conn.setFixedLengthStreamingMode(length);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            conn.connect();
+            // read the response
+            OutputStream o = conn.getOutputStream();
+            System.out.println("###############");
+            System.out.println(o);
+        } catch (Exception e) {
+            System.out.println("Exception: " +e.getMessage());
+        }
+        return token;
     }
 
 }

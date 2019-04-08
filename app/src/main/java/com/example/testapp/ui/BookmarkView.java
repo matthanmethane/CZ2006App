@@ -59,6 +59,27 @@ public class BookmarkView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(bookmarkCnt==2){
+                    // Check whether the schools are of the same type
+                    boolean flag = false;
+
+                    if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 1,-1).size() == 1) {
+                        if (dataRepository.findSchools(compareSchools.get(1).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 1,-1).size() == 1)
+                            flag = true;
+                    }
+                    else if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 2,-1).size() == 1) {
+                        if (dataRepository.findSchools(compareSchools.get(1).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 2,-1).size() == 1)
+                            flag = true;
+                    }
+                    else if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 3,-1).size() == 1) {
+                        if (dataRepository.findSchools(compareSchools.get(1).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 3,-1).size() == 1)
+                            flag = true;
+                    }
+
+                    if (flag == false) {
+                        Toast.makeText(getApplicationContext(),"Please choose 2 schools of the same education level",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     Intent openCompare = new Intent(getApplicationContext(),compareView.class);
                     int i = 0;
                     for(SchoolEntity school:compareSchools){

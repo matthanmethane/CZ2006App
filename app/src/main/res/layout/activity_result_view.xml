@@ -2,21 +2,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/schoolNameInput"
+                android:layout_width="325dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="School Name"
+                android:inputType="textLongMessage|textPersonName" />
+
+            <Button
+                android:id="@+id/schoolNameButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Search" />
+        </LinearLayout>
+
         <Spinner
             android:id="@+id/filterList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/filter_options"
             android:paddingLeft="180dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorPrimary"/>
 
         <ScrollView
             android:layout_width="match_parent"
