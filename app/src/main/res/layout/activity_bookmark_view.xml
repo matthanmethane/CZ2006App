@@ -7,12 +7,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/compare_btn">
-
         <LinearLayout
-            android:id="@+id/bookmarkList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Primary School"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/bookmarkListPri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Secondary School"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/bookmarkListSec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Junior College"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/bookmarkListJc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
     </ScrollView>
     <Button
         android:layout_alignParentBottom="true"

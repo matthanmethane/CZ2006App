@@ -138,14 +138,23 @@ public class BookmarkView extends AppCompatActivity {
      */
     public List<SchoolEntity> displaySchool(List<SchoolEntity> schools) {
 
+        DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
+
         if (schools.size() <= 0)
             return null;
 
         List<SchoolEntity> compareSchools = new ArrayList<SchoolEntity>();
 
-        LinearLayout schoolList = findViewById(R.id.bookmarkList);
-        if (schoolList.getChildCount() > 0)
-            schoolList.removeAllViews();
+        LinearLayout schoolListPri = findViewById(R.id.bookmarkListPri);
+        LinearLayout schoolListSec = findViewById(R.id.bookmarkListSec);
+        LinearLayout schoolListJc = findViewById(R.id.bookmarkListJc);
+
+        if (schoolListPri.getChildCount() > 0)
+            schoolListPri.removeAllViews();
+        if (schoolListSec.getChildCount() > 0)
+            schoolListSec.removeAllViews();
+        if (schoolListJc.getChildCount() > 0)
+            schoolListJc.removeAllViews();
 
         for (int i = 0; i < schools.size(); i++) {
             RelativeLayout box = new RelativeLayout(this);
@@ -191,8 +200,13 @@ public class BookmarkView extends AppCompatActivity {
             box.addView(bookmarkBtn);
             box.addView(schoolName);
             box.addView(button);
-            schoolList.addView(box);
 
+            if(dataRepository.findSchools(schools.get(i).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 1,-1).size() == 1)
+                schoolListPri.addView(box);
+            else if(dataRepository.findSchools(schools.get(i).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 2,-1).size() == 1)
+                schoolListSec.addView(box);
+            else if(dataRepository.findSchools(schools.get(i).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 3,-1).size() == 1)
+                schoolListJc.addView(box);
             schoolName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
@@ -224,7 +238,13 @@ public class BookmarkView extends AppCompatActivity {
                 public void onClick(View arg0) {
                     DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
                     dataRepository.deleteBookmark(school.getSchoolName());
-                    schoolList.removeView(box);
+                    if(dataRepository.findSchools(school.getSchoolName(),new ArrayList<>(), new ArrayList<>(), 1,-1).size() == 1)
+                        schoolListPri.removeView(box);
+                    else if(dataRepository.findSchools(school.getSchoolName(),new ArrayList<>(), new ArrayList<>(), 2,-1).size() == 1)
+                        schoolListSec.removeView(box);
+                    else if(dataRepository.findSchools(school.getSchoolName(),new ArrayList<>(), new ArrayList<>(), 3,-1).size() == 1)
+                        schoolListJc.removeView(box);
+
                     if(bookmarkBtn.isChecked()){
                         compareSchools.remove(school);
                         bookmarkCnt--;
