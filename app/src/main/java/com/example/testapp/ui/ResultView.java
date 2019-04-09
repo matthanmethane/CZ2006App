@@ -1,11 +1,13 @@
 package com.example.testapp.ui;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -83,6 +85,16 @@ public class ResultView extends AppCompatActivity {
 
         // Filter button
         Spinner spinner = findViewById(R.id.filterList);
+        // Hide score filter if primary school
+        if (schoolLevel == 1) {
+            System.out.println("!@#$$#@%#^^#^");
+            Resources res = getResources();
+            String[] stringArray = res.getStringArray(R.array.filter_options2);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, stringArray);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(dataAdapter);
+        }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
