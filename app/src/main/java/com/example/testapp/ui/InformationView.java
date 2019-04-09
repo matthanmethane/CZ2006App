@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,7 +44,7 @@ public class InformationView extends AppCompatActivity {
         String schoolName = getIntent().getStringExtra("name");
         if (dataRepository.isBookmark(schoolName)) {
             item.setChecked(true);
-            item.setIcon(android.R.drawable.btn_star_big_on);
+            item.setIcon(R.drawable.bookmark_on);
         }
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
