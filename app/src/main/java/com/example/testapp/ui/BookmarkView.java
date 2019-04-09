@@ -40,6 +40,11 @@ public class BookmarkView extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    /**
+     * Generate the UI display of all the bookmarks saved by the user. The bookmarks are arranged by education level.
+     * @param savedInstanceState the saved instane state
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -275,6 +280,12 @@ public class BookmarkView extends AppCompatActivity {
 
         }
         return compareSchools;
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<SchoolEntity> schools = getBookmarkedSchools();
+        List<SchoolEntity> compareSchools = displaySchool(schools);
     }
 }

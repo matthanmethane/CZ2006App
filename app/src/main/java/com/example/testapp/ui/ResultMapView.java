@@ -30,6 +30,11 @@ public class ResultMapView extends AppCompatActivity implements GoogleMap.OnInfo
 
     private GoogleMap mMap;
     private List<SchoolEntity> schools;
+    /**
+     * Return to the previous page when the back button in the header is selected.
+     * @param item header menu button
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -40,6 +45,12 @@ public class ResultMapView extends AppCompatActivity implements GoogleMap.OnInfo
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    /**
+     * Gemerate the map UI display. On the map includes the location of all the schools in the search result. The user can access the detailed information of the
+     * school by selecting the popup marker of a particular school.
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

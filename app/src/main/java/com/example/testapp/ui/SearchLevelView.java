@@ -15,7 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
  * Search education level view.
  */
 public class SearchLevelView extends AppCompatActivity {
-
+    /**
+     * Return to the previous page when the back button in the header is selected.
+     * @param item header menu button
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -29,6 +33,10 @@ public class SearchLevelView extends AppCompatActivity {
 
     }
 
+    /**
+     * Generate the UI display of the search on the education level.
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

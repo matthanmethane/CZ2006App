@@ -156,33 +156,6 @@ public class DistanceFilter extends AsyncTask<Void, Void, List<SchoolEntity>> im
 
     private String getToken() {
         String token = "yJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI1NTcsInVzZXJfaWQiOjI1NTcsImVtYWlsIjoiamVzc2x5bi5jaGV3LnMueUBnbWFpbC5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE1NTQ2NTkyODMsImV4cCI6MTU1NTA5MTI4MywibmJmIjoxNTU0NjU5MjgzLCJqdGkiOiI1OGE2MmQ4ZDNjMGRjYmEwZTg0NmNlZmE3MzcwZWVlZSJ9.tXWjnCJ4E78eo3CPAKc2XKvWBdy8sACjtnmSEK3tT-0";
-        try {
-            URL url = new URL("https://developers.onemap.sg/privateapi/auth/post/getToken");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-
-            Map<String,String> arguments = new HashMap<>();
-            arguments.put("email", "jesslyn.chew.s.y@gmail.com");
-            arguments.put("password", "zAch1pam"); // This is a fake password obviously
-            StringJoiner sj = new StringJoiner("&");
-            for(Map.Entry<String,String> entry : arguments.entrySet())
-                sj.add(URLEncoder.encode(entry.getKey(), "UTF-8") + "="
-                        + URLEncoder.encode(entry.getValue(), "UTF-8"));
-            byte[] out = sj.toString().getBytes(StandardCharsets.UTF_8);
-            int length = out.length;
-
-
-            conn.setFixedLengthStreamingMode(length);
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            conn.connect();
-            // read the response
-            OutputStream o = conn.getOutputStream();
-            System.out.println("###############");
-            System.out.println(o);
-        } catch (Exception e) {
-            System.out.println("Exception: " +e.getMessage());
-        }
         return token;
     }
 

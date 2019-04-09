@@ -26,6 +26,11 @@ import androidx.appcompat.app.AppCompatActivity;
  * Display 2 schools' information side-by-side for comparision.
  */
 public class compareView extends AppCompatActivity {
+    /**
+     * Return to the previous page when the back button in the header is selected.
+     * @param item header menu button
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -36,6 +41,11 @@ public class compareView extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    /**
+     * Generate the UI display of the comparison between 2 schools.
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

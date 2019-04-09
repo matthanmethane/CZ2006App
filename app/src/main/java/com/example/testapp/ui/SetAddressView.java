@@ -7,8 +7,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.testapp.R;
+import com.example.testapp.viewmodel.AddressViewModel;
+
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +29,10 @@ import androidx.appcompat.app.AppCompatActivity;
  * Set user's address view.
  */
 public class SetAddressView extends AppCompatActivity {
-
+    /**
+     * Generate the UI display of which the user must input their postal code.
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,15 +74,22 @@ public class SetAddressView extends AppCompatActivity {
                 // Need to validate address
                 String address = setAddress.getText().toString();
                 if (address.length() != 6 | !address.matches("[0-9]+")) {
-                    TextView text = findViewById(R.id.errorMsg);
-                    text.setText("Please input valid postal code");
+                    Toast.makeText(getApplicationContext(),"Please input a 6 digit postal code",Toast.LENGTH_LONG).show();
                 } else {
-                    // TO DO: Check whether valid postal code
-
-                    Intent openSubject = new Intent(getApplicationContext(), SubjectView.class);
-                    openSubject.putExtra("schoolLevel", schoolLevel);
-                    openSubject.putExtra("address", address);
-                    startActivity(openSubject);
+                    AddressViewModel model = new AddressViewModel(address);
+                    try {
+                        model.execute().get();
+                    } catch (Exception e) {
+                        System.out.println("Exception: " + e);
+                    }
+                    if (model.getValid()) {
+                        Intent openSubject = new Intent(getApplicationContext(), SubjectView.class);
+                        openSubject.putExtra("schoolLevel", schoolLevel);
+                        openSubject.putExtra("address", address);
+                        startActivity(openSubject);
+                    } else {
+                        Toast.makeText(getApplicationContext(),"Please input valid postal code",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -75,6 +97,11 @@ public class SetAddressView extends AppCompatActivity {
 
     }
 
+    /**
+     * Return to the previous page when the back button in the header is selected.
+     * @param item header menu button
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
