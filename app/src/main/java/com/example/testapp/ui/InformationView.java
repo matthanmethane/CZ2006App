@@ -193,6 +193,11 @@ public class InformationView extends AppCompatActivity {
         clusterText.setText(clusterCode);
 
         LinearLayout ccaText = findViewById(R.id.full_textbox_cca);
+        if(ccaList.length == 0) {
+            TextView textView = new TextView(this);
+            textView.setText("No information available");
+            ccaText.addView(textView);
+        }
         for (int i = 1; i < ccaList.length; i ++) {
             TextView textView = new TextView(this);
             textView.setText(ccaList[i]);
@@ -201,6 +206,11 @@ public class InformationView extends AppCompatActivity {
 
 
         LinearLayout courseText = findViewById(R.id.full_textbox_course);
+        if(courseList.length == 0) {
+            TextView textView = new TextView(this);
+            textView.setText("No information available");
+            courseText.addView(textView);
+        }
         for (int i = 1; i < courseList.length; i ++) {
             TextView textView = new TextView(this);
             textView.setText(courseList[i]);

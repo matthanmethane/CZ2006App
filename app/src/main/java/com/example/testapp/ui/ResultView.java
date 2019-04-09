@@ -119,6 +119,11 @@ public class ResultView extends AppCompatActivity {
                 openMap.putExtra("address",address);
                 openMap.putExtra("courses",courses);
                 openMap.putExtra("ccas",ccas);
+
+                EditText schoolNameInput = findViewById(R.id.schoolNameInput);
+                String name = schoolNameInput.getText().toString();
+                openMap.putExtra("nameSearch",name);
+
                 startActivity(openMap);
             }
         });

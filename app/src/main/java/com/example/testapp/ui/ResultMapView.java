@@ -62,6 +62,7 @@ public class ResultMapView extends AppCompatActivity implements GoogleMap.OnInfo
 
         Intent intent = getIntent();
         int schoolLevel = intent.getIntExtra("schoolLevel",-1);
+        String nameSearch = intent.getStringExtra("nameSearch");
         String address = intent.getStringExtra("address");
         String[] courses = intent.getStringArrayExtra("courses");
         String[] ccas = intent.getStringArrayExtra("ccas");
@@ -77,7 +78,7 @@ public class ResultMapView extends AppCompatActivity implements GoogleMap.OnInfo
         }
 
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
-        schools = dataRepository.findSchools("",selectedCcas,selectedCourses,schoolLevel,-1);
+        schools = dataRepository.findSchools(nameSearch,selectedCcas,selectedCourses,schoolLevel,-1);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

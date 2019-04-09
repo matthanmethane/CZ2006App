@@ -209,9 +209,11 @@ public class compareView extends AppCompatActivity {
         }
 
         LinearLayout cca1 = findViewById(R.id.cca1);
-        /* String ccaString = "";
-        if (ccaList.length > 1)
-            ccaString = ccaList[0];*/
+        if (ccaList1.length == 0) {
+            TextView textView = new TextView(this);
+            textView.setText("No information available");
+            cca1.addView(textView);
+        }
         for (int i = 1; i < ccaList1.length; i ++) {
             TextView textView = new TextView(this);
             textView.setText(ccaList1[i]);
@@ -220,18 +222,23 @@ public class compareView extends AppCompatActivity {
 
 
         LinearLayout course1 = findViewById(R.id.course1);
-        /*String courseString = "";
-        if (courseList.length > 1)
-            courseString = courseList[0];*/
+        if (courseList1.length == 0) {
+            TextView textView = new TextView(this);
+            textView.setText("No information available");
+            course1.addView(textView);
+        }
         for (int i = 1; i < courseList1.length; i ++) {
             TextView textView = new TextView(this);
             textView.setText(courseList1[i]);
             course1.addView(textView);
         }
+
         LinearLayout cca2 = findViewById(R.id.cca2);
-        /* String ccaString = "";
-        if (ccaList.length > 1)
-            ccaString = ccaList[0];*/
+        if (ccaList2.length == 0) {
+            TextView textView = new TextView(this);
+            textView.setText("No information available");
+            cca2.addView(textView);
+        }
         for (int i = 1; i < ccaList2.length; i ++) {
             TextView textView = new TextView(this);
             textView.setText(ccaList2[i]);
@@ -240,9 +247,11 @@ public class compareView extends AppCompatActivity {
 
 
         LinearLayout course2 = findViewById(R.id.course2);
-        /*String courseString = "";
-        if (courseList.length > 1)
-            courseString = courseList[0];*/
+        if (courseList2.length == 0) {
+            TextView textView = new TextView(this);
+            textView.setText("No information available");
+            course2.addView(textView);
+        }
         for (int i = 1; i < courseList2.length; i ++) {
             TextView textView = new TextView(this);
             textView.setText(courseList2[i]);

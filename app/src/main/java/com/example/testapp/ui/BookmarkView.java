@@ -30,6 +30,8 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class BookmarkView extends AppCompatActivity {
     int bookmarkCnt = 0;
+    List<SchoolEntity> compareSchools = new ArrayList<SchoolEntity>();
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -57,7 +59,7 @@ public class BookmarkView extends AppCompatActivity {
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
 
         List<SchoolEntity> schools = getBookmarkedSchools();
-        List<SchoolEntity> compareSchools = displaySchool(schools);
+        displaySchool(schools);
 
         Button compareBtn = findViewById(R.id.compare_btn);
         compareBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,11 +74,11 @@ public class BookmarkView extends AppCompatActivity {
                         if (dataRepository.findSchools(compareSchools.get(1).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 1,-1).size() == 1)
                             flag = true;
                     }
-                    else if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 2,-1).size() == 1) {
+                    if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 2,-1).size() == 1) {
                         if (dataRepository.findSchools(compareSchools.get(1).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 2,-1).size() == 1)
                             flag = true;
                     }
-                    else if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 3,-1).size() == 1) {
+                    if (dataRepository.findSchools(compareSchools.get(0).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 3,-1).size() == 1) {
                         if (dataRepository.findSchools(compareSchools.get(1).getSchoolName(),new ArrayList<>(), new ArrayList<>(), 3,-1).size() == 1)
                             flag = true;
                     }
@@ -141,14 +143,12 @@ public class BookmarkView extends AppCompatActivity {
      * Display bookmarks.
      * @param schools bookmarked schools
      */
-    public List<SchoolEntity> displaySchool(List<SchoolEntity> schools) {
+    public void displaySchool(List<SchoolEntity> schools) {
 
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
 
         if (schools.size() <= 0)
-            return null;
-
-        List<SchoolEntity> compareSchools = new ArrayList<SchoolEntity>();
+            return;
 
         LinearLayout schoolListPri = findViewById(R.id.bookmarkListPri);
         LinearLayout schoolListSec = findViewById(R.id.bookmarkListSec);
@@ -279,13 +279,15 @@ public class BookmarkView extends AppCompatActivity {
 
 
         }
-        return compareSchools;
+        return;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        bookmarkCnt = 0;
+        compareSchools.clear();
         List<SchoolEntity> schools = getBookmarkedSchools();
-        List<SchoolEntity> compareSchools = displaySchool(schools);
+        displaySchool(schools);
     }
 }
