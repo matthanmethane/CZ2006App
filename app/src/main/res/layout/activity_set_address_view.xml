@@ -41,11 +41,6 @@
             android:layout_gravity="center"
             style="@style/Widget.AppCompat.Button.Colored"/>
 
-        <TextView
-            android:id="@+id/errorMsg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
     </LinearLayout>
 
 </LinearLayout>

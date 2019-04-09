@@ -23,6 +23,11 @@ import androidx.appcompat.app.AppCompatActivity;
  * View that enables user to choose that CCA(s) the school must have.
  */
 public class CcaView extends AppCompatActivity {
+    /**
+     * Return to the previous page when the back button in the header is selected.
+     * @param item header menu button
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -33,6 +38,11 @@ public class CcaView extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    /**
+     * Generate the UI display of the different CCAs the user can select from.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
