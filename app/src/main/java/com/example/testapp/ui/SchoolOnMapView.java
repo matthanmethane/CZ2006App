@@ -55,8 +55,8 @@ public class SchoolOnMapView extends AppCompatActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         KEY_SCHOOL_NAME = getIntent().getStringExtra("school_name");
-        schoolLongitude = getIntent().getDoubleExtra("longitude", -34); // TODO: set a proper default value
-        schoolLatitude = getIntent().getDoubleExtra("latitude", 151); // TODO: set a proper default value
+        schoolLongitude = getIntent().getDoubleExtra("longitude", -1);
+        schoolLatitude = getIntent().getDoubleExtra("latitude", -1);
 
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);

@@ -43,7 +43,6 @@ public class InformationView extends AppCompatActivity {
         DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         MenuItem item = menu.findItem(R.id.infoBookmarkBtn);
         String schoolName = getIntent().getStringExtra("name");
-        //Todo: Initializ the bookmark state
         if (dataRepository.isBookmark(schoolName)) {
             item.setChecked(true);
             item.setIcon(android.R.drawable.btn_star_big_on);
@@ -155,7 +154,6 @@ public class InformationView extends AppCompatActivity {
 
         TextView genderText = findViewById(R.id.full_textbox_school_gender);
         genderText.setText(gender);
-        //Todo: Set the text
         TextView sessionTitle = findViewById(R.id.title_school_session);
         TextView sessionText = findViewById(R.id.full_textbox_school_session);
         if(schoolLevel==1){
