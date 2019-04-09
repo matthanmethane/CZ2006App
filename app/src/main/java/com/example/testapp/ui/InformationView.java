@@ -44,12 +44,12 @@ public class InformationView extends AppCompatActivity {
                 if(item.isChecked()){
                     //Todo:Remove from the bookmark
                     item.setChecked(false);
-                    item.setIcon(android.R.drawable.btn_star_big_off);
+                    item.setIcon(R.drawable.bookmark_off);
                 }
                 else{
                     //Todo: Add to the bookmark
                     item.setChecked(true);
-                    item.setIcon(android.R.drawable.btn_star_big_on);
+                    item.setIcon(R.drawable.bookmark_on);
                 }
                 return true;
             default:
