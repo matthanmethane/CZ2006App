@@ -52,13 +52,13 @@ public class InformationView extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.isChecked()){
                     item.setChecked(false);
+                    item.setIcon(R.drawable.bookmark_off);
                     dataRepository.deleteBookmark(schoolName);
-                    item.setIcon(android.R.drawable.btn_star_big_off);
                 }
                 else{
                     item.setChecked(true);
+                    item.setIcon(R.drawable.bookmark_on);
                     dataRepository.addNewBookmark(schoolName);
-                    item.setIcon(android.R.drawable.btn_star_big_on);
                 }
                 return true;
             }

@@ -5,5 +5,5 @@
         android:title=""
         android:checkable="true"
         app:showAsAction="always"
-        android:icon="@android:drawable/btn_star_big_off" />
+        android:icon="@drawable/bookmark_off" />
 </menu>
