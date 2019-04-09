@@ -33,6 +33,11 @@ import androidx.lifecycle.ViewModelProviders;
  * Display the schools that matches the search result inserted by the user.
  */
 public class ResultView extends AppCompatActivity {
+    /**
+     * Return to the previous page when the back button in the header is selected.
+     * @param item header menu button
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -43,6 +48,11 @@ public class ResultView extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    /**
+     * Generate the UI display for the results of schools that meet the user's requirements.
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +119,11 @@ public class ResultView extends AppCompatActivity {
                 openMap.putExtra("address",address);
                 openMap.putExtra("courses",courses);
                 openMap.putExtra("ccas",ccas);
+
+                EditText schoolNameInput = findViewById(R.id.schoolNameInput);
+                String name = schoolNameInput.getText().toString();
+                openMap.putExtra("nameSearch",name);
+
                 startActivity(openMap);
             }
         });
@@ -222,5 +237,17 @@ public class ResultView extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    /**
+     * Reload the school results to account for any bookmark changes, as the school can be bookmarked from the information view.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        final ResultViewModel viewModel = ViewModelProviders.of(this).get(ResultViewModel.class);
+        List<SchoolEntity> sorted = viewModel.sortSchools();
+        displaySchool(sorted);
     }
 }

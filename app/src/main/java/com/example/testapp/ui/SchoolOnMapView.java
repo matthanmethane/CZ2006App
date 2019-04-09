@@ -23,6 +23,11 @@ public class SchoolOnMapView extends AppCompatActivity implements OnMapReadyCall
     private String KEY_SCHOOL_NAME;
     private Double schoolLatitude;
     private Double schoolLongitude;
+    /**
+     * Return to the previous page when the back button in the header is selected.
+     * @param item header menu button
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -34,6 +39,10 @@ public class SchoolOnMapView extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
+    /**
+     * Generate the map display with the school's location.
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +55,8 @@ public class SchoolOnMapView extends AppCompatActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         KEY_SCHOOL_NAME = getIntent().getStringExtra("school_name");
-        schoolLongitude = getIntent().getDoubleExtra("longitude", -34); // TODO: set a proper default value
-        schoolLatitude = getIntent().getDoubleExtra("latitude", 151); // TODO: set a proper default value
+        schoolLongitude = getIntent().getDoubleExtra("longitude", -1);
+        schoolLatitude = getIntent().getDoubleExtra("latitude", -1);
 
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);

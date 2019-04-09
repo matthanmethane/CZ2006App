@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,30 +28,55 @@ import androidx.appcompat.app.AppCompatActivity;
  * Information view.
  */
 public class InformationView extends AppCompatActivity {
-
+    /**
+     * Generate the header with the bookmark button.
+     * <p>
+     * If the bookmark button is selected, the bookmark setting of the school will change depending on whether the school was previously bookmarked.
+     * </p>
+     * @param menu header menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
+        MenuItem item = menu.findItem(R.id.infoBookmarkBtn);
+        String schoolName = getIntent().getStringExtra("name");
+        if (dataRepository.isBookmark(schoolName)) {
+            item.setChecked(true);
+            item.setIcon(android.R.drawable.btn_star_big_on);
+        }
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.isChecked()){
+                    item.setChecked(false);
+                    dataRepository.deleteBookmark(schoolName);
+                    item.setIcon(android.R.drawable.btn_star_big_off);
+                }
+                else{
+                    item.setChecked(true);
+                    dataRepository.addNewBookmark(schoolName);
+                    item.setIcon(android.R.drawable.btn_star_big_on);
+                }
+                return true;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
+    /**
+     * Return to the previous page when the back button in the header is selected.
+     * @param item header menu button
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
+        String schoolName = getIntent().getStringExtra("name");
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                return true;
-            case R.id.bookmarkBtn:
-                //Enter the function
-                if(item.isChecked()){
-                    //Todo:Remove from the bookmark
-                    item.setChecked(false);
-                    item.setIcon(R.drawable.bookmark_off);
-                }
-                else{
-                    //Todo: Add to the bookmark
-                    item.setChecked(true);
-                    item.setIcon(R.drawable.bookmark_on);
-                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -60,14 +86,7 @@ public class InformationView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information_view);
-
-        MenuItem item = (MenuItem) findViewById(R.id.bookmarkBtn);
-
-        //Todo: Initializ the bookmark state
-        //If it is bookmarked, add item.setChecked(true);item.setIcon(android.R.drawable.btn_star_big_on);
-        //If it is not bookmakred, item.setChecked(false);add item.setIcon(android.R.drawable.btn_star_big_off);
-
-
+        DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
 
         Intent intent = getIntent();
         int schoolLevel = intent.getIntExtra("schoolLevel",-1);
@@ -91,7 +110,6 @@ public class InformationView extends AppCompatActivity {
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setTitle(name);
 
-        DataRepository dataRepository = ((EmpathyApp) getApplication()).getRepository();
         List<SchoolToCCA> ccas = dataRepository.getSchoolCCAs(name);
         String[] ccaList = new String[ccas.size()];
         for (int i = 0; i < ccas.size(); i ++) {
@@ -104,8 +122,6 @@ public class InformationView extends AppCompatActivity {
         for (int i = 0; i < courses.size(); i ++) {
             courseList[i] = courses.get(i).courseName;
         }
-
-
 
         // Display information
         TextView nameText = findViewById(R.id.full_textbox_school_name);
@@ -138,7 +154,6 @@ public class InformationView extends AppCompatActivity {
 
         TextView genderText = findViewById(R.id.full_textbox_school_gender);
         genderText.setText(gender);
-        //Todo: Set the text
         TextView sessionTitle = findViewById(R.id.title_school_session);
         TextView sessionText = findViewById(R.id.full_textbox_school_session);
         if(schoolLevel==1){
@@ -177,12 +192,12 @@ public class InformationView extends AppCompatActivity {
         TextView clusterText = findViewById(R.id.full_textbox_cluster_code);
         clusterText.setText(clusterCode);
 
-
-
         LinearLayout ccaText = findViewById(R.id.full_textbox_cca);
-        /* String ccaString = "";
-        if (ccaList.length > 1)
-            ccaString = ccaList[0];*/
+        if(ccaList.length == 0) {
+            TextView textView = new TextView(this);
+            textView.setText("No information available");
+            ccaText.addView(textView);
+        }
         for (int i = 1; i < ccaList.length; i ++) {
             TextView textView = new TextView(this);
             textView.setText(ccaList[i]);
@@ -191,9 +206,11 @@ public class InformationView extends AppCompatActivity {
 
 
         LinearLayout courseText = findViewById(R.id.full_textbox_course);
-        /*String courseString = "";
-        if (courseList.length > 1)
-            courseString = courseList[0];*/
+        if(courseList.length == 0) {
+            TextView textView = new TextView(this);
+            textView.setText("No information available");
+            courseText.addView(textView);
+        }
         for (int i = 1; i < courseList.length; i ++) {
             TextView textView = new TextView(this);
             textView.setText(courseList[i]);
