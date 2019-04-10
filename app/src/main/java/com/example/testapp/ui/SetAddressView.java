@@ -12,16 +12,6 @@ import android.widget.Toast;
 import com.example.testapp.R;
 import com.example.testapp.viewmodel.AddressViewModel;
 
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -73,23 +63,16 @@ public class SetAddressView extends AppCompatActivity {
             public void onClick(View v) {
                 // Need to validate address
                 String address = setAddress.getText().toString();
-                if (address.length() != 6 | !address.matches("[0-9]+")) {
+                int result = validatePostalCode(address);
+                if (result == 1)
                     Toast.makeText(getApplicationContext(),"Please input a 6 digit postal code",Toast.LENGTH_LONG).show();
-                } else {
-                    AddressViewModel model = new AddressViewModel(address);
-                    try {
-                        model.execute().get();
-                    } catch (Exception e) {
-                        System.out.println("Exception: " + e);
-                    }
-                    if (model.getValid()) {
-                        Intent openSubject = new Intent(getApplicationContext(), SubjectView.class);
-                        openSubject.putExtra("schoolLevel", schoolLevel);
-                        openSubject.putExtra("address", address);
-                        startActivity(openSubject);
-                    } else {
-                        Toast.makeText(getApplicationContext(),"Please input valid postal code",Toast.LENGTH_LONG).show();
-                    }
+                else if (result == 2)
+                    Toast.makeText(getApplicationContext(),"Please input valid postal code",Toast.LENGTH_LONG).show();
+                else {
+                    Intent openSubject = new Intent(getApplicationContext(), SubjectView.class);
+                    openSubject.putExtra("schoolLevel", schoolLevel);
+                    openSubject.putExtra("address", address);
+                    startActivity(openSubject);
                 }
             }
         });
@@ -111,5 +94,31 @@ public class SetAddressView extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * Check whether the input postal code is valid.
+     * <p>
+     * If the output is 1, it means that the postal code format is wrong.
+     * If the output is 2, it means that the postal code doesnt exist.
+     * If the output is 3, it means that the postal code is valid.
+     * </p>
+     * @param address the postal code
+     * @return confirmation on whether the postal code is valid
+     */
+    public int validatePostalCode(String address) {
+        if (address.length() != 6 | !address.matches("[0-9]+")) {
+            return 1;
+        }
+        AddressViewModel model = new AddressViewModel(address);
+        try {
+            model.execute().get();
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+        if (model.getValid()) {
+            return 3;
+        }
+        return 2;
     }
 }
