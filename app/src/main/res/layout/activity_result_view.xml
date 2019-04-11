@@ -16,7 +16,7 @@
 
             <EditText
                 android:id="@+id/schoolNameInput"
-                android:layout_width="325dp"
+                android:layout_width="247dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="School Name"

@@ -155,7 +155,7 @@ public class DistanceFilter extends AsyncTask<Void, Void, List<SchoolEntity>> im
     }
 
     private String getToken() {
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI1NTcsInVzZXJfaWQiOjI1NTcsImVtYWlsIjoiamVzc2x5bi5jaGV3LnMueUBnbWFpbC5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE1NTQ2NTkyODMsImV4cCI6MTU1NTA5MTI4MywibmJmIjoxNTU0NjU5MjgzLCJqdGkiOiI1OGE2MmQ4ZDNjMGRjYmEwZTg0NmNlZmE3MzcwZWVlZSJ9.tXWjnCJ4E78eo3CPAKc2XKvWBdy8sACjtnmSEK3tT-0";
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI1NTcsInVzZXJfaWQiOjI1NTcsImVtYWlsIjoiamVzc2x5bi5jaGV3LnMueUBnbWFpbC5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE1NTQ5MjAzMjAsImV4cCI6MTU1NTM1MjMyMCwibmJmIjoxNTU0OTIwMzIwLCJqdGkiOiI0ZTA4NmFmMzhjNDFjOTIyYWRkMWVhMTQ5Yzg3NmQ2MiJ9.uS-RC_RwGr7zSOSsGChOaX0Q-cbfaDBZ99sUzWwbS48";
         return token;
     }
 
