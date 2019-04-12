@@ -53,7 +53,7 @@ public class compareView extends AppCompatActivity {
 
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setTitle("Bookmark Result");
+        bar.setTitle("Compare Result");
 
         String[] name = new String[2];
         String[] address = new String[2];

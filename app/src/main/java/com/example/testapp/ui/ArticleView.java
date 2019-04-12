@@ -52,7 +52,7 @@ public class ArticleView extends AppCompatActivity {
 
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setTitle("News Article");
+        bar.setTitle("News");
 
 
         ArticleDao_Impl articleDao = new ArticleDao_Impl();
