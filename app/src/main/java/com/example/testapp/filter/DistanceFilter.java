@@ -11,26 +11,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
 
 /**
  * Class to sort schools based on user distance.
  */
 public class DistanceFilter extends AsyncTask<Void, Void, List<SchoolEntity>> implements Filter{
-    String postalCode;
-    List<SchoolEntity> beforeSort;
-    List<SchoolEntity> afterSort;
-    String longitude;
-    String latitude;
+    private String postalCode;
+    private List<SchoolEntity> beforeSort;
+    private List<SchoolEntity> afterSort;
+    private String longitude;
+    private String latitude;
 
     /**
      * Class constructor.
@@ -128,12 +122,10 @@ public class DistanceFilter extends AsyncTask<Void, Void, List<SchoolEntity>> im
     }
 
     private long getDistance(double lat, double lng) {
-        // API expires every 3 days
-        String token = getToken();
-        String distanceAPI = "https://developers.onemap.sg/privateapi/routingsvc/route?start={start}&end={end}&routeType=drive&token={token}";
+      String distanceAPI = "https://maps.googleapis.com/maps/api/distancematrix/json?&origins={start}&destinations={end}&key={token}&mode=transit";
         String start = latitude + "," + longitude;
         String end = Double.toString(lat) + "," + Double.toString(lng);
-        distanceAPI = distanceAPI.replace("{token}",token);
+        distanceAPI = distanceAPI.replace("{token}", "AIzaSyA5qr9oHTgIYBhz5BHTSs0CMTIg__S0Rdk");
         distanceAPI = distanceAPI.replace("{start}",start);
         distanceAPI = distanceAPI.replace("{end}",end);
 
@@ -147,16 +139,16 @@ public class DistanceFilter extends AsyncTask<Void, Void, List<SchoolEntity>> im
             String response = convertStreamToString(in);
 
             JSONObject jsonObject = new JSONObject(response);
-            distance = Long.parseLong(jsonObject.getJSONObject("route_summary").getString("total_distance"));
+            distance = Long.parseLong(jsonObject.getJSONArray("rows")
+                            .getJSONObject(0)
+                            .getJSONArray("elements")
+                            .getJSONObject(0)
+                            .getJSONObject("duration")
+                            .getString("value"));
         } catch (Exception e) {
             System.out.println("Exception: " +e.getMessage());
         }
         return distance;
-    }
-
-    private String getToken() {
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI1NTcsInVzZXJfaWQiOjI1NTcsImVtYWlsIjoiamVzc2x5bi5jaGV3LnMueUBnbWFpbC5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE1NTQ5MjAzMjAsImV4cCI6MTU1NTM1MjMyMCwibmJmIjoxNTU0OTIwMzIwLCJqdGkiOiI0ZTA4NmFmMzhjNDFjOTIyYWRkMWVhMTQ5Yzg3NmQ2MiJ9.uS-RC_RwGr7zSOSsGChOaX0Q-cbfaDBZ99sUzWwbS48";
-        return token;
     }
 
 }
